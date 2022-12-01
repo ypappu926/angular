@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage("Git config"){
             steps {
-                git branch: 'dev', url: 'https://github.com/ypappu926/angular.git'
+                git branch: 'main', url: 'https://github.com/ypappu926/angular.git'
             }
         }
         stage("Build Nodejs"){

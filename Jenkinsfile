@@ -11,7 +11,7 @@ pipeline {
                 git branch: 'dev', url: 'https://github.com/ypappu926/angular.git'
             }
         }
-        stage("Build Maven"){
+        stage("Build Nodejs"){
             steps{
                 sh "npm install"
                 sh "ng build --base-href=/ --prod=true --build-optimizer=true --aot=true"

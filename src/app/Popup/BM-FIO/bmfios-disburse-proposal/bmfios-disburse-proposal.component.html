@@ -1,0 +1,26 @@
+<div class="modal-header d-block">
+  <h4 class="modal-title">Disburse Proposal</h4>
+</div>
+<form #disburseProposalform="ngForm">
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12 pb-2">
+      <span class="text-muted">
+        Sanction Loan Amount : <strong>₹ {{disburseProposalDetails.sanctionAmount}}
+        </strong>        
+      </span>
+    </div>
+    <div class="col-12">
+      <div class="form-group m-0">
+        <label>Disbursement Loan Amount</label>
+        <input type="text" placeholder="Enter Amount" 
+        [(ngModel)]="disburseProposalDetails.ammountToBeDisburse" class="form-control" autocomplete="off" name="disbursedAmount" [appValidateElement]="isProceed" validationControlName="disbursedAmount" appCurrencyInputDirective >
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-psb btn-secondary waves-effect" (click)="close(false)">Cancel</button>
+  <button type="button" class="btn btn-psb btn-psbpurple waves-effect" (click)="submitDisburseAmount()">Disburse</button>
+</div>
+</form>

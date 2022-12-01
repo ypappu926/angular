@@ -1,0 +1,378 @@
+<!-- <p>customer-record works!</p> -->
+<div class="container-fluid">
+    <app-page-title title="Customer Record" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card-box">
+          <div class="row m-0">
+            <div class="col-lg-12 p-0">
+              <div class="Main-heading-dual-Cont">
+                <div class="dash-forms Admin-DashForm Form-one-grp">     
+                  <div class="col-lg-2 float-left p-0">
+                    <div class="form-group m-0">
+                        <ng-select class="NP_SWidth_100" bindLabel="value" bindValue="id" [(ngModel)]="typeId"
+                        [items]="searchType" placeholder="Select any one">
+                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                          <p class="ng-Select-Three"><span>{{item.value}}</span></p>
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>      
+                  <div class="col-lg-3 float-left p-0">
+                  <div class="col-lg-12 float-left pr-0 ">
+                    <form autocomplete="off" novalidate>
+                      <div class="col-lg-9 float-left pl-0">
+                        <div class="form-group m-0">
+                          <div class="input-group Common-form-icon">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><em class="fmdi fmdi-search"></em></span>
+                            </div>
+                            <input type="text" class="form-control bl-0" [(ngModel)]="searchData" name="searchData"
+                                placeholder="Search Your Application Details">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 float-left p-0">
+                        <button type="submit" class="btn Btn-Width-100 btn-outline-psbpurple" (click)="searchBtnData()">Search</button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- <div class="col-lg-3 float-left p-0" *ngIf="false">
+                    <button type="button" class="btn Btn-Width-100 btn-outline-psbpurple" (click)="createBorrower()">Create
+                      Borrower</button>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+            <div class="row m-0" *ngIf="userPersonalDetails">
+              <div class="col-lg-12 p-0">
+                <div class="Main-heading-dual-Cont NP_ptbt_1_5">
+                  <div class="text-heading-cards">
+                    <h3 class="main-text-heading">User and Profile Details</h3>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="Common-ps-FS-NP" summary="">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Signup Date</th>
+                        <th>Password</th>
+                        <th>Lock</th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td (click)="copyToClipBoard(userPersonalDetails.userId)">1</td>
+                        <td (click)="copyToClipBoard(userPersonalDetails.emailId)">{{userPersonalDetails.emailId ? userPersonalDetails.emailId : ''}}</td>
+                        <td (click)="copyToClipBoard(userPersonalDetails.mobile)">{{userPersonalDetails.mobile ? userPersonalDetails.mobile : ''}}</td>
+                        <td>{{userPersonalDetails.signUpDate ? (userPersonalDetails.signUpDate |date:'dd MMM y') : ''}}
+                        </td>
+                        <td><span><a href="javascript:void(0);"
+                              (click)="userResetPassword(userPersonalDetails.userId)">Reset</a></span></td>
+                        <td><a href="javascript:void(0);"
+                            class="{{userPersonalDetails.isLock == 1? 'fa fa-lock' : 'fa fa-unlock'}}"
+                            (click)="lockUnlockUser(userPersonalDetails.userId,userPersonalDetails.isLock)"></a></td>
+                        <td>&nbsp;</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- *ngIf="customerRecordList" -->
+            <div class="row m-0" *ngIf="customerRecord"> 
+              <div class="col-lg-12 p-0">
+                <div class="Main-heading-dual-Cont NP_ptbt_1_5 bt-0">
+                  <div class="text-heading-cards">
+                    <h3 class="main-text-heading">Application List</h3>
+                  </div>
+                  <ng-container *ngIf="checkAdminPermission('IS_DOWNLOAD_EXCEL')">
+                    <div ngbDropdown class="mobile-dropdown" *ngIf="typeId == 3 || typeId == 4">
+                      <a href="javascript: void(0)" class="btn btn-outline-psbpurple dropdown-toggle"
+                         data-toggle="dropdown" aria-expanded="false" (click)="downloadAllList()"><em
+                        class="fmdi fmdi-download mr-2"></em>Download All</a>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="table-responsive">
+                  <table class="Common-ps-NS-NP txt-Left-Np" summary="">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Application ID</th>
+                        <th>Stage Name</th>
+                        <th>Name Of Applicant</th>
+                   <!-- <th>Loan Type</th> -->
+                        <!-- <th>PMAY Status</th>-->
+                        <th>Scheme Type</th> 
+                        <th *ngIf="checkAdminPermission('IS_DOWNLOAD_EXCEL')">Actions</th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <!-- *ngFor="let customerRecord of customerRecordList;let i=index" -->
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td (click)="copyToClipBoard(customerRecord?.applicationId)">{{customerRecord?.applicationCode}}
+                        </td>
+                        <td>{{customerRecord?.stageName}}</td>
+                        <td>{{customerRecord?.name}}</td>
+                        <!-- <td>{{customerRecord?.loanType}}</td> -->
+                        <!-- <td>{{customerRecord?.pmayStatus ? customerRecord.pmayStatus : '-'}}</td> -->
+                        <td>{{customerRecord?.schemeType}}</td>
+                        <td *ngIf="checkAdminPermission('IS_DOWNLOAD_EXCEL')"><a href="javascript:void(0);" class="download-link"
+                            (click)="Download_File(customerRecord)">Download</a>
+                        </td>
+                        <td><em class="fmdi fmdi-caret-down-circle"
+                            (click)="customerRecord.isListCollapsed = !customerRecord.isListCollapsed"
+                            (click)="getCustomerDetails(customerRecord.proposalId, customerRecord.isListCollapsed );
+                            getEligibleAndInEligibleResponse(customerRecord.proposalId, customerRecord.applicationId,customerRecord.isListCollapsed );"></em>
+                            <!-- (click)="getEligibleAndInEligibleResponse(customerRecord.proposalId, customerRecord.applicationId,customerRecord.isListCollapsed )"></em> -->
+                        </td>
+                      </tr>
+                      <tr class="collapse" [ngbCollapse]="!customerRecord.isListCollapsed">
+                        <div class="psb-collapse" id="collapseExample">
+                          <div class="com-tab-group">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="Main-heading-dual-Cont NP_pt_0_5">
+                                  <div class="text-heading-cards">
+                                    <h4 class="m-0">Application Details are shown below</h4>
+                                  </div>
+                                  <div class="Btn-Drop_Down-dual-Cont">
+                                    <div class="Add-new-btn-all">
+                                      <!-- <a href="javascript:void(0);" class="btn btn-outline-psbpurple">View</a> -->
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- *ngIf="false" -->
+                                <div class="DetailsCard-teaserView NP_DetailsCard_TSV" >
+                                  <div class="teaserView-complney-details">
+                                    <div class="card-body p-0">
+                                      <div class="TeaserView-company-details">
+                                        <h5 class="card-title m-0">Personal Details</h5>
+                                      </div>
+                                      <div class="TeaserView-company-details"
+                                        *ngFor="let item of customerDetails && customerDetails.personalDetails |keyvalue; let i=index">
+                                        <span>{{1+i}}</span>
+                                        <span>{{ item.key }}</span>
+                                        <span *ngIf="item.key != 'Ratings'">{{ item.value }}</span> 
+                                        <span class="rating_btn" *ngIf="(item.key == 'Ratings') && (item.value != 0)">
+                                          <a *ngFor="let item of [].constructor(item.value)"> <img src="assets/images/star_blue_fill.svg"></a>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                  <div class="teaserView-complney-details">
+                                    <div class="card-body p-0">
+                                      <div class="TeaserView-company-details">
+                                        <h5 class="card-title m-0">Application Details</h5>
+                                      </div>
+                                      <div class="TeaserView-company-details"
+                                        *ngFor="let item of customerDetails && customerDetails.applicationDetails |keyvalue; let i=index">
+                                        <span>{{1+i}}</span>
+                                        <span>{{ item.key }}</span>
+                                        <span>{{ item.value }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                  <div class="teaserView-complney-details">
+                                    <div class="card-body p-0">
+                                      <div class="TeaserView-company-details">
+                                        <h5 class="card-title m-0">Bank Details</h5>
+                                      </div>
+                                      <div class="TeaserView-company-details"
+                                        *ngFor="let item of customerDetails && customerDetails.bankDetails |keyvalue; let i=index">
+                                        <span>{{1+i}}</span>
+                                        <span>{{ item.key }}</span>
+                                        <span>{{ item.value }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                  <div class="teaserView-complney-details">
+                                    <div class="card-body p-0">
+                                      <div class="TeaserView-company-details">
+                                        <h5 class="card-title m-0">Loan Details</h5>
+                                      </div>
+                                      <div class="TeaserView-company-details"
+                                        *ngFor="let item of customerDetails && customerDetails.loanDetails |keyvalue; let i=index">
+                                        <span>{{1+i}}</span>
+                                        <span>{{ item.key }}</span>
+                                        <span>{{ item.value }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                  <div class="teaserView-complney-details">
+                                    <div class="card-body p-0">
+                                      <div class="TeaserView-company-details">
+                                        <h5 class="card-title m-0">Other Details</h5>
+                                      </div>
+                                      <div class="TeaserView-company-details"
+                                        *ngFor="let item of customerDetails && customerDetails.otherDetails |keyvalue; let i=index">
+                                        <span>{{1 + i}}</span>
+                                        <span>{{ item.key }}</span>
+                                        <span>{{ item.value }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+  
+                                </div>
+                                <div>
+                                  <div class="Main-heading-dual-Cont NP_pt_0_5">
+                                    <div class="text-heading-cards">
+                                      <h4 class="m-0">Matched Application</h4>
+                                    </div>
+  
+  
+                                    <div class="form-group Ext-data mb-0" *ngIf="true">
+                                      <div class="symbole-input Tvs_Dash">
+                                        <em class="fmdi fmdi-search"></em>
+                                        <input type="text" (keyup)="searchMachesList()" name="searchText"
+                                          placeholder="Search Bank" class="form-control"
+                                          [(ngModel)]="searchMachesApplication" style="color:black">
+                                      </div>
+                                    </div>
+  
+  
+                                    <div class="dash-Download" *ngIf="checkAdminPermission('IS_DOWNLOAD_EXCEL')">
+                                      <a href="javascript:void(0);" class="btn btn-outline-psbpurple"
+                                        (click)="downloadAll()"><em class="fmdi fmdi-download mr-1"></em>
+                                        Download All</a>
+                                    </div>
+  
+                                  </div>
+                                  <div class="table-responsive">
+                                    <table class="Np_Cutomer_table" summary="">
+                                      <thead>
+                                        <tr>
+                                          <th>Sr No.</th>
+                                          <th>Bank Name </th>
+                                          <th>Product Name</th>
+                                          <th>Creadted Date</th>
+                                          <th>Product Active</th>
+                                          <th>Loan Amount & <br />Tenure</th>
+                                          <th>Offered ROI & <br />Processing Fees</th>
+                                          <th>FOIR & <br />Score</th>
+                                          <th><p class="block-ellipsis">Message</p></th>
+                                          <th>Scoring</th>
+                                          <th>Eligibilty</th>
+                                          <th >Parameter</th >
+                                        </tr>
+                                      </thead>
+                                      <tbody *ngIf="totalEligibleData > 0">
+                                        <tr *ngFor="let matchedData of eligibleAndInEligibleDetailsList;let i= index">
+                                          <td
+                                            (click)="copyToClipBoard(matchedData.organisationName +'---->   '+ matchedData.productName +'---->   '+ matchedData.eligibilityReason)">
+                                            {{startEligibleIndex + i}}</td>
+                                          <td (click)="copyToClipBoard(matchedData.organisationName)">
+                                            {{matchedData.organisationName}} </td>
+                                          <td (click)="copyToClipBoard(matchedData.productName)">
+                                            {{matchedData.productName}}<br /> ({{matchedData.productVersion}}) </td>
+                                          <td>{{matchedData.createdDate}}</td>
+                                          <td>{{matchedData.productActive}}</td>
+                                          <td>₹ {{(matchedData.elLoanAmount ? matchedData.elLoanAmount : 0) }} &
+                                            <br />{{matchedData.elTenure}} Years
+                                          </td>
+                                          <td>{{matchedData.elRoi}} &<br />{{matchedData.elProcessingFee}}</td>
+                                          <td>{{matchedData.margin}} & <br /> {{matchedData.score}}</td>
+                                          <td (click)="copyToClipBoard(matchedData.eligibilityReason)">
+                                            <p class="block-ellipsis" ngbTooltip="{{matchedData.eligibilityReason}}">
+                                              {{matchedData.eligibilityReason}}</p>
+                                          </td>
+                                          <td><a href="javascript:void(0);" class="download-link"
+                                              (click)="getScoringCalculationsDetails(matchedData.applicationId, matchedData.productId, matchedData.isNoScoring)">View</a>
+                                          </td>
+                                          <td><a href="javascript:void(0);" class="download-link"
+                                              (click)="getEligibilityCalculationsDetails(matchedData.applicationId, matchedData.productId)">View</a>
+                                          </td>
+                                          <td><a href="javascript:void(0);" class="download-link"
+                                              (click)="getAppProdMatchesData(matchedData.proposalId, matchedData.applicationId, matchedData.productId)">View</a>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <div class="row pagination-table" *ngIf="3 < totalEligibleData">
+                                      <div class="col-sm-12 col-md-5">
+                                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status"
+                                          aria-live="polite">
+                                          Showing
+                                          {{startEligibleIndex}} to {{endEligibleIndex}} of {{totalEligibleData}}
+                                          entries
+                                        </div>
+                                      </div>
+                                      <div class="dataTables_length" id="tickets-table_length">
+                                        <label class="d-inline-flex align-items-center">Show
+                                          <ng-select name="tickets-table_length" class="hide-clear"
+                                            aria-controls="tickets-table" name="pageEligibleSize"
+                                            [(ngModel)]="pageEligibleSize"
+                                            (ngModelChange)="getEligiblityPaginationData(isSearch ? true: undefined)"
+                                            [items]="PageEligibleSelectNumber" [clearable]="false">
+                                          </ng-select> entries
+                                        </label>
+                                      </div>
+                                      <!-- Pagination -->
+                                      <div class="col-sm-12 col-md-5">
+                                        <div class="text-md-right float-md-right pagination-rounded">
+                                          <ngb-pagination [maxSize]="3"
+                                            [collectionSize]="totalEligibleData" [(page)]="pageEligible"
+                                            [pageSize]="pageEligibleSize"
+                                            (pageChange)="getEligiblityPaginationData(isSearch ? true: undefined);">
+                                          </ngb-pagination>
+                                        </div>
+                                      </div>
+                                      <!-- End Pagination -->
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+  
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <div class="row pagination-table">
+                    <div class="col-sm-12 col-md-5">
+                      <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                        Showing
+                        {{startIndex}} to {{endIndex}} of {{totalData}}
+                        entries
+                      </div>
+                    </div> -->
+                    <!-- <div class="dataTables_length" id="tickets-table_length">
+                      <label class="d-inline-flex align-items-center">Show
+                        <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table"
+                          name="pageSize" [(ngModel)]="pageSize" (ngModelChange)="getPaginationData()"
+                          [items]="PageSelectNumber" [clearable]="false">
+                        </ng-select> entries
+                      </label>
+                    </div> -->
+                    <!-- Pagination -->
+                    <!-- <div class="col-sm-12 col-md-5">
+                      <div class="text-md-right float-md-right pagination-rounded">
+                        <ngb-pagination [maxSize]="3" [collectionSize]="totalData" [(page)]="page" [pageSize]="pageSize"
+                          (pageChange)="getPaginationData();">
+                        </ngb-pagination>
+                      </div>
+                    </div> -->
+                    <!-- End Pagination -->
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+      </div>
+    </div>
+  <!-- </div> -->

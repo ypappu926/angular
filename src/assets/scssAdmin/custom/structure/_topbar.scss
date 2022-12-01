@@ -1,0 +1,389 @@
+//
+// topbar.scss
+//
+
+// Logo
+.logo {
+  display: block;
+  line-height: $topbar-height;
+
+  span.logo-lg {
+    display: block;
+  }
+
+  span.logo-sm {
+    display: none;
+  }
+
+  .logo-lg-text-dark {
+    color: $dark;
+    font-weight: $font-weight-bold;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+
+  .logo-lg-text-light {
+    color: $white;
+    font-weight: $font-weight-bold;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+}
+
+.logo-box {
+  height: $topbar-height;
+  width: $leftbar-width;
+  float: left;
+}
+
+.navbar-custom {
+  background-color: $bg-topbar-dark;
+  box-shadow: $shadow;
+  padding: 0 10px 0 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: $topbar-height;
+  z-index: 1000;
+
+  .topnav-menu {
+    >li {
+      float: left;
+    }
+
+    .nav-link {
+      padding: 0 15px;
+      color: rgba($white, 0.6);
+      min-width: 32px;
+      display: block;
+      line-height: $topbar-sub-height;
+      text-align: center;
+      max-height: $topbar-sub-height;
+      
+      &.NP-ChangeDash{
+        margin-right: 20px;
+      }
+      &:hover {
+        border-radius: 21px;
+        background: #FfFFFf20;
+      }
+    }
+  }
+
+  .dropdown.show {
+    .nav-link {
+      background-color: rgba($white, 0.05);
+    }
+  }
+
+  /* Search */
+  .app-search {
+    overflow: hidden;
+    height: $topbar-height;
+    display: table;
+    max-width: 180px;
+    margin-right: 20px;
+
+    .app-search-box {
+      display: table-cell;
+      vertical-align: middle;
+
+      input::-webkit-input-placeholder {
+        font-size: 0.8125rem;
+        color: rgba($white, 0.3);
+      }
+    }
+
+    .form-control {
+      border: none;
+      height: 38px;
+      padding-left: 20px;
+      padding-right: 0;
+      color: $white;
+      background-color: rgba($white, 0.07);
+      box-shadow: none;
+      border-radius: 30px 0 0 30px;
+    }
+
+    .input-group-append {
+      margin-left: 0;
+      z-index: 4;
+    }
+
+    .btn {
+      background-color: rgba($white, 0.07);
+      border-color: transparent;
+      color: rgba($white, 0.3);
+      border-radius: 0 30px 30px 0;
+      box-shadow: none !important;
+    }
+  }
+
+  .button-menu-mobile {
+    border: none;
+    color: $white;
+    display: inline-block;
+    height: $topbar-height;
+    line-height: $topbar-height;
+    width: 60px;
+    background-color: transparent;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .button-menu-mobile.disable-btn {
+    display: none;
+  }
+}
+
+/* Notification */
+.noti-scroll {
+  max-height: 230px;
+}
+
+.notification-list {
+  margin-left: 0;
+
+  .noti-title {
+    background-color: $white;
+    padding: 15px 20px;
+    &.dropdown-header{
+      h6{
+        color: #6c757d;
+      }
+      span{
+        color: #343A40;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .noti-icon {
+    font-size: 21px;
+    vertical-align: middle;
+  }
+
+  .noti-icon-badge {
+    display: inline-block;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+  }
+
+  .notify-item {
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom:1px solid #dee2e6;
+   
+
+    &.notify-all{
+      justify-content: center;
+    }
+    &:last-of-type{
+      border-bottom-width: 0;
+    }
+    .notify-Sub-group{
+      display: flex;
+      align-items: center;
+      &.ai_fs{
+        align-items: flex-start;
+      }
+    }
+    &.NewActive{
+      border-left:5px solid transparent;
+      align-items: center;
+      &.warning{
+        border-left:5px solid #ffa000;
+      }
+    }
+
+    .notify-icon {
+      float: left;
+      height: 36px;
+      width: 40.55px;
+      font-size: 18px;
+      line-height: 36px;
+      text-align: center;
+      margin-right: 10px;
+      border-radius: 50%;
+      color: $white;
+      img{
+        width: 100%;
+        float: left;
+        height: 30px;
+      }
+      &.NP_NTI{
+        height: 25px;
+      }
+    }
+
+    .notify-details {
+      margin-bottom: 5px;
+      overflow: hidden;
+      margin-left: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: $gray-800;
+      font-weight: 600;
+      &.NP_NTD{
+        margin: 0;
+        width: 100%;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+      &.NP_Top_List{
+        width: 100%;
+        font-size: 14px;
+        text-overflow: unset;
+        white-space: normal;
+      }
+
+      b {
+        font-weight: 500;
+      }
+
+      small {
+        display: block;
+      }
+
+      span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+      }
+    }
+
+    .user-msg {
+      margin-left: 45px;
+      white-space: normal;
+      line-height: 16px;
+    }
+  }
+
+  .profile-dropdown {
+    .notify-item {
+      padding: 7px 20px;
+    }
+  }
+}
+
+.NP-NotiList{
+  h4{
+    padding: 1.5rem;
+    margin: 0;
+    border-bottom: 1px solid #dee2e6;
+  } 
+  h4{
+    padding: 1.5rem;
+    margin: 0;
+    border-bottom: 1px solid #dee2e6;
+  }
+}
+
+.UserName_Profile_View{
+  height: 40px;
+    width: 40px;
+    float: left;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 18px;
+    background: #fff;
+    color: #38414a;
+    border-radius: 50px;
+    margin-right: .5rem;
+}
+
+.profile-dropdown {
+  width: 270px;
+
+  i {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}
+
+.nav-user {
+  padding: 0 12px !important;
+
+  img {
+    height: 32px;
+    width: 32px;
+  }
+}
+
+// Topbar light
+.topbar-light .navbar-custom {
+  background-color: $bg-topbar-light !important;
+  border-bottom: 1px solid #f1f5f7;
+  color: black !important;
+
+  .topnav-menu {
+    .nav-link {
+      color: $gray-700;
+    }
+  }
+
+  .dropdown.show {
+    .nav-link {
+      background-color: rgba($dark, 0.03);
+    }
+  }
+
+  .button-menu-mobile {
+    color: $dark;
+  }
+
+  /* Search */
+  .app-search {
+    input::-webkit-input-placeholder {
+      color: $gray-500 !important;
+    }
+
+    .form-control {
+      color: $dark;
+      background-color: $gray-100;
+      border-color: $gray-100;
+    }
+
+    .btn {
+      background-color: $gray-100;
+      color: $gray-400;
+    }
+  }
+}
+
+.Sub-ViewDrop {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .pro-user-name {
+    float: left;
+    width: 85%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    span {
+      color: #6c757d;
+    }
+  }
+}
+
+@media (max-width:1366px) {
+  .logo-box {
+    width: 200px;
+  }
+}

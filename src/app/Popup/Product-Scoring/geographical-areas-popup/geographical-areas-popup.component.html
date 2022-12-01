@@ -1,0 +1,61 @@
+<div class="modal-header NPB-1_5">
+    <h4 class="modal-title">Select Location</h4>
+  </div>
+  <div class="modal-body Modal-scroll m-body-border p-0">
+    <div class="row m-0">
+      <div class="col-sm-12 p-0 selecte-three-check">
+        <div class="col-xl-6 br-1 p-0">
+          <div class="check-industry">
+            <div class="check-serch-industry">
+              <div class="checkbox checkbox-psbpurple form-check-inline">
+                <input type="checkbox" [disabled]='viewTab' [(ngModel)]="isSelectAll" id="isSelectAll"  (ngModelChange)="selectAll($event, 'state')">
+                <label for="selectAll"> Select All States </label>
+              </div>
+              <div class="symbole-input w-50">
+                <em class="mdi mdi-magnify"></em>
+                <input type="text" [disabled]='viewTab' class="form-control" placeholder="Search States" [(ngModel)]="searchState" (ngModelChange)="onFilter($event,'state')"/>
+              </div>
+            </div>
+            <div class="slimScroll-psb-cotent" appSlimScroll>
+              <div class="check-drop-arrow" *ngFor="let selector of stateList;let i=index" >
+                <div class="checkbox checkbox-psbpurple form-check-inline">
+                  <input type="checkbox" [disabled]='viewTab'  id="checkbox_{{selector.id}}" [(ngModel)]="selector.isChecked" (change)="getCites(i)">
+                  <label for="checkbox_{{selector.id}}"> {{selector.value}} </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6 br-1 p-0">
+          <div class="check-industry">
+            <div class="check-serch-industry">
+              <div class="checkbox checkbox-psbpurple form-check-inline">
+                <input type="checkbox" [disabled]='viewTab' id="selectAll" value="option1" [(ngModel)]="isSelectAllCity" id="isSelectAllCity"  (ngModelChange)="selectAll($event, 'city')">
+                <label for="selectAll" > Select All Districts </label>
+              </div>
+              <div class="symbole-input w-50">
+                <em class="mdi mdi-magnify"></em>
+                <input type="text" [disabled]='viewTab' class="form-control" placeholder="Search Districts" [(ngModel)]="searchCity" (ngModelChange)="onFilter($event,'city')"/>
+              </div>
+            </div>
+            <div class="slimScroll-psb-cotent" appSlimScroll>
+              <div class="check-drop-arrow" *ngFor="let city of cityList">
+                <div class="checkbox checkbox-psbpurple form-check-inline">
+                  <input type="checkbox"[disabled]='viewTab' id="city_checkbox_{{city.id}}" [(ngModel)]="city.isChecked" (ngModelChange)="setCityCount(1,city.id,$event)">
+                  <label for="city_checkbox_{{city.id}}"> {{city.value}} </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer footer-text-m">
+    <span><strong>{{stateCount}} States and {{cityCount}} City selected</strong></span>
+    <div class="btn-footer-g jc-FEnd">
+      <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"(click)="closeModal()">Cancel</a>
+      <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" [hidden]='viewTab'  (click)="save()">Done</a>
+    </div>
+  </div>

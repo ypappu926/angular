@@ -1,0 +1,126 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+  <app-page-title title="Applications" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12 parent">
+      <div class="card-box btn-tabs" id="stick-headerN">
+        <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+          <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+            <li class="init hide">Select</li>
+            <li class="nav-item Common-badge-C4 Two_TabAfter" id="tab1" (click)="changeTab(1)">
+              <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                <h3 class="notification-list loan-tsv-badge">10</h3>
+                <span class="text-muted">Pending Applications</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4" id="tab2" (click)="changeTab(2)">
+              <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                <h3 class="notification-list loan-tsv-badge">25</h3>
+                <span class="text-muted">Commpleted Applications</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+     
+      <div class="card-box">
+        <div class="btn-tabs MB_1_5_NP Tab_Card_P0 " id="stick-headerN" *ngIf="tab == 3 || tab == 4 || tab == 1">
+          <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex">
+            <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo">
+              <li class="initTwo TwoDrop hide">Select</li>
+              <li class="nav-item Common-badge-C4" id="tab3" (click)="changeTab(3)">
+                <a class="nav-link NP_BB_2" [ngClass]="{ active : tab == 3 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Pending by HO</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab4" (click)="changeTab(4)">
+                <a class="nav-link NP_BB_2 " [ngClass]="{ active : tab == 4 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Pending by BO</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Applications Details</h4>
+            <span class="text-muted">Applications is pending for below mention HO & BO</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple"><i
+                class="fmdi fmdi-download mr-2"></i>Download All</a>
+          </div>
+        </div>
+        <!-- table Report and Filter data -->
+        <div class="table-responsive">
+          <table class="CommonTable_NP Mobile_table_View_NP">
+            <!--Common-ps-Subsidy-NP  [ngClass]="tab == 4 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+            <thead>
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>Name Of Unit</th>
+                <th>Email Id</th>
+                <th>Mobile No</th>
+                <th *ngIf="tab == 3">Status</th>
+                <th *ngIf="tab == 4">Officer Assigned</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="Active_TR">
+                <td data-label="Sr. No.">1</td>
+                <td data-label="Name Of Unit">Nikul Patel</td>
+                <td data-label="Email Id">Nikul@gmail.com</td>
+                <td data-label="Mobile No"> 7069418800</td>
+                <td data-label="Status" *ngIf="tab == 3">New</td>
+                <td data-label="Officer Assigned" *ngIf="tab == 4">Nikul Patel</td>
+                <td data-label="Action">
+                  <div class="NP_Action_table">
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 3"><em class="fmdi fmdi-file-text"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 4"><em class="fmdi fmdi-eye"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td data-label="Sr. No.">1</td>
+                <td data-label="Name Of Unit">Nikul Patel</td>
+                <td data-label="Email Id">Nikul@gmail.com</td>
+                <td data-label="Mobile No"> 7069418800</td>
+                <td data-label="Status" *ngIf="tab == 3">In-Progress</td>
+                <td data-label="Officer Assigned" *ngIf="tab == 4">Nikul Patel</td>
+                <td data-label="Action">
+                  <div class="NP_Action_table">
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 3" routerLink="/TIIC/Com-DataFields"><em class="fmdi fmdi-file-text"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 4" routerLink="/TIIC/Com-DataFields"><em class="fmdi fmdi-eye"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                  </div>
+                </td>
+              </tr>
+              <tr class="Active_TR">
+                <td data-label="Sr. No.">1</td>
+                <td data-label="Name Of Unit">Nikul Patel</td>
+                <td data-label="Email Id">Nikul@gmail.com</td>
+                <td data-label="Mobile No"> 7069418800</td>
+                <td data-label="Status" *ngIf="tab == 3">New</td>
+                <td data-label="Officer Assigned" *ngIf="tab == 4">Nikul Patel</td>
+                <td data-label="Action">
+                  <div class="NP_Action_table">
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 3"><em class="fmdi fmdi-file-text"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                    <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 4"><em class="fmdi fmdi-eye"
+                        placement="top" ngbTooltip="View Details"></em></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

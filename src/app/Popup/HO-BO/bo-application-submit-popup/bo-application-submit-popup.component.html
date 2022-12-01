@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title">Application Submit</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <!-- BO Text -->
+        <div class="col-md-12" *ngIf="roleId == 6">
+            <span>Are you sure you want to send to Branch Office?</span>
+        </div>
+        <div class="col-md-12" *ngIf="roleId == 5">
+            <span>Are you sure you want to Submit the Application Details?</span><br><br>
+            <span>Once submitted, the Application will move to Field Inspection Officer.</span>
+        </div>
+          <!-- HO text -->
+          <!-- <div class="col-md-12">
+            <span>Are you sure you want to Submit the Application Details?</span>
+            <span>Once submitted, the Application will move to Field Inspection Officer.</span>
+          </div> -->
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="close(-1)">Cancel</a>
+    <!-- BO -->
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple waves-effect" (click)="close(1)">{{roleId == 6 ? 'Send to Branch Office' : 'Submit'}}</a>
+    <!-- HO  -->
+    <!-- <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple waves-effect">Submit</a> -->
+</div>

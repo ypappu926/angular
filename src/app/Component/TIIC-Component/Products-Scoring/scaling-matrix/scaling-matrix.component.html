@@ -1,0 +1,790 @@
+<form autocomplete="off" #scalingForm="ngForm">
+    <div class="Common-Requested mt-1-5 active-Requested"
+        *ngIf="updatedDetails&&updatedDetails!=null &&(scoringObj.scoringModelId!=null && scoringObj.scoringModelId!=undefined )&& oldScoringId==scoringObj.scoringModelId && scoringObj.isNoScoring==false &&isSame== false ">
+
+        <div class="Common-req-txt">
+            <p>{{updatedDetails.userName==null?updatedDetails.email: updatedDetails.userName }}{{ ' user has made changes and created new version of ' + updatedDetails.newName +' Scoring model, Kindly update new version of scoring in depending products if required'}}</p>
+
+        </div>
+    </div>
+    <div class="card-box">
+        <div class="Com-pe-main-content NP_radio_PS">
+            <div class="check-pe-text input-text-pe">
+                <div>
+                    <h5 class="m-0">Do you want to attach scoring model with this product ?
+                    </h5>
+                </div>
+                <div class="Common-pe-check-yes-no">
+                    <div class="tab-mandatory-Parameters">
+                        <div ngbRadioGroup name="BillingAddress"
+                            class="btn-group btn-group-toggle btn-radio-select">
+                            <label ngbButtonLabel class="btn tab-product-name "
+                                [ngClass]="scoringObj.isNoScoring==false?'activet-border':''">
+                                <input ngbButton type="radio" name="yes" [value]="false"
+                                    [(ngModel)]="scoringObj.isNoScoring"
+                                    (ngModelChange)="addOrRemoveRisk(scoringObj.isNoScoring);" />
+                                YES
+                            </label>
+                            <label ngbButtonLabel class="btn tab-product-name "
+                                [ngClass]="scoringObj.isNoScoring==true?'activet-border':''">
+                                <input ngbButton type="radio" name="no" [value]="true"
+                                    [(ngModel)]="scoringObj.isNoScoring"
+                                    (ngModelChange)="addOrRemoveRisk(scoringObj.isNoScoring);" />
+                                No </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="scoringObj.isNoScoring != null&& !scoringObj.isNoScoring">
+
+        <div class="card-box">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row m-0">
+                        <div class="Main-heading-dual-Cont bb-1">
+                            <div class="text-heading-cards">
+                                <h4 class="main-text-heading">Scoring & ROI Configuration</h4>
+                                <p class="text-muted">Set the configuration of scoring & ROI as suitable to you</p>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="!scoringObj.isNoScoring">
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <h5>Risk Score Model</h5>
+                                <div class="Com-main-content-pe">
+                                    <div class="col-md-6 col-lg-4 col-xl-3 float-left pl-0">
+                                        <div class="form-group">
+                                            <label>Scoring Model</label>
+                                            <ng-select placeholder="Select any one" [items]="scoringModelList"
+                                                bindLabel="name" [appValidateElement]="submitted" required
+                                                [validationMessage]="{'required': 'Please Select Scoring Model'}"
+                                                name="scoringModelId" bindValue="id"
+                                                [(ngModel)]="scoringObj.scoringModelId" (change)="getTotalScore()">
+                                            </ng-select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-lg-4 col-xl-3 float-left">
+                                        <div class="form-group">
+                                            <label>{{businessTypeId===9? "Minimum Score Applicant":"Minimum Score"}}</label>
+                                            <input type="number" class="form-control" placeholder="Enter Your Score"
+                                                name="totalScore" [appValidateElement]="submitted" required
+                                                pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                (focusout)="checkRange(scoringObj.minimumScore,totalScore)"
+                                                [validationMessage]="{'required': 'Minimum Score is required','pattern': ' Enter valid Minimum Score '}"
+                                                [(ngModel)]="scoringObj.minimumScore" />
+                                            <div class="input-text-check-auto">
+                                                <p class="mt-1">Range 0-{{totalScore}} </p>
+                                                <!-- <div class="checkbox checkbox-psbpurple form-check-inline">
+                                                    <input type="checkbox" id="OnRoadPriceofVehicle" value="option1" [(ngModel)]="scoringObj.isMandatory" name="isMandatory"><label for="OnRoadPriceofVehicle">Mandatory</label>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- end col -->
+                        </div>
+                    </ng-container>
+
+                  
+
+                    <!-- end col -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <div class="row">
+                <div class="col-12">
+                    <div class="Com-pe-main-content NP_radio_PS">
+                        <div class="check-pe-text input-text-pe">
+                            <div class="Com-pe-check">
+                                <h4 class="m-0">Do you want consider ROI ?
+                                </h4>
+                            </div>
+                            <div class="Common-pe-check-yes-no">
+                                <div class="tab-mandatory-Parameters">
+                                    <div ngbRadioGroup name="BillingAddress"
+                                        class="btn-group btn-group-toggle btn-radio-select">
+                                        <label ngbButtonLabel class="btn tab-product-name "
+                                            [ngClass]="scoringObj.isConfigureRoi==true?'activet-border':''">
+                                            <input ngbButton type="radio" name="yes1" [value]="true"
+                                                [(ngModel)]="scoringObj.isConfigureRoi" />
+                                            YES
+                                        </label>
+                                        <label ngbButtonLabel class="btn tab-product-name "
+                                            [ngClass]="scoringObj.isConfigureRoi==false?'activet-border':''">
+                                            <input ngbButton type="radio" name="no1" [value]="false"
+                                                [(ngModel)]="scoringObj.isConfigureRoi" />
+                                            No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            </div>
+            <ng-container *ngIf="scoringObj.isConfigureRoi">
+
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Configuration</h5>
+                        <div class="Com-main-content-pe">
+                            <div class="col-md-6 col-lg-4 col-xl-3 float-left pl-0">
+                                <div class="form-group">
+                                    <label>Margin Based On</label>
+                                    <!-- <div class="Dual-Drop-np"> -->
+                                    <ng-select placeholder="Select any one" required
+                                        [(ngModel)]="scoringObj.marginScaleType" [items]="foirList"
+                                        bindLabel="value" name="foirBasedOn" [appValidateElement]="submitted"
+                                        required
+                                        [validationMessage]="{'required': 'Please Select Margin Based On'}"
+                                        bindValue="id" (change)="cleanOldGradingList();">
+                                    </ng-select>
+    
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 float-left">
+                                <div class="form-group">
+                                    <label>ROI Based On</label>
+                                    <!-- <div class="Dual-Drop-np"> -->
+                                    <ng-select placeholder="Select any one"
+                                        [(ngModel)]="scoringObj.roiScaleType" [appValidateElement]="submitted"
+                                        required
+                                        [validationMessage]="{'required': 'Please Select ROI Based On'}"
+                                        [items]="roiList" bindLabel="value" name="roiBasedOn" bindValue="id">
+                                    </ng-select>
+                                    <!-- <ng-select placeholder="Loan Amount" [items]="roiSubOptionList"
+      bindLabel="value" *ngIf="scoringObj.roiBasedOn == cibilObj.id"
+      bindValue="id"  [(ngModel)]="scoringObj.cibilAndLoanAmount">
+      </ng-select> -->
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 float-left">
+                                <div class="form-group">
+                                    <label>Tenure Based on</label>
+                                    <ng-select placeholder="Select any one"
+                                        [(ngModel)]="scoringObj.tenureScaleType"
+                                        [appValidateElement]="submitted" required
+                                        [validationMessage]="{'required': 'Please Select Tenure Based on'}"
+                                        [items]="tenureList" name="tenureBasedOn" bindLabel="value"
+                                        bindValue="id">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 col-xl-3 float-left">
+                                <div class="form-group">
+                                    <label>PF Based On</label>
+                                    <ng-select placeholder="Select any one" [(ngModel)]="scoringObj.pfScaleType"
+                                        [items]="pfList" [appValidateElement]="submitted" required
+                                        [validationMessage]="{'required': 'Please Select PF Based On'}"
+                                        bindLabel="value" name="pfBasedOn" bindValue="id">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h5>Effective ROI Calculation method</h5>
+                        <div class="psb-tab-content">
+                            <div class="btn-group btn-group-toggle btn-radio-select-scoring" ngbRadioGroup
+                                name="ROI Calculator">
+                                <label ngbButtonLabel class="btn tab-product-name sm-tab"
+                                    [ngClass]="scoringObj.baseRateType==1 ? 'activet-border':''">
+                                    <input ngbButton type="radio" [value]="1"
+                                        [(ngModel)]="scoringObj.baseRateType" name="baseRateType_1"
+                                        (change)="getBaseRate()">{{(schemeId==1 || schemeId==2
+                                    || schemeId==3 || schemeId==4)?'Repo Rate':'EBLR'}}
+                                </label>
+                                <label ngbButtonLabel class="btn tab-product-name sm-tab"
+                                    [ngClass]="scoringObj.baseRateType==2 ? 'activet-border':''">
+                                    <input ngbButton type="radio" [value]="2"
+                                        [(ngModel)]="scoringObj.baseRateType" name="baseRateType_2"
+                                        (change)="getBaseRate()">MCLR
+                                </label>
+                                <label ngbButtonLabel class="btn tab-product-name sm-tab"
+                                    [ngClass]="scoringObj.baseRateType==3 ? 'activet-border':''">
+                                    <input ngbButton type="radio" [value]="3"
+                                        [(ngModel)]="scoringObj.baseRateType" name="baseRateType_3"
+                                        (change)="getBaseRate()">Base Rate
+                                </label>
+                                <!-- <label ngbButtonLabel class="btn tab-product-name sm-tab" [ngClass]="{activet-border : baseRateType==1 }">
+                                        <input ngbButton type="radio" [value]="1" [(ngModel)]="baseRateType">EBLR
+                                    </label>
+                                    <label ngbButtonLabel class="btn tab-product-name sm-tab" [ngClass]="{activet-border : baseRateType==2 }">
+                                        <input ngbButton type="radio" [value]="2" [(ngModel)]="baseRateType">MCLR
+                                    </label> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <ng-container *ngIf="scoringObj.isConfigureRoi">
+            <!-- Risk Scaling -->
+            <div class="card-box" *ngIf="scoringObj.marginScaleType == riskObj.id ||
+        scoringObj.roiScaleType == riskObj.id ||
+        scoringObj.tenureScaleType == riskObj.id ||
+        scoringObj.pfScaleType == riskObj.id">
+                <div class="clearfix">
+                    <div class="text-collapse">
+                        <h4 class="main-text-heading">Risk Score Scaling Matrix</h4>
+                        <span class="text-muted">Set different values for borrower</span>
+                    </div>
+                    <div class="number-collapse">
+                        <div class="collpse-number-main">
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.riskGrading?.noRange}}
+                                </h4>
+                                <span>No. of Ranges</span>
+                            </div>
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.riskGrading?.range}}
+                                </h4>
+                                <span>Score Range</span>
+                            </div>
+                            <a class="psb-collapse-a" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+                                href="javascript:void(0)">
+                                <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+                    <div class="table-responsive">
+                        <!-- CommonTable_NP NP_BGR0 -->
+                        <table class="scroing-RSitr-table" summary="">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Score Range</th>
+                                    <th>Interpretation</th>
+                                    <th>Scale</th>
+                                    <th *ngIf="scoringObj.pfScaleType == riskObj.id">
+                                        Processing Fees (%) <em class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the processing fee % to be charged for the product"></em>
+                                    </th>
+                                    <th *ngIf="scoringObj.pfScaleType == riskObj.id">Min
+                                        PF <em class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the minimum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.pfScaleType == riskObj.id">Max
+                                        PF<em class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the maximum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.marginScaleType == riskObj.id">Margin (%)</th>
+                                    <th *ngIf="scoringObj.tenureScaleType == riskObj.id">Tenure (Years)
+                                    </th>
+                                    <th *ngIf="scoringObj.roiScaleType == riskObj.id">Spread (%)</th>
+                                    <th *ngIf="scoringObj.roiScaleType == riskObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == riskObj.id ? 'EffectiveROI_NP' : ''">
+                                        Effective
+                                        ROI</th>
+                                    <th class="NP_Action">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let riskScoringObj of scoringObj.riskGradingList;let i = index">
+                                    <td scope="row">{{i+1}}</td>
+                                    <td>
+                                        <div class="sitr-scoring-number">
+                                            <div class="form-group input-number-s">
+                                                <input type="text" class="form-control" name="risk_minscore_{{i}}"
+                                                    [(ngModel)]="riskScoringObj.minScore" [disabled]="true">
+                                                <span class="input-margin input-width_np">To</span>
+                                                <input type="number" name="risk_maxscore_{{i}}" class="form-control"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="riskScoringObj.maxScore"
+                                                    (focusout)="onFocusOutEvent($event,scoringObj.riskGradingList,i,'risk_maxscore_'+i,scalingForm);"
+                                                    [disabled]="i+1 ==scoringObj.riskGradingList.length">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="sitr-Scale-number">
+                                            <div class="input-group">
+                                                <input type="text" name="riskScoringObj.interpretation"
+                                                    name="risk_interpretation_{{i}}" [appValidateElement]="submitted"
+                                                    required
+                                                    [validationMessage]="{'required': 'Interpretation is required'}"
+                                                    [(ngModel)]="riskScoringObj.interpretation" class="form-control">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="sitr-Interpretation-number">
+                                            <div class="input-group">
+                                                <input type="number" name="riskScoringObj.scale" name="risk_scale_{{i}}"
+                                                    [appValidateElement]="submitted" required
+                                                    [validationMessage]="{'required': 'Scale is required'}"
+                                                    class="form-control" [(ngModel)]="riskScoringObj.scale">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <!-- (onsubmit)="numberOnly($event)" -->
+                                                <input type="text" class="form-control" name="risk_pf_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,4})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Processing Fees is required','pattern': 'Please enter only numeric value with upto 4 decimals.'}"
+                                                    [(ngModel)]="riskScoringObj.pf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="risk_minpf_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Min PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="riskScoringObj.minPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="risk_maxpf_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    (blur)="blurForMax($event, scoringObj.riskGradingList,2,riskScoringObj.minPf)"
+                                                    pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                                                    [validationMessage]="{'required': 'Max PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.','minlength':'please enter max pf more then min pf.'}"
+                                                    [(ngModel)]="riskScoringObj.maxPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.marginScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="risk_foir_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,2})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Risk Foir is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="riskScoringObj.margin">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.tenureScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="risk_tenure_{{i}}"
+                                                    [required]="true" pattern="^[0-9]*$"
+                                                    (blur)="blurForMax($event, scoringObj.riskGradingList,1)"
+                                                    [appValidateElement]="submitted"
+                                                    [validationMessage]="{'required': 'Tenure is required','other': 'Please enter only numeric value.'}"
+                                                    [(ngModel)]="riskScoringObj.tenure" min="1" max="30" required>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == riskObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="risk_spread_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(?:1?\d(?:\.\d{1,2})?|20(?:\.0?0?)?)$" required
+                                                    [validationMessage]="{'required': 'Spread is required','pattern': 'Please enter only numeric value 1 to 20 with upto 2 decimals.'}"
+                                                    [(ngModel)]="riskScoringObj.spread">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == riskObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == riskObj.id ? 'EffectiveROI_NP' : ''">
+                                        {{baseRate}}% +
+                                        {{parseInt(riskScoringObj.spread)}}% = {{baseRate +
+                                        parseInt(riskScoringObj.spread)}}%</td>
+                                    <td class="NP_Action">
+                                        <a href="javascript: void(0)"
+                                            *ngIf="(i == (scoringObj.riskGradingList.length -1))"
+                                            (click)="removeScoringRange(scoringObj.riskGradingList,index,1)"><em
+                                                class="mdi mdi-close icon-danger"></em></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-sitr-new-rang">
+                            <div class="text-right d-print-none">
+                                <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                                    (click)="addRange(scoringObj.riskGradingList,1)">
+                                    <em class="mdi mdi-plus mr-1"></em> Add Range</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Collapse -->
+            </div>
+
+            <!-- Tenure Scaling -->
+            <div class="card-box" *ngIf="scoringObj.marginScaleType == tenureObj.id ||
+        scoringObj.roiScaleType == tenureObj.id ||
+        scoringObj.tenureScaleType == tenureObj.id ||
+        scoringObj.pfScaleType == tenureObj.id">
+                <div class="clearfix">
+                    <div class="text-collapse">
+                        <h4 class="main-text-heading">Tenure Scaling Matrix</h4>
+                        <span class="text-muted">Set different values for borrower</span>
+                    </div>
+                    <div class="number-collapse">
+                        <div class="collpse-number-main">
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.tenureGrading?.noRange}}
+                                </h4>
+                                <span>No. of Ranges</span>
+                            </div>
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.tenureGrading?.range}}
+                                </h4>
+                                <span>Score Range</span>
+                            </div>
+                            <a class="psb-collapse-a" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+                                href="javascript:void(0)">
+                                <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+                    <div class="table-responsive">
+                        <table class="CommonTable_NP NP_BGR0" summary="">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tenure Range</th>
+                                    <th *ngIf="scoringObj.pfScaleType == tenureObj.id">Processing
+                                        Fees (%) <em class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the processing fee % to be charged for the product"></em>
+
+                                    </th>
+                                    <th *ngIf="scoringObj.pfScaleType == tenureObj.id">Min PF <em
+                                            class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the minimum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.pfScaleType == tenureObj.id">Max PF <em
+                                            class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the maximum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.marginScaleType == tenureObj.id">Margin (%)</th>
+                                    <th *ngIf="scoringObj.tenureScaleType == tenureObj.id">Tenure
+                                        (Years)
+                                    </th>
+                                    <th *ngIf="scoringObj.roiScaleType == tenureObj.id">Spread (%)
+                                    </th>
+                                    <th *ngIf="scoringObj.roiScaleType == tenureObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == tenureObj.id ? 'EffectiveROI_NP' : ''">
+                                        Effective
+                                        ROI</th>
+                                    <th class="NP_Action">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let tenure of scoringObj.tenureGradingList;let i = index">
+                                    <td scope="row">{{i+1}}</td>
+                                    <td>
+                                        <div class="sitr-scoring-number">
+                                            <div class="form-group input-number-s">
+                                                <input type="number" class="form-control" name="gross_minscore_{{i}}"
+                                                    [(ngModel)]="tenure.minScore" [disabled]="true">
+                                                <span class="input-margin input-width_np">To</span>
+                                                <input type="number" name="gross_maxscore_{{i}}" class="form-control"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="tenure.maxScore"
+                                                    (focusout)="onFocusOutEventTenure(scoringObj.tenureGradingList,i);"
+                                                    [disabled]="i+1 === scoringObj.tenureGradingList.length">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <!-- (onsubmit)="numberOnly($event)" -->
+                                                <input type="text" class="form-control" name="gross_pf_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,4})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Processing Fees is required','pattern': 'Please enter only numeric value with upto 4 decimals.'}"
+                                                    [(ngModel)]="tenure.pf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="gross_minpf_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Min PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="tenure.minPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="gross_maxpf_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    (blur)="blurForMax($event, scoringObj.tenureGradingList,2,tenure.minPf)"
+                                                    [validationMessage]="{'required': 'Max PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="tenure.maxPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.marginScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="gross_foir_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,2})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Risk Foir is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="tenure.margin">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.tenureScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="gross_tenure_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    (blur)="blurForMax($event, scoringObj.tenureGradingList,1)"
+                                                    pattern="^[0-9]*$" required
+                                                    [validationMessage]="{'required': 'Tenure is required','pattern': 'Please enter only numeric value.'}"
+                                                    [(ngModel)]="tenure.tenure">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == tenureObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="gross_spread_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                     required
+                                                    [validationMessage]="{'required': 'Spread is required'}"
+                                                    [(ngModel)]="tenure.spread">
+                                            </div>
+                                        </div>
+                                        <!-- pattern="^(?:1?\d(?:\.\d{1,2})?|20(?:\.0?0?)?)$"
+                                        ,'pattern': 'Please enter only numeric value 1 to 20 with upto 2 decimals.' -->
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == tenureObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == tenureObj.id ? 'EffectiveROI_NP' : ''">
+                                        {{baseRate}}% +
+                                        {{parseInt(tenure.spread)}}% = {{baseRate +
+                                        parseInt(tenure.spread)}}%</td>
+                                    <td class="NP_Action" *ngIf="(i == (scoringObj.tenureGradingList.length -1))">
+                                        <a href="javascript: void(0)"
+                                            (click)="removeScoringRange(scoringObj.tenureGradingList,index,3)"><em
+                                                class="mdi mdi-close icon-danger"></em></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="btn-sitr-new-rang">
+                            <div class="text-right d-print-none">
+                                <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                                    (click)="addTenureRange(scoringObj.tenureGradingList,3)">
+                                    <em class="mdi mdi-plus mr-1"></em> Add Range</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Collapse -->
+            </div>
+            <!-- Loan Amount scaling -->
+            <div class="card-box" *ngIf="scoringObj.marginScaleType == loanAmountObj.id ||
+                         scoringObj.roiScaleType == loanAmountObj.id ||
+                         scoringObj.tenureScaleType == loanAmountObj.id ||
+                         scoringObj.pfScaleType == loanAmountObj.id">
+                <div class="clearfix">
+                    <div class="text-collapse">
+                        <h4 class="main-text-heading">Loan Amount Scaling Matrix</h4>
+                        <span class="text-muted">Set different values for borrower</span>
+                    </div>
+                    <div class="number-collapse">
+                        <div class="collpse-number-main">
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.loanAmountGrading?.noRange}}
+                                </h4>
+                                <span>No. of Ranges</span>
+                            </div>
+                            <div class="sub-number-collapse">
+                                <h4 class="m-0 mb-1">{{scoringObj.loanAmountGrading?.range}}
+                                </h4>
+                                <span>Score Range</span>
+                            </div>
+                            <a class="psb-collapse-a" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+                                href="javascript:void(0)">
+                                <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+                    <div class="table-responsive">
+                        <table class="CommonTable_NP NP_BGR0" summary="">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Loan Amount</th>
+                                    <th *ngIf="scoringObj.pfScaleType == loanAmountObj.id">Processing
+                                        Fees (%) <em class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the processing fee % to be charged for the product"></em>
+                                    </th>
+                                    <th *ngIf="scoringObj.pfScaleType == loanAmountObj.id">Min PF <em
+                                            class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the minimum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.pfScaleType == loanAmountObj.id">Max PF <em
+                                            class="fmdi fmdi-info ml-1"
+                                            ngbTooltip="Please set the maximum processing fee in amount"></em></th>
+                                    <th *ngIf="scoringObj.marginScaleType == loanAmountObj.id">
+                                        {{businessTypeId===constant.businessType.HOME_LOAN||businessTypeId===constant.businessType.EDUCATION_LOAN?'
+                                        Foir (%)':'Margin (%)'}}</th>
+                                    <th *ngIf="scoringObj.tenureScaleType == loanAmountObj.id">Tenure
+                                        (Years)
+                                    </th>
+                                    <th *ngIf="scoringObj.roiScaleType == loanAmountObj.id">Spread (%)
+                                    </th>
+                                    <th *ngIf="scoringObj.roiScaleType == loanAmountObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == loanAmountObj.id ? 'EffectiveROI_NP' : ''">
+                                        Effective
+                                        ROI</th>
+                                    <th class="NP_Action">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let loanAmountRiskObj of scoringObj.loanAmountGradingList;let i = index">
+                                    <td scope="row">{{i+1}}</td>
+                                    <td>
+                                        <div class="sitr-scoring-number">
+                                            <div class="form-group input-number-s">
+                                                <input type="number" class="form-control"
+                                                    name="loanAmount_minscore_{{i}}"
+                                                    [(ngModel)]="loanAmountRiskObj.minScore" [disabled]="true">
+                                                <span class="input-margin input-width_np">To</span>
+                                                <input type="number" name="loanAmount_maxscore_{{i}}"
+                                                    class="form-control" [appValidateElement]="submitted"
+                                                    pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                                                    [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.maxScore"
+                                                    (focusout)="onFocusOutEventGrossIncome($event,scoringObj.loanAmountGradingList,i,'loanAmount_maxscore_'+i,scalingForm);"
+                                                    [disabled]="i+1 ==scoringObj.loanAmountGradingList.length">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <!-- (onsubmit)="numberOnly($event)" -->
+                                                <input type="text" class="form-control" name="loanAmount_pf_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,4})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Processing Fees is required','pattern': 'Please enter only numeric value with upto 4 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.pf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="loanAmount_minpf_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Min PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.minPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.pfScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="loanAmount_maxpf_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                                    required
+                                                    (blur)="blurForMax($event, scoringObj.loanAmountGradingList,2,loanAmountRiskObj.minPf)"
+                                                    [validationMessage]="{'required': 'Max PF is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.maxPf">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.marginScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="loanAmount_foir_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,2})?)$"
+                                                    required
+                                                    [validationMessage]="{'required': 'Risk Foir is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.margin">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.tenureScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" name="loanAmount_tenure_{{i}}"
+                                                    [appValidateElement]="submitted" pattern="^[0-9]*$" required
+                                                    [validationMessage]="{'required': 'Tenure is required','pattern': 'Please enter only numeric value.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.tenure"
+                                                    (blur)="blurForMax($event, scoringObj.loanAmountGradingList,1)">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == loanAmountObj.id">
+                                        <div class="sitr-Spread-number">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="loanAmount_spread_{{i}}"
+                                                    [appValidateElement]="submitted"
+                                                    pattern="^(?:1?\d(?:\.\d{1,2})?|20(?:\.0?0?)?)$" required
+                                                    [validationMessage]="{'required': 'Spread is required','pattern': 'Please enter only numeric value 1 to 20 with upto 2 decimals.'}"
+                                                    [(ngModel)]="loanAmountRiskObj.spread">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="scoringObj.roiScaleType == loanAmountObj.id"
+                                        [ngClass]="scoringObj.roiScaleType == loanAmountObj.id ? 'EffectiveROI_NP' : ''">
+                                        {{baseRate}}% +
+                                        {{parseInt(loanAmountRiskObj.spread)}}% = {{baseRate +
+                                        parseInt(loanAmountRiskObj.spread)}}%</td>
+                                    <td class="NP_Action">
+                                        <a href="javascript: void(0)"
+                                            *ngIf="(i == (scoringObj.loanAmountGradingList.length -1))"
+                                            (click)="removeScoringRange(scoringObj.loanAmountGradingList,index,5)"><em
+                                                class="mdi mdi-close icon-danger"></em></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-sitr-new-rang">
+                            <div class="text-right d-print-none">
+                                <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                                    (click)="addGrossIncomeRange(scoringObj.loanAmountGradingList,5)">
+                                    <em class="mdi mdi-plus mr-1"></em> Add Range</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Collapse -->
+            </div>
+
+        </ng-container>
+
+    </ng-container>
+
+</form>

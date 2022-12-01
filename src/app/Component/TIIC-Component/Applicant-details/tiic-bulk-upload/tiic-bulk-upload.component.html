@@ -1,0 +1,166 @@
+<div class="container-fluid">
+    <app-page-title title="{{'BULK_UPLOAD.UPLOAD_CONSENT_AND_APPLICATION' | translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row ">
+      <div class="col-lg-12">
+        <div class="card-box">
+          <div class="col-12 float-left">
+            <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+              <div class="text-heading-cards">
+                <h4 class="main-text-heading">{{'BULK_UPLOAD.BULK_UPLOAD' | translate}}</h4>
+                <p class="text-muted">{{'BULK_UPLOAD.PLEASE_MATCH_FORMAT_WITH_SAMPLE_FILES' | translate}}</p>
+              </div>
+  
+              <div class="Btn-Drop_Down-dual-Cont">
+                <a class="btn btn-psb btn-outline-psbpurple" href="assets\user-management\Borrower Consent.csv">
+                  <em class="fmdi fmdi-download mr-1"></em>{{'BULK_UPLOAD.DOWNLOAD_TAMPLATE' | translate}}</a>
+              </div>
+            </div><!-- end col -->
+          </div>
+  
+          <div class="col-12 float-left">
+            <!-- <form [formGroup]="demoForm"> -->
+            <div class="dragDrop-Common" appDragDrop (fileDropped)="onFileDropped($event)">
+              <div class="files-list" *ngIf="files.length > 0">
+                <div class="single-file" *ngFor="let file of files; let i = index">
+                  <div class="File-Progress">
+                    <div class="file-icon">
+                      <em class="fmdi fmdi-file"></em>
+                    </div>
+                    <div class="info">
+                      <h4 class="name">
+                        {{ file?.name }}
+                      </h4>
+                    </div>
+                    <div class="delete" (click)="deleteFile(i)"> 
+                      <em class="fmdi fmdi-delete mr-1"></em>{{'BULK_UPLOAD.REMOVE' | translate}}
+                    </div> 
+                  </div>
+                  <ngb-progressbar class="Progreebar-File" value="{{file.progress}}" [max]="100" height="4px">
+                  </ngb-progressbar>
+                </div>
+              </div>
+              <div class="Input-text-Fill-Cutome" *ngIf="files.length == 0">
+                <input class="File-input-common"  type="file" accept=".csv" #fileDropRef id="fileDropRef" multiple
+                  (change)="fileBrowseHandler($event.target.files)" />
+
+                <div class="Input-text-File">
+                  <span class="file-upload-icon"><em class="fmdi fmdi-upload"></em></span>
+                  <p class="Drop-text-common" for="fileDropRef">{{'BULK_UPLOAD.DRAG_AND_DROP_FILE' | translate}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- </form> -->
+          </div>
+          <div class="col-12 float-left mt-2">
+            <div class="text-btn Mobile_Btn_Text_Read">
+              <div class="text-left d-print-none">
+                <span>{{'BULK_UPLOAD.ON_CLICKING_UPLOAD_ALL_SUCCESSFULLY_ADDED_BORROWERS' | translate}}</span>
+              </div>
+              <div class="text-right d-print-none">
+                <a href="javascript: void(0)" routerLink="/TIIC/ReadInstructions" class="btn btn-psb btn-outline-psbpurple">
+                  <!-- AddUser_SucessFully() -->
+                  <em class="fmdi fmdi-info mr-1"></em>{{'BULK_UPLOAD.READ_INSTRUCTIONS' | translate}}</a>
+                <!-- <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"> -->
+                  <!-- AddUser_SucessFully() --> 
+                  <!-- <em class="fmdi fmdi-upload mr-1"></em>Upload File</a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card-box">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">{{'BULK_UPLOAD.UPLOAD_BASIC_DETAILS' | translate}}</h4>
+              <span class="text-muted">{{'BULK_UPLOAD.FOLLOWING_IS_THE_HISTORY_OF_YOUR_BULK_UPLOADS' | translate}}</span>
+            </div>
+          </div>  
+        
+          <div class="table-responsive"  *ngIf="rowData.length > 0 ">
+              <table class="Added-Borrowers-History Mobile_table_View_NP" summary="File Upload History Details">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>{{'BULK_UPLOAD.FILE_NAME' | translate}}</th>
+                    <th>{{'BULK_UPLOAD.UPLOADED_ON' | translate}}</th>
+                    <th>{{'BULK_UPLOAD.SUCCESSFUL_ENTRIES' | translate}}</th>
+                    <th>{{'BULK_UPLOAD.FAILED_ENTRIES' | translate}}</th>
+                    <th>{{'BULK_UPLOAD.TOTAL_ENTRIES' | translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="Mobile_View_Filter_Hide_NP">
+                    <td>&nbsp;</td>
+                    <td>
+                      <input type="text" class="form-control" name="search" placeholder="{{'BULK_UPLOAD.SEARCH_BY_FILENAME' | translate}}"
+                        [(ngModel)]="searchFileName" (keyup)="search()">
+                    </td>
+                    <td>
+                      <!-- <input type="text" class="form-control" name="search" placeholder="search by date"
+                        [(ngModel)]="searchDate" (keyup)="onKeyPress($event,'createdDate')"> -->
+                        &nbsp;
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <ng-container *ngIf="rowData.length > 0">                  
+                  <tr *ngFor="let obj of rowData;filter:searchText;let i = index;">
+                    <td data-label="Sr. No.">{{startIndex + i}}</td>
+                    <td data-label="File Name">{{ obj.originalFileName }}</td>
+                    <td data-label="Uploaded On">{{ obj.createdDate ? (obj.createdDate |date:'dd MMM y') :''}}</td>
+                    <td data-label="Successful Entries"><div> {{ obj.successfulEntries }} <a href="javascript: void(0)" (click)='downloadFile(obj.id,0)'><em
+                          class="fmdi fmdi-download IC-green"></em></a></div></td>
+                    
+                    <td data-label="Failed Entries"><div>{{ obj.failedEntries }} <a href="javascript: void(0)" (click)='downloadFile(obj.id,1)'><em
+                          class="fmdi fmdi-download IC-red"></em></a></div></td>
+                    <td data-label="Total Entries"><div>{{ obj.totalEntries }} <a href="javascript: void(0)" (click)='downloadFile(obj.id,2)'><em
+                          class="fmdi fmdi-download "></em></a></div></td>
+                  </tr>
+                </ng-container>
+                </tbody>
+              </table>          
+            </div>
+            <div class="row pagination-table Mobile_Pagination" *ngIf="rowData.length > 0 ">
+              <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'BULK_UPLOAD.SHOWING' | translate}}
+                  {{startIndex}} to
+                  {{endIndex}} of {{totalData}}
+                  {{'BULK_UPLOAD.ENTRIES' | translate}}
+                </div>
+              </div>
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">{{'BULK_UPLOAD.SHOW' | translate}}
+                  <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                    [(ngModel)]="pageSize" [items]="PageSelectNumber" [clearable]="false" (ngModelChange)="getPaginationData(isSearch ? true: undefined)">
+                  </ng-select>{{'BULK_UPLOAD.ENTRIES' | translate}}</label></div>
+              <!-- Pagination -->
+              <div class="col-sm-12 col-md-5">
+                <div class="text-md-right float-md-right pagination-rounded">
+                  <ngb-pagination [collectionSize]="totalData"  [maxSize]="3" [(page)]="page" [pageSize]="pageSize" 
+                  (pageChange)="getPaginationData(isSearch ? true: undefined);">
+                  </ngb-pagination>
+                </div>
+              </div>
+              <!-- End Pagination -->
+            </div>
+
+          
+          
+          <div class="table-No-Data" *ngIf="rowData.length == 0 ">
+            <div class="Com-No-data-Found-NP">
+              <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+              <strong class="No-Data-pad-2">{{'BULK_UPLOAD.LIST_IS_EMPTY' | translate}}</strong>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

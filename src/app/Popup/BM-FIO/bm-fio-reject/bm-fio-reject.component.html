@@ -1,0 +1,36 @@
+<div class="modal-header d-block" *ngIf="popUpObj">
+    <h4 class="modal-title" *ngIf="popUpObj.title">{{popUpObj.title}}
+    </h4>
+    <span class="text-muted" [innerHtml]="popUpObj.content">
+        <!-- Do you want to reject the application ? -->
+  </span>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Select Reason *</label>
+                <ng-select class="NP_Drop_txt_Warp"
+                    placeholder="Select any one"
+                    [items]="selectValue"
+                    [(ngModel)]="data"
+                    name="data"
+                    bindLabel="value"
+                    bindValue="id"
+                    [clearable]="false">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-12" *ngIf="popUpObj?.otherValue && data == popUpObj.otherValue">
+            <div class="form-group">
+                <label>Enter Reason *</label>
+                <input type="text" placeholder="Enter Reason" class="form-control" name="reason"
+                    [(ngModel)]="reason" autocomplete="off">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"  class="btn btn-psb btn-secondary waves-effect"(click)="close(0)">Cancel</button>
+    <button type="button"  class="btn btn-psb btn-psbpurple waves-effect"(click)="close(1)">Confirm </button>
+</div>

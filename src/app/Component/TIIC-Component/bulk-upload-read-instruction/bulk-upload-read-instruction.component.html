@@ -1,0 +1,65 @@
+<div class="container-fluid">
+
+  <div class="row mt-4">
+    <div class="col-lg-12">
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP bb-1">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{'READINSTRUCTIONS.BASIC_INSTRUCTIONS' | translate}}</h4>
+            <p class="text-muted">{{'READINSTRUCTIONS.LIST_OF_BORROWER' | translate}}</p>
+          </div>
+        </div>
+        <div class="ReadInstruction_Cont Mobile_View_ReadInstruction">
+          <ul class="ReadInstruction_ul_Cont">
+            <li>
+              {{'READINSTRUCTIONS.CHECK_THE_INPUT_POINTS' | translate}}
+            </li>
+            <div class="table-responsive">
+              <table class="Common-ps-SS-NP ReadInstruction_table Mobile_table_View_NP">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>{{'READINSTRUCTIONS.FIELD_NAME' | translate}}</th>
+                    <th>{{'READINSTRUCTIONS.INSTRUCTIONS' | translate}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="Field Name">{{'READINSTRUCTIONS.BORROWER_EMAIL_ID' | translate}}</td>
+                    <td data-label="Instructions">{{'READINSTRUCTIONS.INSERT_VALID_EMAIL_ID_OF_BORROWER' | translate}}</td>
+                  </tr>
+                  <tr>
+                    <td data-label="Sr. No.">2</td>
+                    <td data-label="Field Name">{{'READINSTRUCTIONS.BORROWER_MOBILE_NO' | translate}}</td>
+                    <td data-label="Instructions">{{'READINSTRUCTIONS.INSERT_VALID_MOBILE_NO_OF_BORROWER' | translate}}</td>
+                  </tr>
+                  <tr>
+                    <td data-label="Sr. No.">3</td>
+                    <td data-label="Field Name">{{'READINSTRUCTIONS.ENTITY_NAME' | translate}}</td>
+                    <td data-label="Instructions">{{'READINSTRUCTIONS.ENTER_ENTITY_NAME_OF_THE_BORROWER' | translate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ul>
+          <h3>{{'READINSTRUCTIONS.THIS_FIELD_IS_MANDATORY_FOR_BULK_BORROWER' | translate}}</h3>
+          <ul class="ReadInstruction_ul_Cont bb_MB_0">
+            <li>{{'READINSTRUCTIONS.UPLOAD_THIS_FILE_FROM_WHERE_YOU_DOWNLOADED' | translate}}</li>
+            <li>{{'READINSTRUCTIONS.THE_NUMBER_OF_ENTERIES_SHOULD_BE' | translate}}</li>
+            <li>{{'READINSTRUCTIONS.CORRECT_THE_DATA_OF_BORROWERS' | translate}}</li>
+            <li>{{'READINSTRUCTIONS.LINK_WILL_BE_SENT_TO_BORROWERS' | translate}}</li>
+          </ul>
+          <div class="ReadInstructions_Note">
+            <span>{{'READINSTRUCTIONS.NOTE' | translate}}</span>
+            <p>{{'READINSTRUCTIONS.DO_NOT_TEMPER_WITH' | translate}}</p>
+            <p>{{'READINSTRUCTIONS.DO_NOT_EDIT_DELETE' | translate}}</p>
+          </div>
+          <div class="ReadInstructions_Btn_Cont">
+            <a class="btn btn-psb btn-outline-psbpurple" routerLink="/TIIC/Bulk-Upload">{{'READINSTRUCTIONS.CLOSE' | translate}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

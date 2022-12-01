@@ -1,0 +1,133 @@
+<div class="container-fluid">
+  <app-page-title title="Applications" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Feedback List</h4>
+            <span class="text-muted">List of Feedback which Borrower has created</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <!-- <a href="javascript:void(0);" class="btn btn-outline-psbpurple mr-3">Resend link</a> -->
+            <a href="javascript:void(0);" class="btn btn-outline-psbpurple" (click)="getFeedBackList(false, true)"><i
+                class="fmdi fmdi-download mr-2"></i>Download All</a>
+          </div>
+        </div>
+        <!-- table Report and Filter data -->
+        <div class="table-responsive">
+          <table class="Common-ps-SS-NP Mobile_table_View_NP">
+            <thead>
+              <tr>
+                <!-- <th>
+                  <div class="checkbox checkbox-psbpurple checkbox-single" placement="top" ngbTooltip="Select All">
+                    <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                    <label></label>
+                  </div>
+                </th> -->
+                <th>#</th>
+                <th>Borrower Name</th>
+                <th>Register Mobile No</th>
+                <th>Alt Mobile No</th>
+                <th>Created Date</th>
+                <th>Remark</th>
+                <!-- <th>Action</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <input type="text" class="form-control" name="searchBorrowerName" autocomplete="off"
+                  [(ngModel)]="searchFilterJson.searchBorrowerName" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="searchMobileNo" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchMobileNo" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="searchAlternateMobileNo" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchAlternateMobileNo" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td>
+                  <!-- <input type="text" class="form-control" name="searchCreatedDate" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchCreatedDate" (ngModelChange)="debounceEventForFilter()"> -->
+
+                    <div class="psb-input-group">
+                      <input type="text" ngbDatepicker class="form-control" #date1="ngbDatepicker" 
+                        [(ngModel)]="searchFilterJson.searchCreatedDate" [readonly]="true" (ngModelChange)="getFeedBackList()">
+                      <div class="psb-input-group-append" (click)="date1.toggle()">
+                        <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                      </div>
+                    </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="searchRemarks" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchRemarks" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <!-- <td>
+                  <input type="text" class="form-control" name="searchDistrict">
+                </td> -->
+
+                <!-- <td>&nbsp;</td> -->
+              </tr>
+              <tr *ngFor="let feedback of feedbackList;let i = index;">
+                <td data-label="Select" *ngIf="false">
+                  <div class="checkbox checkbox-psbpurple checkbox-single">
+                    <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                    <label></label>
+                  </div>
+                </td>
+                <td data-label="Sr. No.">{{startIndex + i + 1}}</td>
+                <td data-label="Name Of Unit">{{feedback.borrowerName}}</td>
+                <td data-label="Email Id">{{feedback.mobileNo}}</td>
+                <td data-label="Mobile No"> {{feedback.alternateMobileNo}}</td>
+                <!-- <td data-label="Status">
+                  <div class="Comon-Dot-text jc-fend">
+                    <div class="red-dot"></div>&nbsp; Consent Received - No
+                  </div>
+                </td> -->
+                <td data-label="Name of Bank">{{feedback.createdDate}}</td>
+                <td data-label="Consent initiated Date">{{feedback.remarks}}</td>
+                <!-- <td data-label="Action">
+                  <div class="NP_Action_table">
+                    <a href="javascript:void(0);" class="action-icon"><em class="fmdi fmdi-mail-send"
+                        ngbTooltip="Send Details"></em></a>
+                  </div>
+                </td> -->
+              </tr>
+              
+            </tbody>
+          </table>
+          <div class="row pagination-table Mobile_Pagination">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+              {{ (pageSize*(page-1)) == 0 && totalCount == 0 ? totalCount : ((pageSize*(page-1)) + 1) }} to
+              {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+              {{totalCount}}
+              entries
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label
+                class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [clearable]="false" [(ngModel)]="pageSize" [items]="pageSelectNumber" (ngModelChange)="getFeedBackList()">
+                </ng-select> entries</label></div>
+            
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true"
+                [boundaryLinks]="true" [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+              </ngb-pagination>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

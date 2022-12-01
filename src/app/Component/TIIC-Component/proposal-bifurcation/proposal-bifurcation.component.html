@@ -1,0 +1,160 @@
+<div class="container-fluid">
+  <app-page-title title="Proposal Bifurcation" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="card-box">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP bb-1">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Proposal Bifurcation Based on Loan Amount</h4>
+        <p class="text-muted">You can view your loan amount bifurcation history and change as per your requirement</p>
+      </div>
+      <div class="Btn-Drop_Down-dual-Cont">
+        <div class="text-right d-print-none">
+          <button type="button" class="btn btn-psb btn-psbpurple" (click)="Change_proposal_bifurcation_Popup()">
+            Change Loan Amount</button>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+
+    <div class="Com-count-link-Rate NP_ProposalBifurcation">
+      <div class="NP_FW">
+        <div class="dual-content-psb br-1">
+          <h2>0 & 50,00,000</h2>
+          <span>TIIC</span>
+        </div>
+        <div class="dual-content-psb">
+          <h2>50,00,000 to 1000000 & above</h2>
+          <span>TAICO</span>
+        </div>
+      </div>
+
+      <div class="Common-Requested active-Requested">
+        <span class="txt-icon-info"><i class="mdi mdi-arrow-top-right"></i> Request Send to checker</span>
+        <div class="Common-req-txt">
+          <span>Requested on<p>10 July 2020 06:30 PM</p></span>
+        </div>
+      </div>
+
+      <div class="Common-Requested active-Approved">
+        <span class="txt-icon-info"><i class="mdi mdi-arrow-top-right"></i> Approved by checker</span>
+        <div class="Common-req-txt">
+          <span>Requested on<p>10 July 2020 06:30 PM</p></span>
+          <span>Approved on<p>10 July 2020 06:30 PM</p></span>
+        </div>
+      </div>
+
+      <div class="Common-Requested NP_Checker_Approve active-Requested">
+        <div class="checekr-approve-reject">  
+            <div class="Common-Requested-txt">
+            <div class="Checker-text-App-Rj">
+                <span class="txt-icon-info"><i class="mdi mdi-arrow-top-right"></i> Request Send to Maker</span>
+                <span class="Req_NP">Requested on<p>10 July 2020 06:30 PM</p></span>
+            </div>                        
+            <div class="Checker-text-App-Rj">
+              <h2 class="m-0">0 & 50,00,000</h2>
+              <span>TIIC</span>
+            </div>
+            <div class="Checker-text-App-Rj">
+              <h2 class="m-0">50,00,000 to 1000000 & above</h2>
+              <span>TAICO</span>
+            </div>
+          </div>
+        </div>
+        <div class="Checker-Approve-Reject">
+          <ng-container class="btn-checker-aprove">
+            <button type="button" class="btn btn-danger" (click)="Common_proposal_bifurcation_Popup()">
+              <i class="fmdi fmdi-close"></i> Reject
+            </button>
+            <button type="button" class="btn btn-warning">
+                <i class="fmdi fmdi-arrow-left-bottom"></i> Send Back
+              </button>
+            <button type="button" class="btn btn-success">
+              <i class="fmdi fmdi-check-all"></i> Approved
+            </button>
+          </ng-container>
+        </div>
+      </div> 
+
+      <div class="NP_FW">
+        <span class="Note_text">Note - Current Loan Amount Bifurcation</span>
+      </div>
+    </div>
+  </div>
+  <!-- end card-box -->
+
+  <div class="card-box">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="m-0">Proposal Bifurcation History</h4>
+      </div>
+      <!-- <div class="Btn-Drop_Down-dual-Cont">
+                <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple"><i
+                    class="fmdi fmdi-download mr-2"></i>Download All</a>
+            </div> -->
+    </div>
+    <div class="table-responsive">
+        <!-- Common-ps-SS-NP -->
+      <table class=" CommonTable_NP Mobile_table_View_NP">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Min Loan Amount</th>
+            <th>Max Loan Amount</th>
+            <th>Organization</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Sr.No">1</td>
+            <td data-label="Min Loan Amount">
+              ₹ 0
+            </td>
+            <td data-label="Max Loan Amount">
+              ₹ 50,00,001
+            </td>
+            <td data-label="Organization">TIIC</td>
+            <td data-label="Start Date">12 June 2022 03:14 AM</td>
+            <td data-label="End Date">-</td>
+          </tr>
+          <tr>
+              <td data-label="Sr.No">2</td>
+              <td data-label="Min Loan Amount">
+                ₹ 50,00,000
+              </td>
+              <td data-label="Max Loan Amount">
+                ₹ 10,00,00,000 & above
+              </td>
+              <td data-label="Organization">TAICO</td>
+              <td data-label="Start Date">12 June 2022 03:14 AM</td>
+              <td data-label="End Date">-</td>
+            </tr>
+        </tbody>
+      </table>
+      <!-- <div class="row pagination-table Mobile_Pagination"> 
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+              Showing
+                {{((pageSize*(page-1))+1)}} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+              entries
+            </div>
+          </div>
+          <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+              <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+              [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getUserList()">
+              </ng-select> entries</label></div>
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true" 
+                [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+            </ngb-pagination>
+            </div>
+        </div>
+        </div> -->
+    </div>
+  </div>
+
+</div>

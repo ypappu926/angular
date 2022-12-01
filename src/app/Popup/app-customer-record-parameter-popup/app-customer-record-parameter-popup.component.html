@@ -1,0 +1,55 @@
+<!-- <p>app-customer-record-parameter-popup works!</p> -->
+<div class="modal-header d-block">
+    <h4 class="modal-title">Parameter Details</h4>
+</div>
+<div class="modal-body Modal-scroll">
+    <div class="row m-0">
+
+        <h2>Set Parameter</h2>
+        <table class="Common-CustomerScoring-FF-NP">
+            <thead>
+                <tr>
+                    <th>Parameter Name</th>
+                    <th>Product Criteria</th>
+                    <th>Value Of Borrower</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let setparameter of parameterList">
+                    <ng-container *ngIf="setparameter.isSet">
+                        <td>{{setparameter.prodParameters.parameterName}}</td>
+                        <td><span class="block-ellipsis">{{setparameter.prodParameters.fpValue}}</span></td>
+                        <td>{{setparameter.prodParameters.fsValue}}</td>
+                        <td>{{setparameter.prodParameters.isMatched ? 'Yes' : 'No'}}</td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+
+        <br><br><br>
+        <h2>Not Set Parameter</h2>
+
+
+        <table class="Common-CustomerScoring-FF-NP">
+            <thead>
+                <tr>
+                    <th>Parameter Name</th>
+                    <th>Product Criteria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let setparameter of parameterList">
+                    <ng-container *ngIf="!setparameter.isSet">
+                        <td>{{setparameter.prodParameters.parameterName}}</td>
+                        <td>{{setparameter.prodParameters.fpValue}}</td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer jc-center">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+        (click)="activeModal.close('cancel')">Cancel</a>
+</div>

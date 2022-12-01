@@ -1,0 +1,47 @@
+<!-- ========== Left Sidebar Start ========== -->
+<ng-template #contentTemplate>
+  <!--- Sidemenu -->
+  <div id="sidebar-menu">
+    <ul class="metismenu" id="side-menu" #sideMenu>
+
+      <li class="menu-title">{{roleName?.name}}</li>
+
+      <div class="Group-Sidebar">
+        <li *ngFor="let item of menuData">
+          <a href="javascript: void(0);" (click)="routeUrl(item)" class="waves-effect" [ngClass]="item.isActive || item.isCollapse ? 'active-LF':''" aria-expanded="false">
+            <img
+              [src]="item.isActive || item.isCollapse ? ('assets/images/Dashabord/'+item.iconPath +'.svg') : ('assets/images/Dashabord/'+item.iconPath+'-inactive.svg')"
+              alt="{{item.displayName}}" />
+
+            <span class="Cont_Name_NP"> {{item.displayName}}</span>
+            <span *ngIf="item.childList.length > 0" class="{{item.isCollapse ? 'activeArrow menu-arrow':'menu-arrow'}}"></span>
+            <span *ngIf="item.childList.length > 0 && !item.isCollapse" class="{{item.isCollapse ? 'activeArrow menu-arrow':'menu-arrow'}}"></span>
+          </a>
+          <ul class="nav-second-level" aria-expanded="false" *ngIf="item.childList.length > 0 && item.isCollapse">
+            <li *ngFor="let childPath of item.childList">
+              <!--  [ngClass]="item.isActiveCollapse ? 'active-LF':''" -->
+              <a href="javascript: void(0);" (click)="routeUrl(childPath)"
+                class="side-nav-link-ref">{{childPath.displayName}}</a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </ul>
+
+  </div>
+  <!-- End Sidebar -->
+
+  <div class="clearfix"></div>
+</ng-template>
+
+
+<div class="left-side-menu" *ngIf="!isLoginUrl && !isChangePasswordRouterUrl">
+  <div class="slimscroll-menu" appSlimScroll *ngIf="isCondensed">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </div>
+
+  <div class="slimscroll-menu" *ngIf="!isCondensed">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </div>
+</div>
+<!-- Left Sidebar End -->

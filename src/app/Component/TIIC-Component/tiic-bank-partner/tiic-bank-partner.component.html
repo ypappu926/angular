@@ -1,0 +1,146 @@
+<div class="container-fluid">
+    <app-page-title title="Bank Partner" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row" (scroll)="onWindowScroll($event)">
+      <div class="col-lg-12 parent">
+        
+        <div class="card-box" id="stick-headerN">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP p-0">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">Add Bank User</h4>
+              <span class="text-muted">Here you can Add User</span>
+            </div>  
+            <div class="Btn-Drop_Down-dual-Cont">
+              <div ngbDropdown class="mobile-dropdown mr-3">
+                <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple" (click)="downloadAllUser()"><i
+                  class="fmdi fmdi-download mr-2"></i>Download All</a>
+                <!-- <div class="dropdown-menu btn-drop" ngbDropdownMenu>
+                  <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)">in .XLS format</a>
+                  <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)">in .XLSX format</a>
+                </div> -->
+              </div>  
+              <div ngbDropdown class="mobile-dropdown">
+                <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="redirect(1)"><i class="fmdi fmdi-accounts-add mr-2"></i>Add Bank Partner</a>
+              </div>
+            </div>
+          </div>
+          <!-- end col-->
+        </div>
+    
+        <div class="card-box">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+                <div class="text-heading-cards">
+                  <h4 class="main-text-heading">Bank Partner Details ({{totalCount}} Users)</h4>
+                  <span class="text-muted">Bank Partner will upload Borrower Details for further procedure</span>
+                </div>               
+              <!-- <div class="Btn-Drop_Down-dual-Cont">
+                  <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple"><i
+                      class="fmdi fmdi-download mr-2"></i>Download All</a>
+              </div> -->
+          </div>
+  
+          <!-- table Report and Filter data -->
+          <div class="table-responsive">
+            <table class="Common-ps-SS-NP Mobile_table_View_NP">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th> User Name </th>
+                  <th>Bank Name</th>                
+                  <th>Email</th>                 
+                  <th>Mobile</th>
+                  <th class="NP_Action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="Mobile_View_Filter_Hide_NP">
+                  <td>
+                    &nbsp;
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="searchUserName" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                    <ng-select [items]="selectValue"  bindLabel="displayOrgName"  bindValue="displayOrgName" 
+                    [items]="orgList" [(ngModel)]="searchOrgName" (ngModelChange)="debounceEventForFilter()" placeholder="Select Bank"> </ng-select>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="searchEmail" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="searchMobile" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                   &nbsp;
+                  </td>
+                </tr>
+                <tr *ngFor="let customer of BankUserData;let i = index">
+                  <td data-label="Id">
+                    <!-- {{ customer.Id }} -->
+                    {{ i+1 }}
+                  </td>
+                  <td data-label="User Name">
+                    {{ customer.userName }}
+                  </td>
+                  <td data-label="Bank Name">
+                    {{customer.orgName}}
+                  </td>
+                  <td data-label="Email Id">
+                    {{ customer.email }}
+                  </td>
+                  <td data-label="Mobile No.">
+                    {{ customer.mobile }}
+                  </td>     
+                  <td data-label="Action" class="NP_Action">
+                    <div class="Mobile_Action">
+                      <a href="javascript:void(0);" class="action-icon" (click)="redirect(3,customer)" ngbTooltip="View Bank Partner"><em class="fmdi fmdi-eye"></em></a>
+                      <!-- <a href="javascript:void(0);" class="action-icon" ngbTooltip="View Bank Partner"><em class="fmdi fmdi-refresh"></em></a> -->
+                      <a href="javascript:void(0);" class="action-icon"(click)="updateIsLocked(customer)" ngbTooltip="{{customer.isLocked ? 'Unlock Bank Partner':'Lock Bank Partner'}}"><em class="{{customer.isLocked ? 'fmdi fmdi-lock':'fmdi fmdi-lock-open'}}"></em></a>
+                      <a href="javascript:void(0);" class="action-icon" (click)="redirect(2,customer)" ngbTooltip="Edit Bank Partner"><em class="fmdi fmdi-edit" ></em></a>
+                    </div>
+                  </td>                 
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+          <div class="row pagination-table Mobile_Pagination" *ngIf="BankUserData.length > 0 "> 
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+                  {{((pageSize*(page-1))+1)}} to
+                  {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                  {{totalCount}}
+                entries
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getUserList()">
+                </ng-select> entries</label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                  <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true" 
+                  [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+              </ngb-pagination>
+              </div>
+          </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+
+        <div class="table-No-Data" *ngIf="BankUserData.length == 0 ">
+          <div class="Com-No-data-Found-NP">
+            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+            <strong class="No-Data-pad-2"> Currently the List is Empty</strong>
+          </div>  
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  

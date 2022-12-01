@@ -1,0 +1,145 @@
+<div class="container-fluid">
+  <app-page-title title="Upload {{roleName}} Details" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row ">
+    <div class="col-lg-12">
+      <div class="card-box">
+        <div class="col-12 float-left">
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">{{'BULK_UPLOAD.BULK_UPLOAD' | translate}}</h4>
+              <p class="text-muted">{{'BULK_UPLOAD.PLEASE_MATCH_FORMAT_WITH_SAMPLE_FILES'| translate }}</p>
+            </div>
+
+            <div class="Btn-Drop_Down-dual-Cont">
+              <a href="javascript:void(0)" class="btn btn-psb btn-outline-psbpurple"
+                href="assets\user-management\fio_bulk_upload.xlsx"><em class="fmdi fmdi-download mr-1"></em>
+                {{'BULK_UPLOAD.DOWNLOAD_TAMPLATE' | translate }}</a>
+            </div>
+          </div><!-- end col -->
+        </div>
+
+        <div class="col-12 float-left">
+          <div class="dragDrop-Common" appDragDrop (fileDropped)="onFileDropped($event)">
+            <div class="files-list">
+              <div class="single-file" *ngFor="let file of files; let i = index">
+                <div class="File-Progress">
+                  <div class="file-icon">
+                    <em class="fmdi fmdi-file"></em>
+                  </div>
+                  <div class="info">
+                    <h4 class="name">
+                      {{ file?.name }}
+                    </h4>
+                  </div>
+                  <div class="delete" (click)="deleteFile(i)">
+                    <em class="fmdi fmdi-delete mr-1"></em>{{'BULK_UPLOAD.REMOVE' | translate }}
+                  </div>
+                </div>
+                <ngb-progressbar class="Progreebar-File" value="{{file.progress}}" [max]="100" height="4px">
+                </ngb-progressbar>
+              </div>
+            </div>
+            <div class="Input-text-Fill-Cutome" >
+              <input class="File-input-common" type="file" accept=".xls, .xlsx" #fileDropRef id="fileDropRef" multiple
+                (change)="fileBrowseHandler($event.target.files)" />
+              <div class="Input-text-File">
+                <span class="file-upload-icon"><em class="fmdi fmdi-upload"></em></span>
+                <p class="Drop-text-common" for="fileDropRef">{{'BULK_UPLOAD.DRAG_AND_DROP_FILE' | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 float-left mt-2">
+          <div class="text-btn jc-end">
+            <div class="text-right d-print-none">
+              <a href="javascript: void(0)" class="btn btn-psb btn-outline-psbpurple"
+                (click)="User_read_instruction_SucessFully();" *ngIf="false">
+                <em class="fmdi fmdi-info mr-1"></em> {{'BULK_UPLOAD.READ_INSTRUCTIONS'| translate }}</a>
+              <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="uploadFile();">
+                <em class="fmdi fmdi-upload mr-1"></em>
+                {{'BULK_UPLOAD.UPLOAD_FILE'| translate }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <!-- <h4 class="main-text-heading">{{'BULK_UPLOAD.UPLOAD' }} {{roleName}} {{'BULK_UPLOAD.HISTORY' }}</h4> -->
+            <!-- <span class="text-muted">{{'BULK_UPLOAD.FOLLOWING_IS_THE_HISTORY_OF_YOUR_BULK_UPLOADS'}}</span> -->
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="Added-Borrowers-History Mobile_table_View_NP">
+            <thead>
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>{{'BULK_UPLOAD.FILE_NAME'| translate}}</th>
+                <th>{{'BULK_UPLOAD.UPLOADED_ON' | translate}}</th>
+                <th>{{'BULK_UPLOAD.SUCCESSFUL_ENTRIES'| translate }}</th>
+                <th>{{'BULK_UPLOAD.FAILED_ENTRIES' | translate}}</th>
+                <th>{{'BULK_UPLOAD.TOTAL_ENTRIES' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container >
+                <tr *ngFor="let obj of rowData;let i =  index">
+                  <td data-label="Sr. No.">{{startIndex + i}}</td>
+                  <td attr.data-label="{{'BULK_UPLOAD.FILE_NAME' | translate }}">{{ obj.fileName ? obj.fileName : '' }}</td>
+                  <td attr.data-label="{{'BULK_UPLOAD.UPLOADED_ON' | translate }}">{{obj.createdDate ? (obj.createdDate |date:'dd MMM y') :''}}</td>
+                  <td attr.data-label="{{'BULK_UPLOAD.SUCCESSFUL_ENTRIES' | translate }}"><span class="IC-text-NP">{{obj.successEntryCount ? obj.successEntryCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,0)'><em class="fmdi fmdi-download IC-green"></em></a></span></td>
+                  <td attr.data-label="{{'BULK_UPLOAD.FAILED_ENTRIES' | translate }}"><span class="IC-text-NP">{{obj.failedEntryCount ? obj.failedEntryCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,1)'><em class="fmdi fmdi-download IC-red"></em></a></span></td>
+                  <td attr.data-label="{{'BULK_UPLOAD.TOTAL_ENTRIES' | translate }}"><span class="IC-text-NP">{{obj.totalEntryCount ? obj.totalEntryCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,2)'><em class="fmdi fmdi-download"></em></a></span></td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="row pagination-table Mobile_Pagination" *ngIf="fileHistoryList.length > 0">
+            <div class="col-sm-12 col-md-5">
+              <!-- <label  class="d-inline-flex align-items-center">{{'BULK_UPLOAD.SHOW'| translate }} -->
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">{{'BULK_UPLOAD.SHOWING' | translate }}
+                {{startIndex}} to
+                {{endIndex}} of {{totalData}}
+                {{'BULK_UPLOAD.ENTRIES' | translate }}
+              </div>
+            <!-- </label> -->
+          </div>
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class ="d-inline-flex align-items-center">{{'BULK_UPLOAD.SHOW' | translate }}
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [(ngModel)]="pageSize" [items]="PageSelectNumber" [clearable]="false"
+                  (ngModelChange)="getPaginationData()">
+                </ng-select> {{'BULK_UPLOAD.ENTRIES'  | translate }}
+              </label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalData" [maxSize]="3" [(page)]="page" [pageSize]="pageSize"
+                  (pageChange)="getPaginationData();">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+          <div class="table-No-Data" *ngIf="fileHistoryList.length == 0 ">
+            <div class="Com-No-data-Found-NP">
+              <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+              <strong class="No-Data-pad-2"> {{'BULK_UPLOAD.LIST_IS_EMPTY' | translate}}</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

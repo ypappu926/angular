@@ -1,0 +1,566 @@
+<div class="container-fluid">
+  <app-page-title title="View Scoring Model" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <div class="card-box">
+            <!-- Logo & title -->
+            <div class="clearfix">
+              <div class="float-left">
+                <h4 class="m-0 d-print-none">Scoring Model Info</h4>
+              </div>
+              <div class="float-right" style="cursor: pointer;" (click)="openExistingProduct()"
+                *ngIf="productList != undefined && productList.length > 0">
+                <span class="badge badge-pill psbbuges ml-1-5"><em class="mdi mdi-folder mr-2"></em>
+                  {{productList.length}}
+                  dependent products</span>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <p class="m-0">{{scoringModelData.scoreModelName}}</p>
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <p class="m-0">Scoring Model Name</p>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text ">
+                  <h2 class="m-0">{{scoringModelData.scoreModelName}}</h2>
+                  <div>
+                    <!-- <p class="d-block">
+                      <span *ngIf="scoringModelData?.configName">{{scoringModelData?.configName.join(', ')}}</span>
+                    </p> -->
+                  </div>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <p>This will be used as a reference while creating Scoring Model and for internal bank
+                    reference.
+                  </p>
+                </div>
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <p class="Modification-text m0">
+                    <span>Last modified : {{scoringModelData.lastModified | date: 'dd MMM yyyy'}}</span>
+                    <span class="Scoring-product-code">
+                      <p class="m-0">Scoring Code : {{scoringModelData.scoreModelCode}}</p>
+                      <p class="m-0">Version {{scoringModelData.version || 0.1}}
+                      </p>
+                    </span>
+                  </p>
+                  <a *ngIf="(schemeId!=12 &&schemeId!=11&&schemeId!=14)" href="javascript:Void(0)" class="link-btn"
+                    (click)="NP_View_Scoring_Confirmation_Popup()"><em class="fmdi fmdi-eye mr-1"></em>
+                    View scoring model configuration</a>
+                  <!-- <a href="javascript:Void(0)"
+                    *ngIf=" checkButtonPermission('SCORING_EDIT') && (scoringModelData.statusId == 4)&&scoringModelData.version==null"
+                    class="link-btn" (click)="Confirm_scoring_Confiration_Popup()"><em class="fmdi fmdi-edit mr-1"></em>
+                    Edit scoring model configuration</a>-->
+                </div>
+
+              </div>
+              <!-- end col -->
+            </div>
+            <!-- end row -->
+          </div>
+          <!-- end card-box -->
+        </div>
+      </div>
+      <!-- <div class="row" *ngIf="scoringModelData.remark != undefined && scoringModelData.remark != null">
+        <div class="col-12">
+          <div class="Common-Requested mb-12 active-Requested d-block">
+            <span class="txt-icon-info"><em class="mdi mdi-arrow-top-right"></em>
+              {{getStatus(scoringModelData.statusId)}}</span>
+            <div class="Common-Requested-txt">
+              <span>{{scoringModelData.remark}}<p>{{scoringModelData.lastModified | date}}</p></span>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="row" (scroll)="onWindowScroll($event);">
+        <div class="col-12 parent">
+          <div class="card-box btn-tabs" id="stick-headerN">
+            <div class="Main-heading-dual-Cont p-0">
+              <div class="text-heading-cards Np_tab-heading">
+                <h4 class="m-0 mt-2 mb-2 d-print-none">
+                  You can View this Scoring model permanently
+                  <!-- <p *ngIf="scoringModelData.statusId === 3 || scoringModelData.statusId === 1">You can edit or delete
+                    this Scoring Model permanently</p> -->
+                  <!-- <p *ngIf="scoringModelData.statusId === 2">You can download this Scoring Model while checker take any action on this product</p> -->
+                  <!-- <p *ngIf="scoringModelData.statusId === 4">You can edit this Scoring Model</p> -->
+                </h4>
+                <span class="text-muted mb-2"
+                  *ngIf="salariedInfo != undefined && salariedInfo != null && salariedInfo != ''">Loan for study
+                  outside India : {{salariedInfo}}</span>
+                <!-- <div class="nav-bordered"  *ngIf="isTabAvailable">
+                  <ul #tabScrollNP class="nav nav-tabs justify-content-start">
+                      <li class="nav-item" id="tab1" (click)="changeTab(1)">
+                          <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                              <span class="number-text">Applicant</span>
+                          </a>
+                      </li>
+                      <li class="nav-item" id="tab2" (click)="changeTab(2)">
+                          <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                              <span class="number-text">Co-Applicant</span>
+                          </a>
+                      </li>
+                  </ul>
+              </div> -->
+              </div>
+
+
+
+
+              <div class="Btn-Drop_Down-dual-Cont">
+                <button type="button" class="btn btn-psb btn-psblightgray" (click)="exitScoringModel()">Exit</button>
+                <button type="button" class="btn btn-psb btn-outline-psbpurple"
+                  *ngIf=" (scoringModelData.statusId == 1 || scoringModelData.statusId == 4)&&roleId === roles.ADMIN_MAKER.id"
+                  (click)="Confirm_scoring_Confiration_Popup(1)"><em class="fmdi fmdi-edit mr-1"></em> Edit</button>
+                <!-- <button type="button" *ngIf="checkButtonPermission('SCORING_DOWNLOAD')" class="btn btn-psb btn-outline-psbpurple"><i
+                    class="mdi mdi-download mr-1"></i>
+                  Download</button> -->
+                <!-- checkButtonPermission('SCORING_EDIT') && -->
+                <button type="button" *ngIf="scoringModelData.isActive && scoringModelData.statusId == 3 &&roleId === roles.ADMIN_MAKER.id"
+                  class="btn btn-psb btn-outline-psbpurple"
+                  (click)="inActiveScoring(scoringModelData,(scoringModelData.isActive ? 1 : 2))"><em
+                    class="{{scoringModelData.isActive ? 'fmdi fmdi-lock mr-1' : 'fmdi fmdi-lock-open mr-1'}}"></em>
+                  {{scoringModelData.isActive ? 'Deactivate' : 'Activate'}}</button>
+                <!-- checkButtonPermission('SCORING_INACTIVE') &&  -->
+
+                <button type="button" *ngIf=" (scoringModelData.statusId == 2) && isCheker &&tabId==3 "
+                  class="btn btn-psb btn-warning" (click)="Com_Send_Bank_To_Maker_sp()">
+                  <em class="fmdi fmdi-arrow-left-bottom mr-1"></em>
+                  Send Back</button>
+                <!-- checkButtonPermission('SCORING_SEND_BACK_TO_MAKER') && -->
+                <button type="button" *ngIf=" scoringModelData.statusId == 2 && isCheker &&tabId==3"
+                  class="btn btn-psb btn-success" (click)="Com_Approve_sp()"><em class="fmdi fmdi-check-all mr-1"></em>
+                  Approve </button>
+                <!-- checkButtonPermission('SCORING_APPROVE') && -->
+
+
+                <!-- in-active section -->
+                <button type="button" *ngIf=" scoringModelData.isActive && isCheker && scoringModelData.statusId == 6 &&tabId==3"
+                  class="btn btn-psb btn-warning" (click)="Com_Approve_Active()">
+                  <em class="fmdi fmdi-arrow-left-bottom mr-1"></em>
+                  Send Back</button>
+                <!-- checkButtonPermission('SCORING_SEND_BACK') && -->
+                <button type="button" *ngIf=" scoringModelData.isActive && isCheker && scoringModelData.statusId == 6 &&tabId==3"
+                  class="btn btn-psb btn-success" (click)="Com_Approve_InActive()"><em
+                    class="fmdi fmdi-check-all mr-1"></em>
+                  In-Active </button>
+                <!-- checkButtonPermission('SCORING_SEND_BACK') && -->
+
+
+                <!-- Active section -->
+                <!-- {{scoringModelData | json }} -->
+                <button type="button"
+                  *ngIf=" scoringModelData.statusId === 3  && !isCheker && !scoringModelData.isActive "
+                  class="btn btn-psb btn-outline-psbpurple"
+                  (click)="sendActiveForChecker(scoringModelData,(scoringModelData.isActive ? 1 : 2))"><em
+                    class="{{scoringModelData.isActive ? 'fmdi fmdi-lock mr-1' : 'fmdi fmdi-lock-open mr-1'}}"></em>
+                  {{scoringModelData.isActive ? 'Deactivate-new' : 'Send Request For Activate'}}</button>
+
+                <!--  -->
+
+
+                <button type="button" *ngIf="!scoringModelData.isActive && isCheker && scoringModelData.statusId == 5"
+                  class="btn btn-psb btn-warning" (click)="ApproveInActiveFromMaker()">
+                  <em class="fmdi fmdi-arrow-left-bottom mr-1"></em>
+                  Send Back</button>
+
+                <button type="button" *ngIf="!scoringModelData.isActive && isCheker && scoringModelData.statusId == 5"
+                  class="btn btn-psb btn-success" (click)="ApproveActiveFromMaker()"><em
+                    class="fmdi fmdi-check-all mr-1"></em>Active </button>
+
+              </div>
+
+
+
+
+              <!-- maker buttons -->
+              <!-- <button type="button" class="btn btn-psb btn-danger" (click)="Com_Reject_sp()"><i class="fmdi fmdi-close mr-1"></i>
+                      Reject</button> -->
+
+
+            </div>
+          </div>
+          <!-- End Bordered Tabs -->
+        </div>
+      </div>
+
+      <!-- Personal Risk & Financial Risk & Management Risk & Business Risk Start  -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-box">
+            <div class="Main-heading-dual-Cont bb-1">
+              <div class="text-collapse NP_W100">
+                <h4 class="main-text-heading">Scoring Parameters</h4>
+                <span class="text-muted">Add Multiple Scoring Parameters</span>
+              </div>
+            </div>
+
+            <ng-container class="row" *ngFor="let item of scoringModelData.titleList; let t=index">
+              <div class="NP_Paramter_Groups">
+                <div class="Main-heading-dual-Cont p-0">
+                  <div class="text-collapse">
+                    <h4 class="main-text-heading">{{item.riskName}}</h4>
+                    <span class="text-muted">{{item.riskDescription}}</span>
+                  </div>
+                  <div class="number-collapse NP_Input_Text_Cont">
+                    <div class="collpse-number-main ">
+                      <div class="Total-Count-sp">
+                        <div class="sub-number-collapse">
+                          <span>Max Score to be Considered</span>
+                          <h4>{{item.riskMaxScore}}</h4>
+                        </div>
+                        <div class="sub-number-collapse">
+                          <span>Parameters</span>
+                          <h4 class="m-0">{{(item.fieldsList != null && item.fieldsList.length > 0) ?
+                            item.fieldsList.length : 0}}</h4>
+                        </div>
+                      </div>
+                      <a class="psb-collapse-a" data-toggle="collapse"
+                        (click)="item.isPersonalRiskCollapsed = !item.isPersonalRiskCollapsed"
+                        href="javascript:void(0)">
+                        <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="item.isPersonalRiskCollapsed">
+                  <div class="table-responsive">
+                    <table class="scroingModel-RSitr-table ViewCont_Table" summary="">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Parameter</th>
+                          <th>&nbsp;</th>
+                          <th class="jc-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Risk Parameters start -->
+                        <ng-container *ngIf="item.fieldsList != null && item.fieldsList.length > 0">
+                          <ng-container *ngFor="let field of item.fieldsList;let i = index">
+                            <tr *ngIf="field.isConsider">
+                              <div class="table-collapse">
+                                <div class="clearfix">
+                                  <td>{{i+1}}</td>
+                                  <td>
+                                    <div class="sub-man-para-number">
+                                      <p class="ctsp-Common" style="width: 75%;"
+                                        (click)="field.isCollapsed1 = !field.isCollapsed1">{{field.fieldName}}
+                                        <em class="fmdi fmdi-info"
+                                          *ngIf="field.tooltip != undefined && field.tooltip != null"
+                                          tooltipClass="SE-tooltip" ngbTooltip="{{field.tooltip}}}"></em>
+                                      </p>
+                                      <div class="NP_Scoring_Weight">
+                                        <label>Weight:</label>
+                                        <div class="form-group m0">
+                                          {{field.weightage}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <span>Max Score <strong>{{field.maxScore}}</strong></span>
+                                  </td>
+                                  <td class="jc-end">
+                                    <a href="javascript:void(0);" data-toggle="collapse"
+                                      (click)="field.isCollapsed1 = !field.isCollapsed1" class="action-icon">
+                                      <em class="mdi mdi-arrow-down-drop-circle-outline"></em></a>
+
+                                  </td>
+                                </div>
+
+                                <!-- tab inside data start -->
+                                <!-- data for score model start -->
+                                <div class="collapse" id="collapseExample" [ngbCollapse]="field.isCollapsed1"
+                                  *ngIf="field.type == 1 || field.type == 3 || field.type == 4">
+                                  <div class="card card-body">
+                                    <table class="scoring-collapse-table" *ngIf="field.type == 3" summary="">
+                                      <tbody>
+                                        <tr>
+                                          <div class="radio radio-psbpurple form-check-inline"
+                                            *ngFor="let item of field.lovList ;let m = index">
+                                            <input type="radio"
+                                              id="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}"
+                                              value="{{item.id}}" [(ngModel)]="field.addiValues"
+                                              name="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}"
+                                              disabled>
+                                            <label for="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}">
+                                              {{item.value}} </label>
+
+                                          </div>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table class="view-table-scoring" summary="">
+                                      <thead>
+                                        <tr>
+                                          <th>Min</th>
+                                          <th>Max</th>
+                                          <th>Enter Score</th>
+                                          <th>Weighted Score</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <ng-container *ngIf="field.type == 4">
+                                          <tr *ngFor="let item of field.lovList ;let m = index">
+                                            <td>{{item.value}}</td>
+                                            <td></td>
+                                            <td colspan="2">{{item.score}}</td>
+                                          </tr>
+                                        </ng-container>
+
+                                        <tr *ngFor="let item of field.modelParameterList ;let m = index">
+                                          <td>
+                                            <span *ngIf="field.symbol == 'Rs'">{{item.minRange | indNumFormat}} <span
+                                                *ngIf="field.field === 'BUREAU_SCORE' && item.minRange == -1">(New to
+                                                credit)</span> </span>
+                                            <span *ngIf="field.symbol != 'Rs'">{{item.minRange}} <span
+                                                *ngIf="field.field === 'BUREAU_SCORE' && item.minRange == -1">(New to
+                                                credit)</span></span>
+                                            &nbsp;{{field.symbol}}
+                                            <span *ngIf="m == 0 && field.isMinLess">&nbsp; & Less</span>
+                                          </td>
+                                          <td>
+                                            <span *ngIf="field.symbol == 'Rs'">{{item.maxRange | indNumFormat}} <span
+                                                *ngIf="field.field === 'BUREAU_SCORE' && item.maxRange == -1">(New to
+                                                credit)</span> </span>
+                                            <span *ngIf="field.symbol != 'Rs'">{{item.maxRange}} <span
+                                                *ngIf="field.field === 'BUREAU_SCORE' && item.maxRange == -1">(New to
+                                                credit)</span></span>
+                                            &nbsp;{{field.symbol}}
+                                            <span *ngIf="(field.modelParameterList.length-1) == m && field.isMaxMore">
+                                              &nbsp;& Above</span>
+                                          </td>
+                                          <td>{{item.score}}</td>
+                                          <td>{{item.weightedScore}} </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                                <!-- data for score model end -->
+
+                                <!-- data for lov model start-->
+                                <div class="collapse" id="collapseExample" [ngbCollapse]="field.isCollapsed1"
+                                  *ngIf="field.type == 2">
+                                  <div class="card card-body mb-0">
+                                    <table class="view-table-scoring_NP" summary="">
+                                      <thead>
+                                        <tr>
+                                          <th>Category</th>
+                                          <th>Enter Score</th>
+                                          <th>Weighted Score</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of field.modelParameterList ;let m = index">
+                                          <td>{{item.value}}</td>
+                                          <td>{{item.score}}</td>
+                                          <td>{{item.weightedScore}} </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                                <!-- data for lov model end-->
+
+                                <!-- tab inside data end -->
+
+
+                              </div>
+                            </tr>
+                          </ng-container>
+                        </ng-container>
+
+
+                        <!-- Risk Parameters end -->
+                        <div class="copy-paste-content-scoring"
+                          *ngIf="item.fieldsList != null && item.fieldsList.length == 0">
+                          <h4>No Parameter Added Yet</h4>
+                          <span>You can add new scoring parameters by clicking button below</span>
+                        </div>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <!-- Personal Risk & Financial Risk & Management Risk & Business Risk End  -->
+
+      <!-- Decision Matrix Start Code -->
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-box">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-ones">
+                <h4 class="main-text-heading">Decision Matrix</h4>
+                <span class="text-muted">You can set a propionate score if you want</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="scroing-SixColumn-matrix">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Score Range</th>
+                    <th>Grade</th>
+                    <th>Interpretation</th>
+                    <th>Loan Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of scoringModelData?.decisionMatrixList ;let m = index">
+                    <td scope="row">{{m+1}}</td>
+                    <td>{{item.maxScore}} 
+                    to {{item.minScore}}</td>
+                    <td>{{item.grade}} </td>
+                    <td>{{item.interpretation}} </td>
+                    <td>{{item.loanStatus}} </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision Matrix End Code -->
+
+      <!-- Proportionate & Overall Score Start  -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-box">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-collapse">
+                <h4 class="main-text-heading">Proportionate & Overall Score</h4>
+                <span class="text-muted">You can set a propionate score if you want</span>
+              </div>
+              <div class="number-collapse NP_Input_Text_Cont NP_Proportionate_W">
+                <div class="collpse-number-main ">
+                  <div class="Total-Count-sp">  
+                    <div class="sub-number-collapse">
+                      <span>Total Parameters</span>
+                      <h4 class="m-0">{{totalParameter}}</h4>                      
+                    </div>
+                    <div class="sub-number-collapse">
+                      <span>Overall Score</span>
+                      <h4 class="m-0">{{scoringModelData?.total}}</h4>                          
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="Proportionate-over-score">
+              <div class="col-lg-6 float-left br-1 pl-0">
+                <div class="text-ones-ps">
+                  <h4 class="main-text-heading">Proportionate Score</h4>
+                  <span class="text-muted">If you want to convert your overall score to some provisional value you
+                    can use
+                    this</span>
+                </div>
+                <div class="score-Proportionate">
+                  <div class="Check-text-PS">
+                    <div class="checkbox checkbox-psbpurple form-check-inline mb-2">
+                      <input type="checkbox" id="isUseProportionateScore" value="isUseProportionateScore"
+                        [(ngModel)]="scoringModelData.isUseProportionateScore" [ngModelOptions]="{standalone: true}"
+                        disabled>
+                      <label for="isUseProportionateScore">Use Proportionate Score</label>
+                    </div>
+                    <div class="Input-ps-group" *ngIf="scoringModelData.isUseProportionateScore">
+                      <div class="group-label-input-score">
+                        <label>Total Score</label>
+                        <input type="text" class="form-control total-Proportionate-score"
+                          value="{{scoringModelData.total}}" disabled>
+                      </div>
+                      <div class="scoring-exchange">
+                        <img src="assets/images/Dashabord/exchange.svg" alt="exchange" />
+                      </div>
+                      <div class="group-label-input-score">
+                        <label> Proportionate Score</label>
+                        <input type="text" class="form-control total-Proportionate-score"
+                          [(ngModel)]="scoringModelData.proportionateScore" [ngModelOptions]="{standalone: true}"
+                          disabled>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 float-left pl-4 pr-0" *ngIf="false">
+                <div class="text-ones-ps">
+                  <h4 class="main-text-heading">Risk Weights</h4>
+                  <span class="text-muted">If you want to give different weightage to different types of risk you
+                    can use this<br />
+                    method otherwise every parameter will be given same weightage</span>
+                </div>
+                <div class="score-Proportionate">
+                  <div class="Check-text-PS">
+                    <div class="checkbox checkbox-psbpurple form-check-inline w-100-fl mb-2">
+                      <input type="checkbox" id="RiskWeight" value="RiskWeight"
+                        [(ngModel)]="scoringModelData.isUserRiskWeight" [ngModelOptions]="{standalone: true}" disabled>
+                      <label for="RiskWeight"> User Risk Weight </label>
+                    </div>
+                    <div class="view-table-risk-weights" *ngIf="scoringModelData.isUserRiskWeight">
+                      <div class="table-risk-weights" *ngFor="let item of scoringModelData.titleList; let i=index">
+                        <span>
+                          {{item.riskName}}</span> <span><strong>{{item.riskWeightValue}}%</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Proportionate & Overall Score End  -->
+
+    </div>
+  </div>
+</div>
+
+<ng-template #Dropdown>
+  <div ngbDropdown class="dropdown d-inline">
+    <a href="javascript:void(0);" class="action-icon" ngbDropdownToggle> <em class="mdi mdi-dots-vertical"
+        placement="top" ngbTooltip="Menu" tooltipClass="Menutooltip"></em></a>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <a class="dropdown-item" href="javascript: void(0);">Action</a>
+      <a class="dropdown-item" href="javascript: void(0);">Another action</a>
+      <a class="dropdown-item" href="javascript: void(0);">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="javascript: void(0);">Separated link</a>
+    </div>
+  </div>
+</ng-template>

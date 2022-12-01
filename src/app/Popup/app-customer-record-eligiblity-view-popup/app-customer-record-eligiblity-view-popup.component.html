@@ -1,0 +1,27 @@
+<!-- <p>app-customer-record-eligiblity-view-popup works!</p> -->
+<div class="modal-header d-block">
+    <h4 class="modal-title">Eligibility Calculation Details</h4>
+</div>
+<div class="modal-body Modal-scroll">
+    <div class="row m-0">
+        <div class="col-12" *ngIf="eligibilityDetails.length > 0">
+
+            <div class="col-lg-6 float-left" *ngFor="let data of eligibilityDetails">
+
+                <p>Average Call :: - <strong>{{data.averageCall}}</strong></p>
+                <p> El Amount :: - <strong>{{data.elAmount}} </strong></p>
+                <p> Reason :: - <strong>{{data.reason || '-'}} </strong></p>
+
+                <p>Eligiblity json
+                    <i class="fa fa-clone" style="cursor: pointer;" aria-hidden="true"
+                        (click)="copyToClipBoard(data.elJson, true)"></i>
+                </p>
+                <pre> {{data.elJson |json}}</pre>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer jc-center">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+        (click)="activeModal.close('cancel')">Cancel</a>
+</div>

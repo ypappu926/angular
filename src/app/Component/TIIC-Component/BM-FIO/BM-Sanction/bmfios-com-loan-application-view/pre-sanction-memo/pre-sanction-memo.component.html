@@ -1,0 +1,1459 @@
+<form #preSanctionMemoForm="ngForm" autocomplete="off">
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text">
+    <!-- {{!isCollapsed ? '':'p-0'}} -->
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Bank Sanction Memo</h4>
+        <span class="text-muted">Bank Sanction Memo are listed below</span>
+      </div>
+      <div class="Btn-Drop_Down-dual-Cont">
+        <button type="button" class="btn btn-psb btn-psbpurple" (click)="save()"
+          *ngIf="(statusId == 1 || statusId == 2 || statusId == 4) && (roleId==fioRoleId)">Save</button>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="NP_Com_Group  NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Basic Details</h4>
+          </div>
+        </div>
+        <div class="NP_Com_Group">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Name of the Unit</label>
+              <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.unitName" [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList.unitName
+                " [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="NP_Com_Group Text_area_Cont">
+            <div class="col-md-6 col-lg-6 float-left">
+             <div class="form-group">
+                <label>Registered Office Address*</label>
+                <textarea rows="2"  type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.registeredOfficeAddress"
+                [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList
+                    .registeredOfficeAddress
+                " [disabled]="true" class="form-control">
+              </textarea>
+             </div>
+          </div>
+          <div class="col-md-6 col-lg-6 float-left">
+            <div class="form-group">
+              <label>Correspondence Address*</label>
+               <textarea rows="2" type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.correspondenceAddress"
+                [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList
+                    .correspondenceAddress
+               " [disabled]="true" class="form-control"></textarea>
+           </div>
+         </div>
+        </div>
+        <div class="NP_Com_Group Text_area_Cont">
+          <ng-container *ngFor="
+             let factoryAddress of preSanctionMemoData
+             .commonSanctionReportDataProxyList.factoryAddress;
+             let i = index
+              ">
+              <div class="col-md-6 col-lg-6 float-left">
+                <div class="form-group">
+                  <label>Factory Address {{ i + 1 }}*</label>
+                  <textarea rows="2" type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList
+                  .factoryAddress[{{ i }}].factoryAddress" [(ngModel)]="factoryAddress.factoryAddress"
+                    [disabled]="true" class="form-control"></textarea>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>KYC Risk Categorisation*</label>
+              <ng-select placeholder="Select any one" name="kycRiskCategorisation"
+                [(ngModel)]="preSanctionMemoData.kycRiskCategorisation" [items]="kycRiskCategorisationList"
+                validationControlName="kycRiskCategorisation" [appValidateElement]="isSaved" [disabled]="disable || (roleId != fioRoleId)"
+                bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>UN Terrorist List*</label>
+              <ng-select placeholder="Select any one" name="unTerroristList" validationControlName="unTerroristList"
+                [appValidateElement]="isSaved" [(ngModel)]="preSanctionMemoData.unTerroristList" [disabled]="disable || (roleId != fioRoleId)"
+                [items]="yesNoList" bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Description</h4>
+          </div>
+        </div>
+        <div class="NP_Com_Group">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Constitution*</label>
+              <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.constitution" [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList
+                    .constitution
+                " [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Date of Establishment*</label>
+              <div class="psb-input-group clockpicker">
+                <input
+                  name="preSanctionMemoData.commonSanctionReportDataProxyList.establishmentDate" [(ngModel)]="
+                    preSanctionMemoData.commonSanctionReportDataProxyList
+                      .establishmentDate
+                  " [disabled]="true" ngbDatepicker class="form-control right-br-0" #d10="ngbDatepicker" />
+                <div class="psb-input-group-append" (click)="d10.toggle()">
+                  <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Type Of Industry*</label>
+              <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.typeOfIndustry"
+                [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList
+                    .typeOfIndustry
+                " [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Size Of The Unit*</label>
+              <input type="text" name="preSanctionMemoData.unitSize" [(ngModel)]="preSanctionMemoData.unitSize"
+                [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>PAN*</label>
+              <input type="text" name="preSanctionMemoData.pan" [(ngModel)]="preSanctionMemoData.pan" [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Udhyam Reg No*</label>
+              <input type="text" name="preSanctionMemoData.udhyamRegNo" [(ngModel)]="preSanctionMemoData.udhyamRegNo"
+                [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>GSTIN*</label>
+              <input type="text" name="preSanctionMemoData.gstin" [(ngModel)]="preSanctionMemoData.gstin"
+                [disabled]="true" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Purpose Of Proposed Loan*</label>
+              <ng-select name="preSanctionMemoData.loanPurpose" [(ngModel)]="preSanctionMemoData.loanPurpose"
+                [disabled]="true" [items]="purposeOfLoanList" bindValue="id"
+                bindLabel="value" [clearable]="false"></ng-select>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>CIBIL MSME Rank*</label>
+              <input type="text" name="preSanctionMemoData.cibilMsmeRank"
+                [(ngModel)]="preSanctionMemoData.cibilMsmeRank" [disabled]="true"
+                class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Internal Credit Rating*</label>
+              <input type="text" name="preSanctionMemoData.internalCreditRating" [disabled]="true"
+                [(ngModel)]="preSanctionMemoData.internalCreditRating" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Grading Of Project*</label>
+              <input type="text" name="preSanctionMemoData.gradingOfProject"
+                [(ngModel)]="preSanctionMemoData.gradingOfProject" [disabled]="true"
+                class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Date Of Inspection*</label>
+              <div class="psb-input-group clockpicker">
+                <input ngbDatepicker
+                  name="preSanctionMemoData.commonSanctionReportDataProxyList.enquiryDate" [(ngModel)]="
+                    preSanctionMemoData.commonSanctionReportDataProxyList
+                      .enquiryDate
+                  " [disabled]="true" class="form-control right-br-0" #d12="ngbDatepicker" />
+                <div class="psb-input-group-append" (click)="d12.toggle()">
+                  <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Name Of The Investigating Officer*</label>
+              <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.inspectedBy" [(ngModel)]="
+                  preSanctionMemoData.commonSanctionReportDataProxyList
+                    .inspectedBy
+                " [disabled]="true" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Promoter Details</h4>
+          </div>
+        </div>
+        <div class="NP_Com_Group">
+          <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS_CH Mobile_table_View_NP">
+            <thead>
+              <tr>
+                <th>Promoter Name</th>
+                <th>Address</th>
+                <th>Bureau Score</th>
+                <th>Date Of Bureau Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let partnerList of preSanctionMemoData
+                    .commonSanctionReportDataProxyList.partnerList;
+                  let i = index
+                ">
+                <td data-label="Promoter Name">
+                  <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.partnerList[{{
+                      i
+                    }}].name" [(ngModel)]="partnerList.name" [disabled]="true"
+                    class="form-control" />
+                </td>
+                <td data-label="Address">
+                  <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.partnerList[{{
+                      i
+                    }}].address" [(ngModel)]="partnerList.address" [disabled]="true"
+                    class="form-control" />
+                </td>
+                <td data-label="Bureau Score">
+                  <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.partnerList[{{
+                      i
+                    }}].bureauScore" [(ngModel)]="partnerList.bureauScore" [disabled]="true"
+                    class="form-control" />
+                </td>
+                <td data-label="Date Of Bureau Score">
+                  <div class="psb-input-group">
+                    <input name="preSanctionMemoData.commonSanctionReportDataProxyList.partnerList[{{
+                        i
+                      }}].dateOfBureauScore" [(ngModel)]="partnerList.dateOfBureauScore" [disabled]="true"
+                      ngbDatepicker class="form-control right-br-0" #BureauDate="ngbDatepicker" />
+                    <div class="psb-input-group-append" (click)="BureauDate.toggle()">
+                      <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ngbCollapse]="isCollapsed" -->
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text MT_1">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Analysis of Results (Latest Year)</h4>
+      </div>
+    </div>
+    <div class="NP_Com_Group NP_BT_PT_1_5">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Financial Analysis</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Revenue*</label>
+            <input type="text" name="preSanctionMemoData.revenue"
+              [(ngModel)]="preSanctionMemoData.revenue" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Other Income*</label>
+            <input type="text" name="preSanctionMemoData.otherIncome"
+              [(ngModel)]="preSanctionMemoData.otherIncome" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Total Income*</label>
+            <input type="text" name="preSanctionMemoData.totalIncome"
+              [(ngModel)]="preSanctionMemoData.totalIncome" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Depreciation*</label>
+            <input type="text" name="preSanctionMemoData.depreciation"
+              [(ngModel)]="preSanctionMemoData.depreciation" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Net Profit*</label>
+            <input type="text" name="preSanctionMemoData.netProfit"
+              [(ngModel)]="preSanctionMemoData.netProfit" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Net Worth*</label>
+            <input type="text" name="preSanctionMemoData.netWorth"
+              [(ngModel)]="preSanctionMemoData.netWorth" [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Secured Loans*</label>
+            <input type="text" name="preSanctionMemoData.securedLoans" [(ngModel)]="preSanctionMemoData.securedLoans"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Unsecured Loans*</label>
+            <input type="text" name="preSanctionMemoData.unsecuredLoans"
+              [(ngModel)]="preSanctionMemoData.unsecuredLoans" [disabled]="true"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Fixed Assets*</label>
+            <input type="text" name="preSanctionMemoData.fixedAssets" [(ngModel)]="preSanctionMemoData.fixedAssets"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Creditors*</label>
+            <input type="text" name="preSanctionMemoData.creditors" [(ngModel)]="preSanctionMemoData.creditors"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Stock*</label>
+            <input type="text" name="preSanctionMemoData.stock" [(ngModel)]="preSanctionMemoData.stock"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Debtors*</label>
+            <input type="text" name="preSanctionMemoData.debtors" [(ngModel)]="preSanctionMemoData.debtors"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">GSTR Analysis - Taxable Supply</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Total Months*</label>
+            <input type="text" name="preSanctionMemoData.gstTotalMonths"
+              [(ngModel)]="preSanctionMemoData.gstTotalMonths" [disabled]="true"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Total Invoice Value*</label>
+            <input type="text" name="preSanctionMemoData.gstTotalInvoiceValue"
+              [(ngModel)]="preSanctionMemoData.gstTotalInvoiceValue" [disabled]="true"
+              class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- [ngbCollapse]="isCollapsed" -->
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text MT_1">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Financial Details</h4>
+      </div>
+    </div>
+    <div class="NP_Com_Group NP_BT_PT_1_5">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Land Details</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO Land_Details_NP Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Purchase Cost</th>
+              <th>% of ownership</th>
+              <th>Village</th>
+              <th>Sub Registrar Office</th>
+              <th>Guideline Value</th>
+              <th>Market Value</th>
+              <th>Whether hypothecated, if so to whom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let landDetails of preSanctionMemoData
+                  .commonSanctionReportDataProxyList.landDetails;
+                let i = index
+              ">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Description">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].description" [(ngModel)]="landDetails.description" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Purchase Cost">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].purchaseCost" [(ngModel)]="landDetails.purchaseCost" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="% of ownership">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].percentOwnership" [(ngModel)]="landDetails.percentOwnership" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Village">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].village" [(ngModel)]="landDetails.village" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Collateral Sub Registrar Office">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].subRegistrarOffice" [(ngModel)]="landDetails.subRegistrarOffice" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Guideline Value">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].guidelineValue" [(ngModel)]="landDetails.guidelineValue" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Market Value">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].marketValue" [(ngModel)]="landDetails.marketValue" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Whether hypothecated, if so to whom">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.landDetails[{{
+                    i
+                  }}].hypothecated" [(ngModel)]="landDetails.hypothecated" [disabled]="true"
+                  class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Building Details</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Type of Roof</th>
+              <th>Plinth Area</th>
+              <th>Original Cost of Construction</th>
+              <th>Remarks</th>
+              <th>Whether hypothecated, if so to whom</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let buildingDetails of preSanctionMemoData
+                  .commonSanctionReportDataProxyList.buildingDetails;
+                let i = index
+              ">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Description">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].description" [(ngModel)]="buildingDetails.description" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Type of Roof">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].typeOfRoof" [(ngModel)]="buildingDetails.typeOfRoof" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Plinth Area">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].plinthArea" [(ngModel)]="buildingDetails.plinthArea" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Original Cost of Construction">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].costOfConstruction" [(ngModel)]="buildingDetails.costOfConstruction" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Remarks">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].remarks" [(ngModel)]="buildingDetails.remarks" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Whether hypothecated, if so to whom">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.buildingDetails[{{
+                    i
+                  }}].hypothecated" [(ngModel)]="buildingDetails.hypothecated" [disabled]="true" class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+        <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+            class="fmdi fmdi-plus mr-1"></em>
+          Add More</button>
+      </div> -->
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Plant Details</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Year of Purchase</th>
+              <th>Purchase Value</th>
+              <th>Current Value</th>
+              <th>Whether under charge (including EPCG obligation)</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let plantDetails of preSanctionMemoData
+                  .commonSanctionReportDataProxyList.plantDetails;
+                let i = index
+              ">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Description">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].description" [(ngModel)]="plantDetails.description" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Year of Purchase">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].yearOfPurchase" [(ngModel)]="plantDetails.yearOfPurchase" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Purchase Value ">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].purchaseValue" [(ngModel)]="plantDetails.purchaseValue" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Current Value">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].currentValue" [(ngModel)]="plantDetails.currentValue" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Whether under charge (including EPCG obligation)">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].underCharge" [(ngModel)]="plantDetails.underCharge" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Remarks">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.plantDetails[{{
+                    i
+                  }}].remarks" [(ngModel)]="plantDetails.remarks" [disabled]="true"
+                  class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Other Assets</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Year of Purchase</th>
+              <th>Purchase Value</th>
+              <th>Current Value</th>
+              <th>Whether under charge (including EPCG obligation)</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                let otherAssetDetails of preSanctionMemoData
+                  .commonSanctionReportDataProxyList.otherAssetDetails;
+                let i = index
+              ">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Description">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].description" [(ngModel)]="otherAssetDetails.description" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Year of Purchase">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].yearOfPurchase" [(ngModel)]="otherAssetDetails.yearOfPurchase" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Purchase Value ">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].purchaseValue" [(ngModel)]="otherAssetDetails.purchaseValue" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Current Value">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].currentValue" [(ngModel)]="otherAssetDetails.currentValue" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Whether under charge (including EPCG obligation)">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].underCharge" [(ngModel)]="otherAssetDetails.underCharge" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Remarks">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.otherAssetDetails[{{
+                    i
+                  }}].remarks" [(ngModel)]="otherAssetDetails.remarks" [disabled]="true"
+                  class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+        <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+            class="fmdi fmdi-plus mr-1"></em>
+          Add More</button>
+      </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- [ngbCollapse]="isCollapsed" -->
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text MT_1">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Infrastructure Details</h4>
+      </div>
+    </div>
+    <div class="NP_Com_Group NP_BT_PT_1_5">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Power (Electricity Details)</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Sanctioned Load*</label>
+            <input type="text"
+              name="preSanctionMemoData.commonSanctionReportDataProxyList.sanctionedLoad" 
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.sanctionedLoad" 
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Connected Load*</label>
+            <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.connectedLoad" 
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.connectedLoad"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>SC No*</label>
+            <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.scNo"
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.scNo"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Date Of Connection*</label>
+            <div class="psb-input-group clockpicker">
+              <input ngbDatepicker name="preSanctionMemoData.commonSanctionReportDataProxyList.connectionDate"
+                [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.connectionDate"
+                [disabled]="true" class="form-control right-br-0" #d7="ngbDatepicker" />
+              <div class="psb-input-group-append" (click)="d7.toggle()">
+                <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Water Details</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Existing Requirement*</label>
+            <input type="text"
+              name="preSanctionMemoData.commonSanctionReportDataProxyList.existingRequirement"
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.existingRequirement" 
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Whether Adequate*</label>
+            <ng-select name="preSanctionMemoData.commonSanctionReportDataProxyList.whetherAdequate"
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.whetherAdequate"
+              [disabled]="true" [items]="yesNoList" bindValue="id" bindLabel="value"
+              [clearable]="false"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Source*</label>
+            <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.source"
+              [(ngModel)]="preSanctionMemoData.commonSanctionReportDataProxyList.source"
+              [disabled]="true" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ngbCollapse]="isCollapsed" -->
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text MT_1">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+      <div class="text-heading-cards">
+        <h4 class="main-text-heading">Other Details</h4>
+      </div>
+    </div>
+    <div class="NP_Com_Group NP_BT_PT_1_5">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Performance under TNCGS Details</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO Land_Details_NP Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>No of Loans</th>
+              <th>Amount Sanctioned</th>
+              <th>Amount Disbursed</th>
+              <th>Principal Outstanding</th>
+              <th>Principal Overdue</th>
+              <th>Interest Overdue</th>
+              <th>% of Principal Overdue to Principal Outstanding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Sr.No">1</td>
+              <td data-label="No of Loans">
+                <input type="text" name="tncgsNoOfLoans" [(ngModel)]="preSanctionMemoData.tncgsNoOfLoans"
+                  [disabled]="disable || (roleId != fioRoleId)" validationControlName="tncgsNoOfLoans" [appValidateElement]="isSaved"
+                  [placeholder]="disable?'':'Enter value'" appCurrencyInputDirective maxlength="10"
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.tncgsNoOfLoans" class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="Amount Sanctioned">
+                <input type="text" name="amountSanctioned" maxlength="10"
+                  [(ngModel)]="preSanctionMemoData.amountSanctioned" [disabled]="disable || (roleId != fioRoleId)"
+                  validationControlName="amountSanctioned" [appValidateElement]="isSaved" [placeholder]="disable?'':'Enter value'"
+                  appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.amountSanctioned" class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="Amount Disbursed">
+                <input type="text" name="amountDisbursed" maxlength="10"
+                  [(ngModel)]="preSanctionMemoData.amountDisbursed" [disabled]="disable || (roleId != fioRoleId)"
+                  validationControlName="amountDisbursed" [appValidateElement]="isSaved" [placeholder]="disable?'':'Enter value'"
+                  appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.amountDisbursed" class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)"  -->
+              <td data-label="Principal Outstanding">
+                <input type="text" name="principalOutstanding" maxlength="10" 
+                  [(ngModel)]="preSanctionMemoData.principalOutstanding" [disabled]="disable || (roleId != fioRoleId)"
+                  validationControlName="principalOutstanding" [appValidateElement]="isSaved" [placeholder]="disable?'':'Enter value'"
+                  appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.principalOutstanding" class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="Principal Overdue">
+                <input type="text" name="principalOverdue" [(ngModel)]="preSanctionMemoData.principalOverdue"
+                  [disabled]="disable || (roleId != fioRoleId)" maxlength="10" validationControlName="principalOverdue"
+                  [appValidateElement]="isSaved" [placeholder]="disable?'':'Enter value'" appCurrencyInputDirective
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.principalOverdue"
+                   class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="Interest Overdue">
+                <input type="text" name="interestOverdue" maxlength="10"
+                  [(ngModel)]="preSanctionMemoData.interestOverdue" [disabled]="disable || (roleId != fioRoleId)"
+                  validationControlName="interestOverdue" [appValidateElement]="isSaved" [placeholder]="disable?'':'Enter value'"  appCurrencyInputDirective
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.interestOverdue"
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="% of Principal Overdue to Principal Outstanding">
+                <input type="text" name="prOverdueOutstanding" [(ngModel)]="preSanctionMemoData.prOverdueOutstanding"
+                  [disabled]="disable || (roleId != fioRoleId)" validationControlName="prOverdueOutstanding" [appValidateElement]="isSaved"
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.prOverdueOutstanding"
+                   [placeholder]="disable?'':'Enter value'" class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Current Exposure</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS_CH Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>Name of Bank</th>
+              <th>Facility Amount</th>
+              <th>Outstanding as on</th>
+              <th>Whether Secured</th>
+              <th>Collateral Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let existingLoan of preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails;let i = index">
+              <td data-label="Name of Bank">
+                <ng-select
+                  name="preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails[{{i}}].nameOfLender"
+                  [(ngModel)]="existingLoan.nameOfLender" [disabled]="true"
+                  [items]="bankList" bindValue="id" bindLabel="name" [clearable]="false"></ng-select>
+              </td>
+              <td data-label="Facility Amount">
+                <input type="text"
+                  name="preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails[{{i}}].sanctionedLoanAmt"
+                  [(ngModel)]="existingLoan.sanctionedLoanAmt" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Outstanding as on">
+                <div class="psb-input-group">
+                  <input ngbDatepicker class="form-control right-br-0" [disabled]="true"
+                    name="preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails[{{i}}].outstandingDisplayDate"
+                    [(ngModel)]="existingLoan.outstandingDisplayDate"#outstandingDisplayDate="ngbDatepicker"/>
+                  <div class="psb-input-group-append" (click)="outstandingDisplayDate.toggle()">
+                    <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Whether Secured">
+                <ng-select name="preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails[{{
+                      i
+                    }}].isSecured" [(ngModel)]="existingLoan.isSecured" [disabled]="true"
+                  [items]="yesNoList" bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+              </td>
+              <td data-label="Collateral Details">
+                <input type="text"
+                  name="preSanctionMemoData.commonSanctionReportDataProxyList.existingLoansDetails[{{i}}].collateralAmt"
+                  [(ngModel)]="existingLoan.collateralAmt" [disabled]="true" class="form-control"
+                  [disabled]="true" class="form-control" />
+              </td>
+            </tr>
+            <!-- <tr>
+                <td data-label="Name of Bank">
+                  <input
+                    type="text"
+                    [disabled]="true"
+                    class="form-control"
+                  />
+                </td>
+                <td data-label="Facility Amount">
+                  <input
+                    type="text"
+                    [disabled]="true"
+                    class="form-control"
+                  />
+                </td>
+                <td data-label="Outstanding as on">
+                  <div class="psb-input-group">
+                    <input
+                      ngbDatepicker
+                      class="form-control right-br-0"
+                      [disabled]="true"
+                      #OutstandingDate="ngbDatepicker"
+                    />
+                    <div
+                      class="psb-input-group-append"
+                      (click)="OutstandingDate.toggle()"
+                    >
+                      <span class="psb-input-group-text"
+                        ><i class="fmdi fmdi-calendar"></i
+                      ></span>
+                    </div>
+                  </div>
+                </td>
+                <td data-label="Whether Secured">
+                  <ng-select
+                    [items]="yesNoList"
+                    bindValue="id"
+                    bindLabel="value"
+                    [clearable]="false"
+                  ></ng-select>
+                </td>
+                <td data-label="Collateral Details">
+                  <input
+                    type="text"
+                    [disabled]="true"
+                    class="form-control"
+                  />
+                </td>
+              </tr> -->
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Status of Licences</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <div class="col-md-6 col-lg-3 float-left">
+          <!-- <div class="form-group">
+              <label>Licence*</label>
+              <input
+                type="text"
+                class="form-control"
+              />
+            </div> -->
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Registration Of Enterpreneurs Memorandum*</label>
+            <ng-select name="preSanctionMemoData.enterpreneursMemorandum"
+              [(ngModel)]="preSanctionMemoData.enterpreneursMemorandum" [disabled]="true" [items]="licenceStatusList"
+              bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Building Plan Approval*</label>
+            <ng-select name="preSanctionMemoData.buildingPlanApproval"
+              [(ngModel)]="preSanctionMemoData.buildingPlanApproval" [disabled]="true" [items]="licenceStatusList"
+              bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>TNPCB Clearance*</label>
+            <ng-select name="preSanctionMemoData.tnpcbClearance"
+              [(ngModel)]="preSanctionMemoData.tnpcbClearance" [disabled]="true" [items]="licenceStatusList"
+              bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Raw Materials</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_Threeatb NP_SR_NO Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Any Difficulty In Procurement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                  let rawMaterial of preSanctionMemoData
+                    .commonSanctionReportDataProxyList.rawMaterialDetails;
+                  let i = index
+                ">
+              <td data-label="Sr.No.">{{i+1}}</td>
+              <td data-label="Description">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList
+              .rawMaterialDetails[{{ i }}].description" [(ngModel)]="rawMaterial.description" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Any Difficulty In Procurement">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList
+              .rawMaterialDetails[{{ i }}].procurementDifficulty" [(ngModel)]="rawMaterial.procurementDifficulty"
+                  [disabled]="true" class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Major Customers</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS NP_SR_NO Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Yearly Sales (Rs)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                  let majorCustomerData of preSanctionMemoData
+                    .commonSanctionReportDataProxyList.majorCustomers;
+                  let i = index
+                ">
+              <td data-label="Sr.No.">{{i+1}}</td>
+              <td data-label="Name">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList
+              .majorCustomers[{{ i }}].name" [(ngModel)]="majorCustomerData.name" [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Yearly Sales (Rs)">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList
+              .majorCustomers[{{ i }}].yearlySales" [(ngModel)]="majorCustomerData.yearlySales" [disabled]="true" class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Scheme Eligibility Criteria</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_Threeatb NP_SR_NO Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product Parameter</th>
+              <th>Set Values</th>
+              <th>Value Of Borrower</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+              let appProdMatchesData of preSanctionMemoData.commonSanctionReportDataProxyList.appProdMatchesDataResponses
+              let i = index">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Product Parameter">
+                <input type="text" [disabled]="true" name="preSanctionMemoData.commonSanctionReportDataProxyList
+                  .appProdMatchesDataResponses[{{ i }}].parameterName"
+                  [(ngModel)]="appProdMatchesData.parameterName" class="form-control" />
+              </td>
+              <td data-label="Set Values">
+                <input type="text" [disabled]="true" name="preSanctionMemoData.commonSanctionReportDataProxyList
+                  .appProdMatchesDataResponses[{{ i }}].fpValue" 
+                  [(ngModel)]="appProdMatchesData.fpValue" class="form-control" />
+              </td>
+              <td data-label="Value Of Borrower">
+                <input type="text" [disabled]="true" name="preSanctionMemoData.commonSanctionReportDataProxyList
+                  .appProdMatchesDataResponses[{{ i }}].fsValue"
+                  [(ngModel)]="appProdMatchesData.fsValue" class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Means of Finance</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS NP_SR_NO Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Description</th>
+              <th>Value of Borrower</th>
+              <th>As Revised By Lending Bank</th>
+              <!-- <th>Reserve Value Borrower*</th>
+              <th>Unsecured Loans Value Borrower*</th>
+              <th>Promoter's Contribution% Value Borrower*</th>
+              <th>Reserve Value Bank*</th>
+              <th>Unsecured Loans Value Bank*</th>
+              <th>Promoter's Contribution% Value Bank*</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Sr.No.">1</td>
+              <td>capital</td>
+              <td data-label="Value of Borrower">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.capitalValueBorrower"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.capitalValueBorrower" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="As Revised By Lending Bank">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.capitalValueBank"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.capitalValueBank" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+                  validationControlName="capitalValueBank" [appValidateElement]="isSaved" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.meansOfFinanceDetails.capitalValueBank" 
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+            </tr>
+            <tr>
+              <td data-label="Sr.No.">2</td>
+              <td>reserve</td>
+              <td data-label="Reserve Value Borrower">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.reservesValueBorrower"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.reservesValueBorrower" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Reserve Value Borrower Value Bank">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.reservesValueBank"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.reservesValueBank" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+                  validationControlName="reservesValueBank" [appValidateElement]="isSaved" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.meansOfFinanceDetails.reservesValueBank" 
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+            </tr>
+            <tr>
+              <td data-label="Sr.No.">3</td>
+              <td>Unsecured Loans</td>
+              <td data-label="Unsecured Loans">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.unsecuredLoansValueBorrower"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.unsecuredLoansValueBorrower" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Unsecured Loans Value Bank">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.unsecuredLoansValueBank"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.unsecuredLoansValueBank" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+                  validationControlName="unsecuredLoansValueBank" [appValidateElement]="isSaved" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.meansOfFinanceDetails.unsecuredLoansValueBank" 
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+            </tr>
+            <tr>
+              <td data-label="Sr.No.">4</td>
+              <td>Promoter's Contribution%</td>
+              <td data-label="Promoter's Contribution% Value Borrower">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBorrower"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBorrower" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+                  validationControlName="promoterContributionPrValueBorrower" [appValidateElement]="isSaved" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBorrower"
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+              <td data-label="Promoter's Contribution% Value Bank">
+                <input type="text" name="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBank"
+                  [(ngModel)]="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBank" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+                  validationControlName="promoterContributionPrValueBank" [appValidateElement]="isSaved" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preSanctionMemoData.meansOfFinanceDetails.promoterContributionPrValueBank" 
+                  class="form-control" />
+              </td>
+              <!-- (keypress)="keyPressEvent($event,1)" -->
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>  
+      </div>-->
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Repayment Schedule</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS NP_SR_NO Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Repayment date</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                  let RepaymentDetail of preSanctionMemoData.repaymentScheduleDetailsList;
+                  let i = index
+                ">
+              <td data-label="Sr.No.">{{i+1}}</td>
+              <td data-label="Repayment date">
+                <div class="psb-input-group clockpicker">
+                  <input placeholder="Select Date" name="preSanctionMemoData.repaymentScheduleDetailsList[{{i}}].repaymentDate" 
+                  [(ngModel)]="RepaymentDetail.repaymentDate" ngbDatepicker class="form-control right-br-0" #d13="ngbDatepicker"
+                  [readonly]="true" [disabled]="disable || (roleId != fioRoleId)"
+                  validationControlName="repaymentDate" [appValidateElement]="isSaved" />
+                  <div class="psb-input-group-append" (click)="d13.toggle()">
+                    <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Amount">
+                <input type="number" name="preSanctionMemoData.repaymentScheduleDetailsList[{{i}}].repaymentAmout" 
+                [disabled]="disable || (roleId != fioRoleId)" validationControlName="repaymentAmout" [appValidateElement]="isSaved"
+                [(ngModel)]="RepaymentDetail.repaymentAmout" placeholder="Enter Value" class="form-control" />
+              </td>
+              <td>
+                <a href="javascript:void(0)" *ngIf="roleId == fioRoleId && preSanctionMemoData.repaymentScheduleDetailsList.length>1" [ngClass]="(disable || (roleId != fioRoleId)) ? 'icon-danger disable-pointer' : 'icon-danger'" (click)="addRemoveRepayment('remove',i)">
+                        <em class="fmdi fmdi-close" [disabled]="disable || (roleId != fioRoleId)"></em>
+                      </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple" *ngIf="roleId == fioRoleId" [disabled]="disable || (roleId != fioRoleId)" (click)="addRemoveRepayment('add')"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>  
+      </div>
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Details of Collateral</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group">
+        <table class="NP_Com_Form_Table_BM_FIO Land_Details_NP Mobile_table_View_NP">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Location</th>
+              <th>Type of Property</th>
+              <th>Guide Line Value</th>
+              <th>Market Value</th>
+              <th>Name of Owner</th>
+              <th>Whether Encumbered</th>
+              <th>Institution with which property is encumbered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                  let collateralList of preSanctionMemoData
+                    .commonSanctionReportDataProxyList.collateralList;
+                  let i = index
+                ">
+              <td data-label="Sr.No">{{ i + 1 }}</td>
+              <td data-label="Location">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].location" [(ngModel)]="collateralList.location" [disabled]="true"
+                  class="form-control" />
+              </td>
+              <td data-label="Type of Property">
+                <ng-select name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].typeOfPropertyId" [(ngModel)]="collateralList.typeOfPropertyId" [items]="typeOfPropertyList"
+                  [disabled]="true" bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+              </td>
+              <td data-label="Guide Line Value">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].guideLineValue" [(ngModel)]="collateralList.guideLineValue"
+                  [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Market Value">
+                <input type="number" name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].marketValue" [(ngModel)]="collateralList.marketValue"
+                  [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Name of Owner">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].nameOfOwner" [(ngModel)]="collateralList.nameOfOwner"
+                  [disabled]="true" class="form-control" />
+              </td>
+              <td data-label="Whether Encumbered">
+                <ng-select name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].isEncumbered" [(ngModel)]="collateralList.isEncumbered" [items]="yesNoList" [disabled]="true"
+                  bindValue="id" bindLabel="value" [clearable]="false"></ng-select>
+              </td>
+              <td data-label="Institution with which property is encumbered">
+                <input type="text" name="preSanctionMemoData.commonSanctionReportDataProxyList.collateralList[{{
+                      i
+                    }}].encumberedName" [(ngModel)]="collateralList.encumberedName"
+                  [disabled]="true" class="form-control" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="NP_Com_Group btn_table_right">
+          <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            Add More</button>  
+    </div>-->
+      </div>
+    </div>
+    <div class="NP_Com_Group">
+      <div class="Main-heading-dual-Cont">
+        <div class="text-heading-cards">
+          <h4 class="main-text-heading">Details of Personal Guarantees</h4>
+        </div>
+      </div>
+      <div class="NP_Com_Group" *ngFor="
+            let personalGuarantees of preSanctionMemoData.personalGuaranteesList;
+            let i = index
+          ">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Name Of Guarantor*</label>
+            <input type="text" name="preSanctionMemoData.personalGuaranteesList[{{i}}].nameOfGuarantor"
+              [(ngModel)]="personalGuarantees.nameOfGuarantor" [disabled]="true"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Residential Address*</label>
+            <input type="text" name="preSanctionMemoData.personalGuaranteesList[{{i}}].guarantorResidentialAddress"
+              [(ngModel)]="personalGuarantees.guarantorResidentialAddress" [disabled]="true"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Office Address*</label>
+            <input type="text" [disabled]="true"
+              name="preSanctionMemoData.personalGuaranteesList[{{i}}].guarantorOfficeAddress"
+              [(ngModel)]="personalGuarantees.guarantorOfficeAddress" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Gross Pay Per Month</label>
+            <input type="text" name="preSanctionMemoData.personalGuaranteesList[{{i}}].guarantorGrossPayPerMonth"
+              [(ngModel)]="personalGuarantees.guarantorGrossPayPerMonth" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+              appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="personalGuarantees.guarantorGrossPayPerMonth" 
+              validationControlName="guarantorGrossPayPerMonth" [appValidateElement]="isSaved" class="form-control" />
+          </div>
+          <!-- (keypress)="keyPressEvent($event,1)" -->
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Net Pay Per Month</label>
+            <input type="text" name="preSanctionMemoData.personalGuaranteesList[{{i}}].guarantorNetPayPerMonth"
+              [(ngModel)]="personalGuarantees.guarantorNetPayPerMonth" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+              appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="personalGuarantees.guarantorNetPayPerMonth" 
+              validationControlName="guarantorNetPayPerMonth" [appValidateElement]="isSaved" class="form-control" />
+          </div>
+          <!-- (keypress)="keyPressEvent($event,1)" -->
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>Net Worth</label>
+            <input type="text" name="preSanctionMemoData.personalGuaranteesList[{{i}}].guarantorNetworth"
+              [(ngModel)]="personalGuarantees.guarantorNetworth" [disabled]="disable || (roleId != fioRoleId)" [placeholder]="disable?'':'Enter value'"
+              appCurrencyInputDirective appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="personalGuarantees.guarantorNetworth"  validationControlName="guarantorNetworth"
+              [appValidateElement]="isSaved" class="form-control" />
+          </div>
+          <!-- (keypress)="keyPressEvent($event,1)" -->
+        </div>
+        <div class="col-md-6 col-lg-6 float-left">
+          <div class="form-group">
+            <label>Whether Property In His/Her Name</label>
+            <ng-select [placeholder]="disable?'':'Enter value'"
+              name="preSanctionMemoData.personalGuaranteesList[{{i}}].isGuarantorProperty"
+              [(ngModel)]="personalGuarantees.isGuarantorProperty" [disabled]="disable || (roleId != fioRoleId)" [items]="yesNoList"
+              bindValue="id" bindLabel="value" [clearable]="false" validationControlName="isGuarantorProperty"
+              [appValidateElement]="isSaved"></ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>

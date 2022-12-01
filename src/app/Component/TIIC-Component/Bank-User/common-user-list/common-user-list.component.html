@@ -1,0 +1,218 @@
+<div class="container-fluid">
+  <app-page-title title="User List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row" (scroll)="onWindowScroll($event)">
+    <div class="col-lg-12 parent">
+      <div class="card-box" id="stick-headerN">
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP p-0">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{(userRoleId == 1 && tab == 1)?'View':'Add'}} {{this.tabObjDetails.name || '-'}}</h4>
+            <span class="text-muted">{{'COMMON_USER.HERE_YOU_CAN' | translate}} {{(userRoleId == 1 && tab == 1)?'View':'Add'}} {{this.tabObjDetails.name}} {{(userRoleId == 1 && tab == 1)?'':'Users'}}</span>
+          </div>
+
+
+          <div class="Btn-Drop_Down-dual-Cont" *ngIf="this.tabObjDetails.buttonDropdownType != 0">
+            <div class="mobile-dropdown NP_DRP" *ngIf="this.tabObjDetails.buttonDropdownType == 1">
+              <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="isRedirectForEdit(tab, null, 1)"><i class="fmdi fmdi-accounts-add mr-2"></i>{{'COMMON_USER.ADD_USER' | translate}}</a>
+            </div>
+            <div ngbDropdown class="mobile-dropdown NP_DRP"  *ngIf="this.tabObjDetails.buttonDropdownType == 2">
+              <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" ngbDropdownToggle><i
+                  class="fmdi fmdi-accounts-add mr-2"></i>{{'COMMON_USER.ADD_USER' | translate}}</a>
+              <div class="dropdown-menu btn-drop" ngbDropdownMenu>
+                <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)"
+                  (click)="isRedirectForEdit(tab, null, 1)">
+                  <i class="fmdi fmdi-accounts-add mr-2"></i>{{'COMMON_USER.ADD_SINGLE_USER' | translate}}</a>
+                <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)"
+                (click)="isRedirectForBulkUpload(tab, this.tabObjDetails.name)"><i
+                    class="fmdi fmdi-accounts-add mr-2"></i>{{'COMMON_USER.BULK_UPLOAD' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- end col-->
+      </div>
+
+      <div class="card-box btn-tabs" id="stick-headerN">
+        <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+          <ul class="nav nav-tabs justify-content-start customdropdown_mobile">
+            <li class="init hide">{{'APPLICATIONS.SELECT' | translate}}</li>
+            <li class="nav-item" id="tab{{data.id}}" (click)="changeTab(data.id)" *ngFor="let data of userTabList">
+              <a class="nav-link" [ngClass]="{ active : tab == data.id }">
+                <span class="number-text">{{data.name}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{this.tabObjDetails.name}} ( {{totalCount || 0}} Users )</h4>
+            <span class="text-muted" *ngIf="this.tabObjDetails.name != 'All Users'">{{this.tabObjDetails.title}}.</span>
+          </div>
+
+          
+          <div class="Btn-Drop_Down-dual-Cont" >
+            <button type="button" ngbTooltip="Enable transfer to TAICO/DIC FIO"  class="btn btn-psb btn-psbpurple" (click)="enableTransfer()" *ngIf="userRoleId == 1 && this.tabObjDetails.name == 'Field Inspection Officer'" [disabled]="isEnabledTransfer" ><i
+              class="fmdi fmdi-link mr-2"></i>Enable Transfer</button>
+              <ng-container *ngIf="intialTotalCount > 0">
+            <button type="button" class="btn btn-psb btn-outline-psbpurple" (click)="downloadAllUser()"><i
+                class="fmdi fmdi-download mr-2"></i>{{'COMMON_USER.DOWNLOAD_USER' | translate}}</button>
+              </ng-container>
+          </div>
+        </div>
+
+        <!-- table Report and Filter data -->
+          <div class="table-responsive">
+            <!-- *ngIf="intialTotalCount > 0" -->
+            <!--Common-ps-Subsidy-NP 2CoBank Name-nine-dataTSV BM_FIO_Table  [ngClass]="tab == 2 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+            <table class="CommonTable_NP NP_SA_Column Mobile_table_View_NP">
+              <!--Common-ps-Subsidy-NP  Comon-nine-dataTSV BM_FIO_Table  [ngClass]="tab == 2 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+              <thead>
+                <tr>
+                  <th>{{'COMMON_USER.SR_NO' | translate}}</th>
+                  <th *ngIf="isViewUserNameColumn">{{'COMMON_USER.USER_NAME' | translate}}</th>
+                  <th *ngIf="isViewRoleColumn">{{'COMMON_USER.ROLE' | translate}}</th>
+                  <th *ngIf="isViewEmailColumn">{{'COMMON_USER.USER_EMAIL' | translate}}</th>
+                  <th *ngIf="isViewOrgColumn">{{'COMMON_USER.BANK_NAME' | translate}}</th>
+                  <th *ngIf="isViewDepartmentColumn">{{'COMMON_USER.DEPARTMENT'  | translate}}</th>
+                  <th *ngIf="isViewDistrictColumn">{{'COMMON_USER.DISTRICT' | translate}}</th>
+                  <th *ngIf="isViewMobileColumn">{{'COMMON_USER.CONTACT_NO' | translate}}</th>
+                  <th *ngIf="isViewBranchNameColumn">{{'COMMON_USER.BRANCH_NAME' | translate}}</th>
+                  <!-- <th *ngIf="isViewCityColumn">{{'COMMON_USER.CITY' | translate}}</th> -->
+                  <th *ngIf="isViewStatusColumn">{{'COMMON_USER.STATUS' | translate}}</th>
+                  <th *ngIf="isViewViewColumn || isViewLockColumn || isViewEditColumn || isViewResetPasswordColumn" class="NP_Action">{{'COMMON_USER.ACTION' | translate}}</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <!-- Filter TR Cont Start -->
+                <tr class="Mobile_View_Filter_Hide_NP">
+                  <td></td>
+                  <td *ngIf="isViewUserNameColumn"><input type="text" class="form-control" [(ngModel)]="searchUserName"
+                      (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="isViewRoleColumn">
+                      <ng-select bindValue="id" bindLabel="name" [items]="userRoleDropdownList"
+                        name="searchUserRoleId" [clearable]="true" [(ngModel)]="searchUserRoleId" (ngModelChange)="debounceEventForFilter()">
+                    </ng-select>
+                  </td>
+                  <td *ngIf="isViewEmailColumn"><input type="text" class="form-control" [(ngModel)]="searchEmail"
+                      (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="isViewOrgColumn || isViewDepartmentColumn"><input type="text" class="form-control" [(ngModel)]="searchOrgName"
+                      (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="isViewDistrictColumn"><input type="text" class="form-control" [(ngModel)]="searchDistrict"
+                        (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="isViewMobileColumn"><input type="text" class="form-control" [(ngModel)]="searchMobile"
+                      (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="isViewBranchNameColumn"><input type="text" class="form-control" [clearable]="true" [(ngModel)]="searchBranchName" 
+                    (ngModelChange)="debounceEventForFilter()"></td>
+                    <!-- <td *ngIf="isViewCityColumn"><input type="text" class="form-control" [clearable]="true" [(ngModel)]="searchCityName" 
+                      (ngModelChange)="debounceEventForFilter()"></td> -->
+                  <td *ngIf="isViewStatusColumn"><ng-select bindValue="id" bindLabel="name" [items]="statusList"
+                    name="searchStatus" [clearable]="true" [(ngModel)]="searchStatus" (ngModelChange)="debounceEventForFilter()">
+                </ng-select></td>
+                  <td class="NP_Action" *ngIf="isViewViewColumn || isViewLockColumn || isViewEditColumn || isViewResetPasswordColumn">&nbsp;</td>
+                </tr>
+                <!-- Filter TR Cont End -->
+                <ng-container *ngIf="totalCount > 0">
+                  <tr *ngFor="let obj of bankUserList;let i = index">
+                    <td data-label="Sr. No.">{{ startIndex + 1 + i}}</td>
+                    <td *ngIf="isViewUserNameColumn" data-label="User Name">{{obj.userName || ''}}</td>
+                    <td *ngIf="isViewRoleColumn" data-label="Role">{{obj.roleName}}</td>
+                    <td *ngIf="isViewEmailColumn" data-label="Email ID">{{obj.email || ''}}</td>
+                    <td *ngIf="isViewOrgColumn || isViewDepartmentColumn" data-label="Department">{{obj.orgName || ''}}</td>
+                    <td *ngIf="isViewDistrictColumn" data-label="Discrict">{{obj.discrictName || ''}}</td>
+                    <td *ngIf="isViewMobileColumn" data-label="Contact No.">{{obj.mobile || ''}}</td>
+                    <td *ngIf="isViewBranchNameColumn" data-label="Branch Name">{{obj.branchName}}</td>
+                    <!-- <td *ngIf="isViewCityColumn" data-label="City Name" *ngIf="userRoleId == 2 || userRoleId == 3">{{obj.cityName}}</td> -->
+                    <td *ngIf="isViewStatusColumn" data-label="Status">
+                      <div class="Comon-Dot-text">
+                        <span class="{{obj.isActive ? 'Success-Dot':'Danger-Dot'}}"></span>
+                        {{obj.isActive? 'Active':'InActive'}}
+                      </div>
+                    </td>
+                    <td *ngIf="isViewViewColumn || isViewLockColumn || isViewEditColumn || isViewResetPasswordColumn" data-label="Action" class="NP_Action">
+                      <div class="Mobile_Action">
+                        <a *ngIf="isViewViewColumn" href="javascript:void(0);" class="action-icon" (click)="isRedirectForEdit(tab, obj, 2)"><em
+                            class="fmdi fmdi-eye" placement="top" ngbTooltip="View Details"></em></a>
+                        <a *ngIf="isViewLockColumn" href="javascript:void(0);" class="action-icon" (click)="LockUser_Popup(obj.userId,obj.email,obj.isLocked)"><em
+                            class="{{obj.isLocked ? 'fmdi fmdi-lock' : 'fmdi fmdi-lock-open'}}" placement="top"
+                            ngbTooltip="{{obj.isLocked?'Unlock':'Lock'}}"></em></a>
+                        <a *ngIf="isViewResetPasswordColumn" href="javascript:void(0);" class="action-icon" (click)="ResetPassword_Popup(obj.userId,obj.email)" ><em
+                              class="fmdi fmdi-refresh" placement="top"
+                              ngbTooltip="Reset Password"></em></a>
+                        <a *ngIf="isViewEditColumn" href="javascript:void(0);" class="action-icon" (click)="isRedirectForEdit(tab, obj, 3)"><em
+                            class="fmdi fmdi-edit" placement="top" ngbTooltip="Edit Details"></em></a>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngIf="totalCount == 0">
+                    <tr class="NoDateTable">
+                      <td colspan="8">
+                        <div class="table-No-Data">
+                          <div class="Com-No-data-Found-NP">
+                            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+                            <strong class="No-Data-pad-2">{{this.tabObjDetails.name}} {{'COMMON_USER.LIST_IS_EMPTY' | translate}}</strong>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="row pagination-table Mobile_Pagination"  *ngIf="intialTotalCount > 0">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                {{'COMMON_USER.SHOWING' | translate}}
+                {{ (totalCount > 0) ? (startIndex + 1) : 0}} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+                {{'COMMON_USER.ENTRIES' | translate}}
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label
+                class="d-inline-flex align-items-center">{{'COMMON_USER.SHOW' | translate}}
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getUserList()">
+                </ng-select>{{'COMMON_USER.ENTRIES' | translate}}
+              </label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true"  [pageSize]="pageSize" [rotate]="true" [boundaryLinks]="true" 
+                  (pageChange)="onPageChange($event)">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      <!-- <div class="card-box" *ngIf="intialTotalCount == 0">
+        <div class="table-No-Data">
+          <div class="Com-No-data-Found-NP">
+            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+            <strong class="No-Data-pad-2">{{'COMMON_USER.CURRENTLY_LIST_IS_EMPTY' | translate}}</strong>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="card-box btn-tabs-Fix-NP Mobile_BTN_NP">
+        <div class="nav-bordered">
+            <h4 class="m-0 mb-2 d-print-none">Bulk Actions.</h4>
+            <span>You can use bulk action for locking and resetting password for multiple users simultaneously.</span>
+        </div>
+        <div class="text-right d-print-none">
+            <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple ml-2"><em
+                    class="fmdi fmdi-lock"></em>Lock Selected Users</a>
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+
+</div>

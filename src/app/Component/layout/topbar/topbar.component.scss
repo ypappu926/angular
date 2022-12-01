@@ -1,0 +1,25 @@
+.topnav-menu {
+  display: flex;
+  align-items: center;
+  &.NP_LeftIconView{
+    width: auto;
+    float: left;
+  }
+ 
+  &.Line_Height{
+     height: 70px;
+    // line-height: 70px;
+  }
+}
+.logo-lg{
+  img{
+    transform: scale(1.5);
+  }
+}
+@media (max-width:1366px){
+  .logo-lg{
+    img{
+      transform: scale(1.5);
+    }
+  }
+}

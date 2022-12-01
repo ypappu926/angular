@@ -1,0 +1,606 @@
+<div class="container-fluid " (scroll)="onWindowScroll($event)">
+  <div class="icon-title-heading">
+    <em class="fmdi fmdi-arrow-left" (click)="navigate()"></em>
+    <app-page-title title="Loan Application View" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  </div>
+  <div class="row ">
+    <div class="col-12 parent">
+      <div class="card-box btn_tab_text_Cont Mobile_BTN_NP" id="stick-headerN">
+        <div class="NP_Com_Group BTN_text_Cont">
+          <div class="nav-bordered DScrolTopBlock_NP">
+            <div class="Top_Fix_text_Ico_View">
+              <em class="fmdi fmdi-arrow-left" (click)="navigate()"></em>
+              <div class="Top_text_View">
+                <span>Borrower Name : <p>{{msmeProposalDetails?.fullName}}</p></span>
+                <div class="NP_Bottom_txt_Cont">
+                  <span>Inprincipal Amount : <p>₹ {{(msmeProposalDetails?.elAmount |indNumFormat) || '-' }}</p></span>
+                  <span>Loan Type : <p>{{msmeProposalDetails?.loanTypeName || '-'}}</p></span>
+                  <span>Product Name : <p>{{msmeProposalDetails?.productName || '-'}}</p></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nav-bordered DScrollnone_NP">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading"><a href="javascript:Void(0);">{{msmeProposalDetails?.fullName}}</a></h4>
+              <span class="text-muted">Application Code - {{msmeProposalDetails?.applicationCode || '-'}}</span>
+            </div>
+          </div>
+
+          <div class="text-right d-print-none" *ngIf="workflowData?.step?.stepActions?.length > 0 &&  isSanctionBtn"> 
+            <ng-container *ngFor="let stepAction of workflowData.step.stepActions;let i = index">
+            <button type="button"  [ngClass]="stepAction.action.json"
+              (click)="performAction(stepAction)">{{stepAction.action.buttonText}}
+            </button>
+            </ng-container>
+        </div>
+        </div>
+        <div class="NP_Com_Group mt-3 DScrollnone_NP">
+          <div class="CardSubDetails_Cont_NP">
+            <div class="CardGRP_text_NP">
+              <span>{{msmeProposalDetails?.proposalStatusName || '-'}}</span>
+              <span class="text-muted">Status</span>
+            </div>
+            <div class="CardGRP_text_NP">
+              <span>{{(msmeProposalDetails?.journeyCompletionDate | date: 'dd MMM, yyyy') || '-'}} </span>
+              <span class="text-muted">Date</span>
+            </div>
+            <div class="CardGRP_text_NP">
+              <span>₹ {{(msmeProposalDetails?.elAmount |indNumFormat) || '-' }}</span>
+
+              <span class="text-muted">Amount</span>
+            </div>
+            <div class="CardGRP_text_NP">
+              <span>{{msmeProposalDetails?.productName || '-'}}</span>
+              <span class="text-muted">Product Name</span>
+            </div>
+            <div class="CardGRP_text_NP">
+              <span>{{msmeProposalDetails?.loanTypeName || '-'}}</span>
+              <span class="text-muted">Loan Type</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="TSV_Main_bottom_Cont NP_JCFEnd bt-1 DScrollnone_NP">
+          <div class="TSV_bottom_Right_Cont">
+            <div class="float-right">
+              <div class="TeaserView-Datalink">
+                <a href="javascript:void(0);"><i class="fmdi fmdi-email"></i>
+                  {{msmeProposalDetails?.email || '-'}}</a>
+                <a href="javascript:void(0);"><i class="fmdi fmdi-phone"></i>{{msmeProposalDetails?.mobile || '-' }}</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12 parent">
+      <div class="card-box p-0">
+        <div class="btn-atm-tab NP_SubCardTab" id="stick-headerN">
+          <div class="tab-text-hading">
+            <!-- <span class="text-muted btn-Other-tab">Manjeet Kumar Sharma</span> -->
+            <div class="nav-bordered">
+              <ul class="nav nav-tabs justify-content-start customdropdown_mobile">
+                <li class="init hide">Select</li>
+                <li class="nav-item" id="tab1" (click)="activeClick(1)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                    <span class="number-text"><img class="mr-2"
+                        [src]="tab == 1 ? 'assets/images/Dashabord/tab-img/Summary-Blue.svg' : 'assets/images/Dashabord/tab-img/Summary-Gray.svg'"
+                        alt="Summary Details"> Summary</span>
+                  </a>
+                </li>
+                <li class="nav-item" id="tab3" (click)="activeClick(2)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                    <span class="number-text"><img class="mr-2"
+                        [src]="tab == 2 ? 'assets/images/Dashabord/tab-img/Downloads-Blue.svg' : 'assets/images/Dashabord/tab-img/Downloads-Gray.svg'"
+                        alt="Downloads Details">Download</span>
+                  </a>
+                </li>
+                <li class="nav-item" id="tab4" (click)="activeClick(3)" *ngIf="true">
+                  <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                    <span class="number-text"><img class="mr-2"
+                        [src]="tab == 3 ? 'assets/images/Dashabord/tab-img/Application-History-Blue.svg' : 'assets/images/Dashabord/tab-img/Application-History-Gray.svg'"
+                        alt="Application History Details"> Sanction Report</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card-box">
+        <div class="com-tab-group" *ngIf="tab == 1">
+          <div class="DetailsCard-teaserView">
+            <div class="LH_NP_Com">
+              <div class="text-heading-cards np-2hd">
+                <h4 class="main-text-heading">Applicant Details</h4>
+              </div>
+              <div class="teaserView-complney-details">
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details">
+                    <span>01</span>
+                    <span>Name of Company</span>
+                    <span>{{applicantdetails?.nameOfBusinessUnit ||'-'}} </span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>02</span>
+                    <span>Bank Name</span>
+                    <span>{{msmeProposalDetails?.orgName || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>03</span>
+                    <span>SMA Status</span>
+                    <span>{{msmeProposalDetails?.smaStatus ||'-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>04</span>
+                    <span>PAN</span>
+                    <span>{{msmeProposalDetails?.pan ||'-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>05</span>
+                    <span>Udyam Reg No.</span>
+                    <span>{{msmeProposalDetails?.udyamRegistration ||'-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>06</span>
+                    <span>GSTIN</span>
+                    <span>{{msmeProposalDetails?.gstIn ||'-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>07</span>
+                    <span>Constitution</span>
+                    <span>{{msmeProposalDetails?.constitution ||'-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>08</span>
+                    <span>Date of Establishment</span>
+                    <span>{{(applicantdetails?.dateOfEstablishment | date: 'dd MMM, yyyy') ||'-' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com">
+              <div class="text-heading-cards np-2hd">
+                <h4 class="main-text-heading">Credit Rating Details</h4>
+              </div>
+              <div class="teaserView-complney-details">
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details">
+                    <span>01</span>
+                    <span>Credit Rating Score</span>
+                    <span>{{msmeProposalDetails?.creditRatingScore || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>02</span>
+                    <span>Credit Rating Grade</span>
+                    <span>{{msmeProposalDetails?.creditRatingGrade || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>03</span>
+                    <span>Credit Rating Status of Loan</span>
+                    <span>{{msmeProposalDetails?.creditRatingStatusOfLoan || '-'}} </span>
+                    <!-- (|indNumFormat) -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com">
+              <div class="text-heading-cards np-2hd">
+                <h4 class="main-text-heading">Field Inspection Details</h4>
+              </div>
+              <div class="teaserView-complney-details">
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details">
+                    <span>01</span>
+                    <span>Field Inspection Officer</span>
+                    <span>{{msmeProposalDetails?.fieldInspectionOffcerName || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>02</span>
+                    <span>Field Inspection Date</span>
+                    <span>{{(msmeProposalDetails?.dateOfInspection |date: 'dd MMM, yyyy') || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>03</span>
+                    <span>Field Inspection Remarks</span>
+                    <span>{{msmeProposalDetails?.inspectionRemarks || '-'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com">
+              <div class="text-heading-cards np-2hd">
+                <h4 class="main-text-heading">Committee Details</h4>
+              </div>
+              <div class="teaserView-complney-details">
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details">
+                    <span>01</span>
+                    <span>Lead Bank Manager</span>
+                    <span>{{msmeProposalDetails?.leadBankManager || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>02</span>
+                    <span>General Manager</span>
+                    <span>{{msmeProposalDetails?.generalManager || '-'}}</span>
+                  </div>
+                  <div class="TeaserView-company-details">
+                    <span>03</span>
+                    <span>District</span>
+                    <span>{{msmeProposalDetails?.district || '-'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="com-tab-group" *ngIf="tab == 2">
+          <div class="DetailsCard-teaserView">
+            <div class="LH_NP_Com_appi NPSUB_TSVCard" *ngIf="false">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Bureau Reports</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="responsiveTable">
+                    <table class="Common_Table_DownLink Mobile_table_View_NP">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>PAN</th>
+                          <th>Type</th>
+                          <th>Score</th>
+                          <th class="NP_Action">Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-label="Name">Balaji Enterprises</td>
+                          <td data-label="PAN">HNYPS9340W</td>
+                          <td data-label="Type">Comercial</td>
+                          <td data-label="Score">CMR-4</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"><em
+                                class="fmdi fmdi-download"></em>Experian</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Bank Statements</h4>
+                </div>
+                <div class="card-body p-0">
+                  <!-- <div class="TeaserView-company-details ai-center Mobile_TSViewNP">
+                    <div class="img_text_Cont" >
+                      <span *ngIf="false">
+                        <img src="assets/images/bank-logo/sbi-logo.svg" alt="Bank Logo">
+                      </span>
+                      <span>
+                        <h5 class="mt-0">State Bank Of India</h5>
+                        <p class="text-muted">Account Number - 2051119012629</p>
+                      </span>
+                    </div>
+                    <span>
+                      <a href="javascript:void(0)"
+                        (click)="downloadZipFile(354,msmeProposalDetails?.bsModualMasterId,'Bank Statement')"><em
+                          class="fmdi fmdi-download"></em>Bank Statements</a>
+                    </span>
+                  </div> -->
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">Bank Details</p>
+                      <p class="text-muted">Download Bank Statement uploaded by borrower</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)"
+                        (click)="downloadZipFile(354, msmeProposalDetails?.bsModualMasterId, 'Bank Statement')"><em
+                          class="fmdi fmdi-download"></em>Bank Statements</a>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">ITR</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">ITR Details</p>
+                      <p class="text-muted">Download ITR files uploaded by borrower</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)"
+                        (click)="downloadZipFile(358, msmeProposalDetails?.itrModualMasterId, 'ITR')"><em
+                          class="fmdi fmdi-download"></em>ITR Files</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Bureau Reports</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">Bureau Reports</p>
+                      <p class="text-muted">Download Bureau Reports</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)"
+                        (click)="downloadZipFile(575, 15, 'Bureau_Reports')"><em
+                          class="fmdi fmdi-download"></em>Bureau Files</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading"> Download Application Form</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">Application Details</p>
+                      <p class="text-muted">Download application form files uploaded by borrower</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)" (click)="downloadMsmeApplicationForm()"><em
+                          class="fmdi fmdi-download"></em>Application Files</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading"> Download CAM Report</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">CAM Details</p>
+                      <p class="text-muted">Download CAM files uploaded by borrower</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)" (click)="downloadCamReport()"><em class="fmdi fmdi-download"></em>CAMFiles</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com_appi NPSUB_TSVCard" *ngIf="true">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Download Field Inspection Report</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="TeaserView-company-details NP_Two_Cont">
+                    <span>
+                      <p class="text-muted">FIO Details</p>
+                      <p class="text-muted">Download FIO files uploaded by borrower</p>
+                    </span>
+                    <span>
+                      <a href="javascript:void(0)"(click)="downloadFIOReport()"><em class="fmdi fmdi-download"></em>FIO Report</a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com_appi NPSUB_TSVCard" *ngIf="true">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Sanction Reports</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="responsiveTable">
+                    <table class="Common_Table_DownLink Mobile_table_View_NP">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th class="NP_Action">Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-label="Name">Sanction Reports</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadSanctionReport(1)" >
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                        <tr *ngIf="displaySanctionLetterOp">
+                          <td data-label="Name">Sanction Letter</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadSanctionLetter(2)" >
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="LH_NP_Com_appi NPSUB_TSVCard" *ngIf="allowDownloadDisbusement">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Disbursement Note Report</h4>
+                </div>                
+                <div class="card-body p-0">
+                  <div class="responsiveTable">
+                    <table class="Common_Table_DownLink Mobile_table_View_NP">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th class="NP_Action">Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-label="Name">Disbursement Note</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadDisbursalNotReport()" >
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>                        
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="LH_NP_Com_appi NPSUB_TSVCard">
+              <div class="teaserView-complney-details">
+                <div class="text-heading-cards np-2hd">
+                  <h4 class="main-text-heading">Other Documents</h4>
+                </div>
+                <div class="card-body p-0">
+                  <div class="responsiveTable">
+                    <table class="Common_Table_DownLink Mobile_table_View_NP">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th class="NP_Action">Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-label="Name">Partnership Deed</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadFile('Partnership Deed', 763)" >
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                        <tr>
+                          <td data-label="Name">Memorandum of Association</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadFile('Memorandum of Association', 764)">
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                        <tr>
+                          <td data-label="Name">Certificate of Incorporation</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadFile('Certificate of Incorporation', 765)">
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                        <tr>
+                          <td data-label="Name">Proof of Photo Identity</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadFile('Proof of Photo Identity', 766)">
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>
+                        <tr>
+                          <td data-label="Name">Proof of Residence</td>
+                          <td data-label="Download" class="NP_Action"> <a href="javascript:void(0)"
+                            (click)="downloadFile('Proof of Residence', 778)">
+                            <em class="fmdi fmdi-download"></em>Download</a></td>
+                        </tr>   
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="com-tab-group" *ngIf="tab == 3">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+            <div class="text-heading-cards BTN_ContView">
+              <button type="button" (click)="changeTab(4)"
+              [ngClass]="sanctionPageStatus.preScreeningStatus && SubTab == 4 ? 'btn Common_head_Btn_NP Complete_Tbtn_NP Active_Tbtn_NP' 
+                : sanctionPageStatus.preScreeningStatus ? 'btn Common_head_Btn_NP Complete_Tbtn_NP' 
+                : SubTab == 4 ? 'btn Common_head_Btn_NP Active_Tbtn_NP' 
+                : 'btn Common_head_Btn_NP'"><em class="fmdi fmdi-check-all"></em> Pre-Screening
+                Report</button>
+              <button type="button" (click)="changeTab(5)"
+                [ngClass]="sanctionPageStatus.preSanctionStatus && SubTab == 5 ? 'btn Common_head_Btn_NP Complete_Tbtn_NP Active_Tbtn_NP' 
+                : sanctionPageStatus.preSanctionStatus ? 'btn Common_head_Btn_NP Complete_Tbtn_NP' 
+                : SubTab == 5 ? 'btn Common_head_Btn_NP Active_Tbtn_NP' 
+                : 'btn Common_head_Btn_NP'"><em class=" fmdi fmdi-check-all"></em> Pre-Sanction Report</button>
+
+              <button type="button" (click)="changeTab(6)"
+                [ngClass]="sanctionPageStatus.bankSanctionStatus && SubTab == 6 ? 'btn Common_head_Btn_NP Complete_Tbtn_NP Active_Tbtn_NP' 
+                : sanctionPageStatus.bankSanctionStatus ? 'btn Common_head_Btn_NP Complete_Tbtn_NP' 
+                : SubTab == 6 ? 'btn Common_head_Btn_NP Active_Tbtn_NP' 
+                : 'btn Common_head_Btn_NP'"><em class=" fmdi fmdi-check-all"></em> Bank Sanction Memo</button>
+
+              <button type="button" (click)="changeTab(7)" *ngIf="(statusId == 3 && roleId == roleMaster.BRANCH_MANAGER.id) || (statusId > 3)"
+                [ngClass]="sanctionPageStatus.branchManagerRemarks && SubTab == 7 ? 'btn Common_head_Btn_NP Complete_Tbtn_NP Active_Tbtn_NP' 
+                : sanctionPageStatus.branchManagerRemarks ? 'btn Common_head_Btn_NP Complete_Tbtn_NP' 
+                : SubTab == 7 ? 'btn Common_head_Btn_NP Active_Tbtn_NP' 
+                : 'btn Common_head_Btn_NP'"><em class=" fmdi fmdi-check-all"></em> Remarks by Branch Manager</button>
+
+              <button type="button" (click)="changeTab(8)" *ngIf="(statusId == 14 && roleId == roleMaster.FIELD_INSPECTION_OFFICER.id) || (statusId > 14)"
+                [ngClass]="sanctionPageStatus.sanctionLetter && SubTab == 8 ? 'btn Common_head_Btn_NP Complete_Tbtn_NP Active_Tbtn_NP' 
+                : sanctionPageStatus.sanctionLetter ? 'btn Common_head_Btn_NP Complete_Tbtn_NP' 
+                : SubTab == 8 ? 'btn Common_head_Btn_NP Active_Tbtn_NP' 
+                : 'btn Common_head_Btn_NP'"><em class=" fmdi fmdi-check-all"></em> Sanction Letter</button>
+            </div>
+
+            <div class="Btn-Drop_Down-dual-Cont" *ngIf="workflowData?.step?.stepActions?.length > 0 &&  !isSanctionBtn && isShowWorkFlow"> 
+              <ng-container *ngFor="let stepAction of workflowData.step.stepActions;let i = index">
+                <button type="button" 
+                [ngClass]="stepAction.action.json"
+                  (click)="performAction(stepAction)">{{stepAction.action.buttonText}}
+                </button>
+                </ng-container>
+            
+              <!-- <button type="button" class="btn btn-psb btn-secondary">Send Bank</button>
+              <button type="button" class="btn btn-psb btn-success">Approve</button>
+              <button type="button" class="btn btn-psb btn-psbpurple" (click)="BMFIOS_Send_for_Approval_Popup()">Send
+                For Approval</button> -->
+            </div>
+          </div>
+          <ng-container *ngIf="tab == 3 || SubTab == 4 || SubTab == 5 || SubTab == 6 || SubTab == 7">
+            <ng-container *ngIf="SubTab == 4">
+              <app-pre-screening-report [applicationId]="applicationId" [proposalId]="proposalId" 
+                [roleId]="roleId" (onCompleted)="updateFlag($event)" [statusId]="statusId">
+              </app-pre-screening-report>
+            </ng-container>
+
+            <ng-container *ngIf="SubTab == 5">
+              <app-pre-sanction-report [applicationId]="applicationId" [proposalId]="proposalId"
+                [roleId]="roleId" (onCompleted)="updateFlag($event)" [statusId]="statusId">
+              </app-pre-sanction-report>
+            </ng-container>
+            <ng-container *ngIf="SubTab == 6">
+              <app-pre-sanction-memo [applicationId]="applicationId" [proposalId]="proposalId"
+                [roleId]="roleId" (onCompleted)="updateFlag($event)" [statusId]="statusId">
+              </app-pre-sanction-memo>
+            </ng-container>
+            <ng-container *ngIf="SubTab == 7">
+              <app-branch-manager-remarks [applicationId]="applicationId" [proposalId]="proposalId"
+                [roleId]="roleId" (onCompleted)="updateFlag($event)" [statusId]="statusId"></app-branch-manager-remarks>
+            </ng-container>
+            <ng-container *ngIf="SubTab == 8">
+              <app-saction-letter [applicationId]="applicationId" [proposalId]="proposalId"
+                [roleId]="roleId" (onCompleted)="updateFlag($event)" [statusId]="statusId"></app-saction-letter>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

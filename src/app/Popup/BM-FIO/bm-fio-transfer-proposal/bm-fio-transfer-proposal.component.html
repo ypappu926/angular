@@ -1,0 +1,92 @@
+<div class="modal-header d-block">
+  <h4 class="modal-title">Transfer Proposal</h4>
+  <span class="text-muted">
+    Select the Branch to transfer the Proposal and the Reason for Transfer
+  </span>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <div class="nav-bordered tab-badge ">
+        <ul class="nav nav-tabs Common-tab-Badge NP_popupTab_Tow customdropdown_mobile">
+          <li class="init hide">Select</li>
+          <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1)">
+            <a class="nav-link" [ngClass]="{ active : inputData.transferType == 1 }">
+              <span class="text-muted">Transfer to another FIO</span>
+            </a>
+          </li>
+          <li class="nav-item Common-badge-C4" id="tab2" (click)="changeTab(2)">
+            <a class="nav-link" [ngClass]="{ active : inputData.transferType == 2 }">
+              <span class="text-muted">Transfer to another Branch</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="inputData.transferType == 1">
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select Department of FIO *</label>
+          <ng-select placeholder="Select any one" [items]="orgTypeList" bindValue="orgId" bindLabel="orgName"
+            [(ngModel)]="inputData.fioDepartmentId" (change)="getFioList()"></ng-select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select FIO *</label>
+          <ng-select placeholder="Select any one" [items]="fioList" bindValue="userId" bindLabel="name"
+            [(ngModel)]="inputData.subsidiaryFioUserId"></ng-select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select Reason *</label>
+          <ng-select class="NP_Drop_txt_Warp" placeholder="Select any one" [items]="popUpObj.fioTransferList" bindValue="id" bindLabel="value"
+            [(ngModel)]="inputData.transferReasonId"></ng-select>
+        </div>
+        <div class="col-12" *ngIf="inputData?.transferReasonId && 3 == inputData.transferReasonId">
+          <div class="form-group">
+            <label>Enter Reason *</label>
+            <input type="text" placeholder="Enter Reason" class="form-control" name="reason"
+              [(ngModel)]="inputData.otherTransferReason" autocomplete="off">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="inputData.transferType== 2">
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select District *</label>
+          <ng-select placeholder="Select any one" [(ngModel)]="inputData.districtId" [items]="districtList"
+            bindValue="id" bindLabel="districtName" (change)="getPincodeList()"></ng-select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select Branch</label>
+          <ng-select placeholder="Select any one" [(ngModel)]="inputData.branchId" [items]="branchList"
+            bindValue="branchId" bindLabel="displayName"></ng-select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <label>Select Reason *</label>
+          <ng-select class="NP_Drop_txt_Warp" placeholder="Select any one" [items]="popUpObj.bmTransferList" bindValue="id" bindLabel="value"
+            [(ngModel)]="inputData.transferReasonId"> </ng-select>
+        </div>
+        <div class="col-12" *ngIf="inputData?.transferReasonId && 4 == inputData.transferReasonId">
+          <div class="form-group">
+            <label>Enter Reason *</label>
+            <input type="text" placeholder="Enter Reason" class="form-control" name="reason"
+              [(ngModel)]="inputData.otherTransferReason" autocomplete="off">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-psb btn-secondary waves-effect" (click)="close(-1)">Cancel</button>
+  <button type="button" class="btn btn-psb btn-psbpurple waves-effect" (click)="close(inputData.transferType)">Comfirm
+  </button>
+</div>

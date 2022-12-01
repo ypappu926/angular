@@ -1,0 +1,133 @@
+<div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text">
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+        <div class="text-heading-cards">
+            <h4 class="main-text-heading">Sanction Letter</h4>
+            <span class="text-muted">Sanction Letter are listed below</span>
+        </div>
+        <div class="Btn-Drop_Down-dual-Cont">
+            <button type="button" class="btn btn-psb btn-psbpurple" *ngIf="(statusId == 14 || statusId ==  15 || statusId == 17) && (roleId == fioRoleId)" (click)="proceed()" >Save</button>
+        </div>
+    </div>
+    <form #sanctionLetterForm="ngForm" autocomplete="off">
+        <div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+                <div class="Main-heading-dual-Cont">
+                    <div class="text-heading-cards">
+                        <h4 class="main-text-heading">Basic Details</h4>
+                    </div>
+                </div>
+                <div class="NP_Com_Group ">
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Name of the Unit</label>
+                            <input type="text" placeholder="Enter value" class="form-control" disabled
+                                [(ngModel)]="sanctionDetails.unitName" name="unitName">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Registered Office*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" disabled
+                                [(ngModel)]="sanctionDetails.registeredOfficeAddress" name="registeredOfficeAddress">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left" *ngFor="let data of sanctionDetails.factoryAddress; let i = index;">
+                        <div class="form-group">
+                            <label>Factory Address {{i + 1}}*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" disabled
+                                [(ngModel)]="data.factoryAddress" name="data.factoryAddress{{i}}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Amount Sanctioned Loan*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.amountSanctionedLoan" name="amountSanctionedLoan"
+                                validationControlName="amountSanctionedLoan" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Date Of Sanction*</label>
+                            <div class="psb-input-group clockpicker">
+                                <input placeholder="Select Date" placeholder="Select Date" ngbDatepicker
+                                    class="form-control right-br-0" #d7="ngbDatepicker" [disabled]="true"
+                                    [(ngModel)]="sanctionDetails.dateOfSanction" name="dateOfSanction"
+                                    validationControlName="dateOfSanction" [appValidateElement]="isProceed">
+                                <div class="psb-input-group-append" (click)="d7.toggle()">
+                                    <span class="psb-input-group-text"><i class="fmdi fmdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>No Of Installment*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.noOfInstallment" name="noOfInstallment" (keyup)="calculateTotalLoanAmt()"
+                                validationControlName="noOfInstallment" [appValidateElement]="isProceed"  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sanctionDetails.noOfInstallment">
+                        </div>
+                        <!-- (keypress)="keyPressEvent($event,1)" -->
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Monthly Principal Repayment*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.monthlyPrincipalRepayment" name="monthlyPrincipalRepayment" (keyup)="calculateTotalLoanAmt()"
+                                validationControlName="monthlyPrincipalRepayment" [appValidateElement]="isProceed"  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sanctionDetails.monthlyPrincipalRepayment">
+                        </div>
+                        <!-- (keypress)="keyPressEvent($event,1)" -->
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Total Loan Amount*</label>
+                            <input type="text" class="form-control" disabled
+                                [(ngModel)]="sanctionDetails.totalLoanAmount" name="totalLoanAmount"
+                                validationControlName="totalLoanAmount" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Rate of Interest*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.rateOfIntrest" name="rateOfIntrest"
+                                validationControlName="rateOfIntrest" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Moratorium Period*</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.moratoriumPeriod" name="moratoriumPeriod"
+                                validationControlName="moratoriumPeriod" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.location" name="location"
+                                validationControlName="location" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Collateral Extent</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.collateralExtent" name="collateralExtent"
+                                validationControlName="collateralExtent" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Collateral Owned By</label>
+                            <input type="text" placeholder="Enter value" class="form-control" [disabled]="disable || (roleId != fioRoleId)"
+                                [(ngModel)]="sanctionDetails.collateralOwnedBy" name="collateralOwnedBy"
+                                validationControlName="collateralOwnedBy" [appValidateElement]="isProceed">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

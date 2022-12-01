@@ -1,0 +1,67 @@
+<div class="account-pages Disbursment_Certificate_NP">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-xl-12">
+          <div class="card-box">
+              <div class="Disbursment_Certificate_Note">
+                <!-- Logo -->
+                <div class="DCNote_Page_Img_text_GRP">
+                  <a class="Logo_Tamilnadu" routerLink=".">
+                    <img src="https://prod-sidbi-public-image.s3.ap-south-1.amazonaws.com/tn/bank_logos/TN_New_Borrower_logo.svg" alt="Tamlindau Logo" height="110">
+                  </a>
+                  <div class="DC_Page_text">
+                    <h2>DISBURSEMENT CERTIFICATE FOR THE</h2>
+                    <p>TNCGS LOAN OF {{disbursementDetails?.nameOfUnit | uppercase}}</p>
+                    <br><br>
+                  </div>
+                  <!-- <div class="Borrower_Profile_IMG"> -->
+                    <div>
+                    <!-- <img src="" alt="User Profile">{{disbursementDetails?.baseEncodedImage}} -->
+                    <!-- <img src="{{partnerPhotoUrl}}" alt="User Profile"> -->
+                    <img [src]="imgURL" style="height: 60px;">
+                  </div>
+                  <div class="DC_Name_txt">
+                    <span>{{disbursementDetails?.mainPartnerName}}</span>
+                  </div>
+                  <div class="DC_Cont_TN">
+                        <span>{{disbursementDetails?.nameOfUnit}} has been provided with a loan of <strong>₹ {{disbursementDetails?.totalDisbursedAmount | indNumFormat}}</strong> by {{disbursementDetails?.bankName}}.</span>
+                        <span>This loan is guaranteed by the Government of Tamil Nadu under the Tamil Nadu Credit Guarantee Scheme.</span>
+                        <span>Date : <strong>{{disbursementDetails?.disbursementDate}}</strong></span>
+                  </div>
+                  <br>
+                  <!-- <div class="DC_Page_text">
+                    <span>Hon’ble Chief Minister, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hon’ble Minister for MSMEs,</span>
+                  </div>
+                  <div>
+                    <span>Govt. of Tamil Nadu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Govt. of Tamil Nadu</span>
+                  </div> -->
+                  <!-- <div class="DC_Sign_Cont">                    
+                    <div class="Sign_Cont"> 
+                        <span>&nbsp;</span>
+                        <span>Hon’ble Chief Minister,<br/> Govt. of Tamil Nadu</span>
+                    </div>
+                    <div class="Sign_Cont"> 
+                        <span>&nbsp;</span>
+                        <span>Hon’ble Minister for MSMEs,<br/>Govt. of Tamil Nadu</span>
+                    </div>
+                    <div class="Sign_Cont"> 
+                        <span>5 August, 2022</span>
+                        <span>Date</span>
+                    </div>
+                </div> -->
+                    <div class="Btn_Cont_GRP_NP">
+                    <button type="button" class="btn btn-secondary waves-effect" (click)="navigateToLoanApplicatoinViewPage()">Back</button>
+                    <ng-container>
+                      <button type="button" class="btn btn-psbpurple waves-effect ml-3" (click)="downloadDisbursalNotReport()">Download as PDF</button>                      
+                    </ng-container>
+                  </div>
+                </div>
+  
+            </div>
+            <div class="DC_Buttom_Cont"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end page -->

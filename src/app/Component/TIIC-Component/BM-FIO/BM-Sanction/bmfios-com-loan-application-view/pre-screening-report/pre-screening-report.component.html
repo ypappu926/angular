@@ -1,0 +1,426 @@
+<form #preScreeningForm="ngForm" autocomplete="off">
+  <div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text">
+     <!-- {{!isCollapsed ? '':'p-0'}} -->
+     <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+        <div class="text-heading-cards">
+           <h4 class="main-text-heading">Pre-screening report</h4>
+           <span class="text-muted">Pre-screening report are listed below</span>
+        </div>
+        <div class="Btn-Drop_Down-dual-Cont">
+           <button type="button" *ngIf="(statusId == 1 || statusId == 2 || statusId == 4) && (roleId==fioRoleId)" class="btn btn-psb btn-psbpurple" (click)="save()" >Save</button>
+        </div>
+     </div>
+     <div class="NP_Com_Group">
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+           <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                 <h4 class="main-text-heading">Basic Details</h4>
+              </div>
+           </div>
+           <div class="NP_Com_Group">
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Name of the Unit</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.unitName"
+                  [(ngModel)]="
+                  preScreeningData.commonSanctionReportDataProxy.unitName"
+                  [disabled]="false"                  
+                  class="form-control"
+                  />   
+                  <!-- appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="preScreeningData.commonSanctionReportDataProxy.unitName" -->
+                 </div>
+              </div>
+              <div class="NP_Com_Group Text_area_Cont">
+              <div class="col-md-6 col-lg-6 float-left">
+                 <div class="form-group">
+                    <label>Registered Office Address*</label>
+                    <textarea rows="2" type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.registeredOfficeAddress"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy
+                    .registeredOfficeAddress"
+                    [disabled]="true"
+                    class="form-control"></textarea>
+                    <!-- <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.registeredOfficeAddress"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy
+                    .registeredOfficeAddress
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    /> -->
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-6 float-left">
+                 <div class="form-group">
+                    <label>Correspondence Address*</label>
+                    <textarea rows="2" type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.correspondenceAddress"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy
+                    .correspondenceAddress
+                    "
+                    [disabled]="true"
+                    class="form-control"></textarea>
+                    <!-- <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.correspondenceAddress"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy
+                    .correspondenceAddress
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    /> -->
+                 </div>
+              </div>
+             </div>
+              <div class="NP_Com_Group Text_area_Cont">
+                 <ng-container
+                    *ngFor="
+                    let factoryAddress of preScreeningData
+                    .commonSanctionReportDataProxy.factoryAddress;
+                    let i = index
+                    "
+                    >
+                    <div class="col-md-6 col-lg-6 float-left">
+                       <div class="form-group">
+                          <label>Factory Address {{ i + 1 }}*</label>
+                          <textarea rows="2" type="text"
+                          name="preScreeningData.commonSanctionReportDataProxy
+                          .factoryAddress[{{ i }}].factoryAddress"
+                          [(ngModel)]="factoryAddress.factoryAddress"
+                          [disabled]="true"
+                          class="form-control"></textarea>
+                          <!-- <input
+                          type="text"
+                          name="preScreeningData.commonSanctionReportDataProxy
+                          .factoryAddress[{{ i }}].factoryAddress"
+                          [(ngModel)]="factoryAddress.factoryAddress"
+                          [disabled]="true"
+                          class="form-control"
+                          /> -->
+                       </div>
+                    </div>
+                 </ng-container>
+              </div>
+           </div>
+        </div>
+        <div class="NP_Com_Group">
+           <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                 <h4 class="main-text-heading">Promoter Details</h4>
+              </div>
+           </div>
+           <div class="NP_Com_Group">
+              <ng-container
+                 *ngFor="
+                 let partnerList of preScreeningData.commonSanctionReportDataProxy
+                 .partnerList;
+                 let i = index
+                 "
+                 >
+                 <div class="col-md-6 col-lg-3 float-left">
+                    <div class="form-group">
+                       <label>Promoter Name {{ i + 1 }}*</label>
+                       <input
+                       type="text"
+                       name="preScreeningData.commonSanctionReportDataProxy.partnerList[{{
+                       i
+                       }}].name"
+                       [disabled]="true"
+                       [(ngModel)]="partnerList.name"
+                       class="form-control"
+                       />
+                    </div>
+                 </div>
+                 <table
+                    class="NP_Com_Form_Table_BM_FIO NP_Threeatb Mobile_table_View_NP"
+                    >
+                    <thead>
+                       <tr>
+                          <!-- <th>Promoter Name</th> -->
+                          <th>Name of the College/Institute/University</th>
+                          <th>Qualification</th>
+                          <th>Year of Passing</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                       <ng-container *ngIf="partnerList?.academicDetails?.length > 0">
+                          <tr
+                             *ngFor="
+                             let data of partnerList.academicDetails;
+                             let j = index
+                             "
+                             >
+                             <!-- <td data-label="Promoter Name 1">
+                                <input type="text" name="preScreeningData.commonSanctionReportDataProxy .partnerList[{{ i }}].name"
+                                    [(ngModel)]="partnerList.name" class="form-control"/>
+                                </td> -->
+                             <td data-label="Name of the College/Institute/University">
+                                <input
+                                type="text"
+                                class="form-control"
+                                [disabled]="true"
+                                [(ngModel)]="data.nameOfCollege"
+                                name="partnerList.academicDetails[{{i + '' + j}}].nameOfCollege"
+                                />
+                             </td>
+                             <td data-label="Qualification">
+                                <input
+                                type="text"
+                                class="form-control"
+                                [disabled]="true"
+                                [(ngModel)]="data.qualification"
+                                name="partnerList.academicDetails[{{i + '' + j}}].qualification"
+                                />
+                             </td>
+                             <td data-label="Year of Passing">
+                                <input
+                                type="text"
+                                class="form-control"
+                                [disabled]="true"
+                                [(ngModel)]="data.yearOfPassing"
+                                name="partnerList.academicDetails[{{i + '' + j}}].yearOfPassing"
+                                />
+                             </td>
+                          </tr>
+                       </ng-container>
+                    </tbody>
+                 </table>
+              </ng-container>
+              <!-- <div class="NP_Com_Group btn_table_right">
+                 <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+                     class="fmdi fmdi-plus mr-1"></em>
+                   Add More</button>
+                 </div> -->
+           </div>
+        </div>
+        <div class="NP_Com_Group">
+           <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                 <h4 class="main-text-heading">Description</h4>
+              </div>
+           </div>
+           <div class="NP_Com_Group">
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Constitution*</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.constitution"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy.constitution
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Loan Amount</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.loanAmount"
+                    [(ngModel)]="preScreeningData.loanAmount"
+                    [disabled]="true"
+                    class="form-control"
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Type Of Industry</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.typeOfIndustry"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy.typeOfIndustry
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Type Of Product</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.typeOfProduct"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy.typeOfProduct
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Purpose Of Proposed Loan*</label>
+                    <ng-select
+                    placeholder="Select any one"
+                    bindValue="id"
+                    bindLabel="value"
+                    validationControlName="purposeOfLoan"
+                    [appValidateElement]="isSaved"
+                    name="purposeOfLoan"
+                    [(ngModel)]="preScreeningData.purposeOfLoan"
+                    [items]="purposeOfLoanList"
+                    [disabled]="disable || (roleId != fioRoleId)"
+                    [clearable]="false"
+                    ></ng-select>
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Date Of Receipt Of Application*</label>
+                    <div class="psb-input-group clockpicker">
+                       <input
+                       name="preScreeningData.applicationDate"
+                       [(ngModel)]="preScreeningData.applicationDate"
+                       ngbDatepicker
+                       [disabled]="true"
+                       class="form-control right-br-0"
+                       #d="ngbDatepicker"
+                       />
+                       <div class="psb-input-group-append" (click)="d.toggle()">
+                          <span class="psb-input-group-text"
+                             ><i class="fmdi fmdi-calendar"></i
+                             ></span>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Details Of Field Inspection Carried Out By*</label>
+                    <input
+                    type="text"
+                    name="preScreeningData.commonSanctionReportDataProxyList.inspectedBy"
+                    [(ngModel)]="
+                    preScreeningData.commonSanctionReportDataProxy.inspectedBy
+                    "
+                    [disabled]="true"
+                    class="form-control"
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Date On Enquiry*</label>
+                    <div class="psb-input-group clockpicker">
+                       <input
+                       ngbDatepicker
+                       name="preScreeningData.commonSanctionReportDataProxyList.enquiryDate"
+                       [(ngModel)]="preScreeningData.commonSanctionReportDataProxy.enquiryDate"
+                       [disabled]="true"
+                       class="form-control right-br-0"
+                       #d1="ngbDatepicker"
+                       />
+                       <div class="psb-input-group-append" (click)="d1.toggle()">
+                          <span class="psb-input-group-text"
+                             ><i class="fmdi fmdi-calendar"></i
+                             ></span>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <!-- <div class="NP_Com_Group" *ngIf="roleId == constants.UserRoleList.BRANCH_MANAGER.id">
+           <div class="Main-heading-dual-Cont">
+             <div class="text-heading-cards">
+               <h4 class="main-text-heading">Remark By Branch Manager</h4>
+             </div>
+           </div>
+           <div class="NP_Com_Group">
+             <div class="col-md-6 col-lg-3 float-left">
+               <div class="form-group">
+                 <label>Remarks*</label>
+                 <input
+                   type="text"
+                   name="preScreeningData.bmRemarks"
+                   validationControlName="bmRemarks"
+                   [appValidateElement]="isSaved"
+                   [(ngModel)]="preScreeningData.bmRemarks"
+                   class="form-control"
+                 />
+               </div>
+             </div>
+             <div class="col-md-6 col-lg-3 float-left">
+               <div class="form-group">
+                 <label>Details Of CIBIL Report*</label>
+                 <input
+                   type="text"
+                   name="preScreeningData.cibilReport"
+                   validationControlName="cibilReport"
+                   [appValidateElement]="isSaved"
+                   [(ngModel)]="preScreeningData.cibilReport"
+                   class="form-control"
+                 />
+               </div>
+             </div>
+             <div class="col-md-6 col-lg-3 float-left">
+               <div class="form-group">
+                 <label>Compliance of KYC Norms*</label>
+                 <input
+                   type="text"
+                   name="preScreeningData.kycCompilance"
+                   validationControlName="kycCompilance"
+                   [appValidateElement]="isSaved"
+                   [(ngModel)]="preScreeningData.kycCompilance"
+                   class="form-control"
+                 />
+               </div>
+             </div>
+           </div>
+           </div> -->
+        <div class="NP_Com_Group">
+           <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                 <h4 class="main-text-heading">
+                    Recommendation by Committee Members
+                 </h4>
+              </div>
+           </div>
+           <div class="NP_Com_Group">
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>Lead Bank Manager</label>
+                    <input
+                    type="text"
+                    validationControlName="lmRecommendation"
+                    [appValidateElement]="isSaved"
+                    name="lmRecommendation"
+                    [(ngModel)]="preScreeningData.lmRecommendation"
+                    class="form-control"
+                    disabled
+                    />
+                 </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                 <div class="form-group">
+                    <label>General Manager</label>
+                    <input
+                    type="text"
+                    name="gmRecommendation"
+                    validationControlName="gmRecommendation"
+                    [appValidateElement]="isSaved"
+                    [(ngModel)]="preScreeningData.gmRecommendation"
+                    class="form-control"
+                    disabled
+                    />
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+</form>

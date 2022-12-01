@@ -1,0 +1,123 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+    <app-page-title title="Dashboard" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row">
+      <div class="col-lg-12 parent">
+
+
+        <div class="card-box btn-tabs" id="stick-headerN">
+          <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+            <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+              <li class="init hide">{{'BO_DASHBOARD.SELECT' | translate}}</li>
+              <li class="nav-item Common-badge-C4 Two_TabAfter" id="tab1" (click)="changeTab(1)">
+                <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                  <h3 class="notification-list loan-tsv-badge">{{totalNewApplDetlObj || 0}}</h3>
+                  <span class="text-muted">{{'BO_DASHBOARD.PENDING_APPLICATIONS' | translate}}</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab3" (click)="changeTab(3)">
+                <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                  <h3 class="notification-list loan-tsv-badge">{{totalCompletedObj || 0}}</h3>
+                  <span class="text-muted">{{'BO_DASHBOARD.COMPLETED_APPLICATIONS' | translate}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+                <div class="text-heading-cards">
+                  <h4 class="main-text-heading">{{'BO_DASHBOARD.BORROWER_DETAILS' | translate}}</h4>
+                  <span class="text-muted">{{'BO_DASHBOARD.LIST_OF_BORROWER_BANKER_HAS_PROVIDED' | translate}}</span>
+                </div>
+              <div class="Btn-Drop_Down-dual-Cont" *ngIf="foStatusDetails && foStatusDetails.length > 0">
+                <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple" (click)="downloadAllStatusUsers()"><i
+                    class="fmdi fmdi-download mr-2"></i>{{'BO_DASHBOARD.DOWNLOAD_ALL' | translate}}</a>
+              </div>
+          </div>
+  
+          <!-- table Report and Filter data -->
+          <div class="table-responsive">
+            <table class="CommonTable_NP Mobile_table_View_NP">
+              <!--  Common-ps-SS-NP NP_BGBTR0 -->
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>{{'BO_DASHBOARD.NAME_OF_UNIT' | translate}}</th>
+                  <th>{{'BO_DASHBOARD.EMAIL_ID' | translate}}</th>
+                  <th>{{'BO_DASHBOARD.MOBILE_NO' | translate}}</th>
+                  <th *ngIf="tab == 1">{{'BO_DASHBOARD.STATUS' | translate}}</th>
+                  <th class="NP_Action">{{'BO_DASHBOARD.ACTION' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="Mobile_View_Filter_Hide_NP">
+                  <td>&nbsp;</td>
+                  <td> <input type="text" class="form-control"  name="searchEntityName" [(ngModel)]="searchEntityName" (ngModelChange)="debounceEventForFilter()"></td>
+                  <td><input type="text" class="form-control" name="searchEmail" [(ngModel)]="searchEmail" (ngModelChange)="debounceEventForFilter()"></td>
+                  <td><input type="text" class="form-control" name="searchMobile" [(ngModel)]="searchMobile" (ngModelChange)="debounceEventForFilter()"></td>
+                  <td *ngIf="tab == 1">
+                    <ng-select placeholder="Select Status" class="" bindValue="id" bindLabel="name" [clearable]="true"
+                      [(ngModel)]="statusId" [items]="statusList" (ngModelChange)="getStatusList()" name="statusId">
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                      </ng-template>
+                    </ng-select>
+                  </td>
+                  <td class="NP_Action">&nbsp;</td>
+                </tr>
+                <tr class="{{tab == 1 && customer.status == 8 ? 'Active_TR' : ''}}" *ngFor="let customer of foStatusDetails;let i = index">
+                  <td data-label="Id">{{ i+1 }}</td>
+                  <td attr.data-label="{{'BO_DASHBOARD.NAME_OF_UNIT' | translate}}">{{ customer.entityName }}</td>
+                  <td attr.data-label="{{'BO_DASHBOARD.EMAIL_ID' | translate}}">{{ customer.email || 'NA'}}</td>
+                  <td attr.data-label="{{'BO_DASHBOARD.MOBILE_NO' | translate}}">{{ customer.mobile }}</td> 
+                  <td attr.data-label="{{'BO_DASHBOARD.STATUS' | translate}}" *ngIf="tab == 1">
+                    <div class="Comon-Dot-text" >
+                      <div class="{{customer.status == 8 ? 'green-dot': 'warning-dot'}}"></div>
+                      &nbsp; {{customer.status == 8 ? 'New': 'In-Progress'}}</div>
+                  </td>
+                  <td attr.data-label="{{'BO_DASHBOARD.ACTION' | translate}}" class="NP_Action">
+                    <div class="Mobile_Action">
+                      <a class="action-icon" href="javascript:void(0)" (click)="redirect(customer,1)"  *ngIf="tab == 1"><em class="fmdi fmdi-file-text" ngbTooltip="Fill Details"></em></a>
+                      <a class="action-icon" href="javascript:void(0)" (click)="redirect(customer,2)" *ngIf="false"><em class="fmdi fmdi-edit"></em></a><!-- tab == 1 -->
+                      <a class="action-icon" href="javascript:void(0)" (click)="redirect(customer,3)" *ngIf="tab == 3"><em class="fmdi fmdi-eye" ngbTooltip="View Details"></em></a>
+                    </div>
+                  </td>            
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row pagination-table Mobile_Pagination" *ngIf="foStatusDetails && foStatusDetails.length > 0 "> 
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                {{'BO_DASHBOARD.SHOWING' | translate}}
+                  {{((pageSize*(page-1))+1)}} to
+                  {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                  {{totalCount}}
+                  {{'BO_DASHBOARD.ENTRIES' | translate}}
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">{{'BO_DASHBOARD.SHOW' | translate}}
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getStatusList()">
+                </ng-select> {{'BO_DASHBOARD.ENTRIES' | translate}}</label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                  <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true" 
+                  [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+              </ngb-pagination>
+              </div>
+          </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  

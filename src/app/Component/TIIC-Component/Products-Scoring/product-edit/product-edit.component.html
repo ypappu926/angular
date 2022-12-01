@@ -1,0 +1,1119 @@
+<div class="container-fluid">
+    <app-page-title title="Edit Product " [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+    <div class="row" *ngIf="byIdData">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-box">
+                        <!-- Logo & title -->
+                        <div class="clearfix">
+                            <div class="float-left">
+                                <h4 class="m-0 d-print-none">Product Info</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product-text al-center">
+                                    <p class="m-0">Product Name</p>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product-text ">
+                                    <h2 class="m-0">{{byIdData.productName}}</h2>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product-text al-center">
+                                    <p>This will be used as a reference while creating products and for internal bank
+                                        reference.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="product-text al-center">
+                                    <p class="Modification-text m0">
+                                        <span>Last modified : {{byIdData.createdDate| date:'medium'}}</span>
+                                        <span class="Scoring-product-code">
+                                            <p class="m-0">Product Code : {{byIdData.productCode}}</p>
+                                            <p class="m-0">Version : {{byIdData.versionId?byIdData.versionId:0.1}}</p>
+                                        </span>
+                                    </p>
+                                    <div>
+                                        <a href="javascript:Void(0)" class="link-btn"
+                                            (click)="NP_View_Product_Confirmation_Popup()"><em
+                                                class="fmdi fmdi-eye mr-1"></em>
+                                            View product configuration</a>
+                                        <a href="javascript:Void(0)" *ngIf="!(typeId==1)&&byIdData.versionId==null"
+                                            class="link-btn ml-2" (click)="Confirm_Product_Confirmation_Popup()"><em
+                                                class="fmdi fmdi-edit mr-1"></em>
+                                            <!-- *ngIf="checkButtonPermission('EDIT_PRODUCT_CONFIGURATION')" -->
+                                            Edit product configuration</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </div>
+                    <!-- end card-box -->
+                </div>
+            </div>
+
+            <div class="row" (scroll)="onWindowScroll($event)">
+                <div class="col-lg-12 parent">
+                    <div class="card-box btn-tabs" id="stick-headerN">
+                        <div class="tab-text-hading Np_tab-heading">
+                            <span class="text-muted mb-2 btn-Other-tab">{{byIdData.productName}}</span>
+                            <div class="nav-bordered">
+                                <ul #tabScrollNP class="nav nav-tabs justify-content-start">
+                                    <li class="nav-item" id="tab1" (click)="changeTab(1)">
+                                        <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                                            <span class="number-text">Mandatory Parameters</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" id="tab2" (click)="changeTab(2)">
+                                        <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                                            <span class="number-text">Optional Parameters</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" id="tab3" (click)="changeTab(3)">
+                                        <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                                            <span class="number-text">Eligibility Model</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" id="tab4" (click)="changeTab(4)">
+                                        <a class="nav-link" [ngClass]="{ active : tab == 4 }">
+                                            <span class="number-text">Scoring & ROI</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-btn-media">
+                            <div class="Btn-NP-PS">
+                                <!-- *ngIf="checkButtonPermission('SAVE_PRODUCT')" -->
+                                <ng-container>
+                                    <a href="javascript:void(0)" (click)="Unsave_Changes_Popup(productFields)"
+                                        class="btn btn-psb btn-psblightgray">Exit</a>
+                                    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                                        (click)="saveProductSubFieldValue(productFields)"><em
+                                            class="mdi mdi-folder mr-1"></em>Save</a>
+                                    <!-- {{actionButtons|json}} -->
+                                    <!-- class="NP-Margin_left"  -->                                    
+                                    <div class="NP-Margin_left" *ngFor="let activeButton of actionButtons"
+                                        [hidden]="!showActionButtons">
+                                        <ng-container *ngIf="activeButton.action.id==16">
+                                            <a href="javascript: void(0)"
+                                                (click)="Send_Checker_Approval_Popup(activeButton)"
+                                                class="btn btn-psb btn-psbpurple"><em
+                                                    class="mdi mdi-arrow-top-right mr-1"></em>
+                                                {{activeButton.action.buttonText}}</a>
+                                        </ng-container>
+                                    </div>
+                                    <!-- </div> -->
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- div tab part -->
+            <div class="row">
+                <div class="col-12">
+                    <!-- Tab Content -->
+                    <div *ngIf="tab == 1">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="Main-heading-dual-Cont">
+                                        <div class="text-heading-cards">
+                                            <h4 class="main-text-heading">Set Product Matching Parameters</h4>
+                                            <p class="text-muted">All parameters in this list are mandatory, if any
+                                                parameter doesn’t match applicant will be rejected</p>
+                                        </div>
+                                    </div>
+                                    <!-- end row -->
+                                    <div class="table-responsive">
+                                        <table class="mandatory-Parameters-table" summary="">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Parameter</th>
+                                                    <th class="jc-FEND">Set Value</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="productFields">
+                                                <ng-container
+                                                    *ngFor="let dd of productFields.productFieldTempMappings;let i = index">
+                                                    <tr *ngIf="dd.isMandatory">
+                                                        <ng-container *ngIf="dd.isConsidered">
+                                                            <app-product-template class="product-template-NP" [tab]="1"
+                                                                [productFields]="dd" [index]="i"
+                                                                [businessTypeId]="businessTypeId" [schemeId]="schemeId"
+                                                                [productId]="productId" [submitted]="submitted">
+                                                            </app-product-template>
+                                                        </ng-container>
+                                                    </tr>
+                                                </ng-container>
+
+
+                                            </tbody>
+                                            <div class="btn-Add-CMR-Score-Range">
+                                                <div class="text-right d-print-none">
+                                                    <a href="javascript: void(0)"
+                                                        (click)="Product_Parameters_Popup(fields,tab)"
+                                                        class="btn btn-psb btn-psbpurple"><em
+                                                            class="mdi mdi-plus mr-1"></em>
+                                                        Add Matches Parameters</a>
+                                                </div>
+                                            </div>
+                                        </table>
+
+                                    </div>
+
+                                    <!-- end row -->
+                                </div>
+                                <!-- end col -->
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="tab == 2">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="Main-heading-dual-Cont">
+                                        <div class="text-heading-cards">
+                                            <h4 class="main-text-heading">Set View only Parameters</h4>
+                                            <p class="text-muted">These parameters will not be used for matching,
+                                                Borrower will not be rejected even if parameters doesn’t match</p>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="mandatory-Parameters-table" summary="">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Parameter</th>
+                                                    <th class="jc-FEND">Set Value</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="productFields">
+                                                <ng-container
+                                                    *ngFor="let dd of productFields.productFieldTempMappings;let i = index">
+                                                    <tr *ngIf="!dd.isMandatory">
+                                                        <ng-container *ngIf="dd.isConsidered">
+                                                            <app-product-template class="product-template-NP" [tab]="2"
+                                                                [productFields]="dd" [index]="i"
+                                                                [businessTypeId]="businessTypeId" [schemeId]="schemeId"
+                                                                [productId]="productId" [submitted]="submitted">
+                                                            </app-product-template>
+                                                        </ng-container>
+                                                    </tr>
+                                                </ng-container>
+
+                                            </tbody>
+                                            <hr class="m-0" />
+                                            <div class="btn-Add-CMR-Score-Range">
+                                                <div class="text-right d-print-none">
+                                                    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                                                        (click)="Product_Parameters_Popup(fields,tab)"><em
+                                                            class="mdi mdi-plus mr-1"></em>
+                                                        Add View Only Parameters</a>
+                                                </div>
+                                            </div>
+                                        </table>
+
+                                    </div>
+
+                                    <!-- end row -->
+                                </div>
+                                <!-- end col -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="tab == 3">
+                        <app-eligibility-model [contentType]="'edit'" [productType]="productType"
+                            (dataSavedEvent)="eligibilitySavedEvent($event)">
+                        </app-eligibility-model>
+                    </div>
+
+                    <div *ngIf="tab == 4">
+                        <app-scaling-matrix [productId]="productId"[minLoanAmount]="minLoanAmount"[maxLoanAmount]="maxLoanAmount"  (savedScallingEvent)="scalingSavedEvent($event)">
+                        </app-scaling-matrix>
+                    </div>
+                    <!-- <div *ngIf="tab == 5">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="Com-pe-main-content">
+                                            <div class="check-pe-text input-text-pe">
+                                                <div class="main-heading">
+                                                    <h4 class="m-0 mb-2">Do you want to provide concession in the Rate
+                                                        Of Interest (ROI)?
+                                                    </h4>
+                                                    <span class="text-muted">Concession will be applicable only for your
+                                                        existing customers</span>
+                                                </div>
+                                                <div class="Common-pe-check-yes-no">
+                                                    <div class="tab-mandatory-Parameters">
+                                                        <div name="BillingAddress"
+                                                            class="btn-group btn-group-toggle btn-radio-select"><label
+                                                                class="btn tab-product-name activet-border"><input
+                                                                    type="radio" value="1">
+                                                                YES
+                                                            </label><label class="btn tab-product-name"><input
+                                                                    type="radio" value="2"> Net
+                                                                No </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="Com-pe-main-content">
+                                            <div class="check-pe-text input-text-pe">
+                                                <div class="main-heading">
+                                                    <h4 class="m-0 mb-2">Do you want to provide concession in the
+                                                        Processing Fee (PF)?
+                                                    </h4>
+                                                    <span class="text-muted">Concession will be applicable only for your
+                                                        existing customers</span>
+                                                </div>
+                                                <div class="Common-pe-check-yes-no">
+                                                    <div class="tab-mandatory-Parameters">
+                                                        <div name="BillingAddress"
+                                                            class="btn-group btn-group-toggle btn-radio-select"><label
+                                                                class="btn tab-product-name activet-border"><input
+                                                                    type="radio" value="1">
+                                                                YES
+                                                            </label><label class="btn tab-product-name"><input
+                                                                    type="radio" value="2"> Net
+                                                                No </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Select Concession Units</h5>
+                                            <div class="Com-main-content-pe">
+                                                <div class="col-md-6 col-lg-6 col-xl-3 float-left pl-0">
+                                                    <div class="form-group">
+                                                        <label>Rate Of Interest (ROI) Based On</label>
+                                                        <ng-select placeholder="Select any one" [items]="selectValue">
+                                                        </ng-select>
+                                                        <p class="mt-1">Max. Concession Allowed - 5% <em
+                                                                class="fmdi fmdi-info"></em></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-6 col-xl-3 float-left">
+                                                    <div class="form-group">
+                                                        <label>Processing Fee (PF) Based On</label>
+                                                        <ng-select placeholder="Select any one" [items]="selectValue">
+                                                        </ng-select>
+                                                        <p class="mt-1">Max. Concession Allowed - 5% <em
+                                                                class="fmdi fmdi-info"></em></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="clearfix pb-1-5">
+                                        <div class="text-collapse retails-count-Concession">
+                                            <h4 class="m-0 mb-2 d-print-none">Concession Parameters</h4>
+                                            <span>Set values for each parameter accordingly</span>
+                                        </div>
+                                        <div class="number-collapse retails-count-Concession-width">
+                                            <div class="collpse-number-main">
+                                                <div class="sub-number-collapse">
+                                                    <h4 class="m-0 mb-1">10% - 18%</h4>
+                                                    <span>Normal ROI</span>
+                                                </div>
+                                                <div class="sub-number-collapse">
+                                                    <h4 class="m-0 mb-1">4% - 10%
+                                                    </h4>
+                                                    <span>ROI With Max. Concession</span>
+                                                </div>
+                                                <div class="sub-number-collapse">
+                                                    <h4 class="m-0 mb-1">2% - 10%
+                                                    </h4>
+                                                    <span>Normal PF Range</span>
+                                                </div>
+                                                <div class="sub-number-collapse">
+                                                    <h4 class="m-0 mb-1">2% - 7%
+                                                    </h4>
+                                                    <span>PF With Max. Concession</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table-scroing-retails-Concession mb-0" summary="">
+                                            <thead>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th>#</th>
+                                                    <th>Parameter (Check the box to set value for each parameter)</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                            <input type="checkbox" id="TwoWheelerLoan" value="option1">
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>1</td>
+                                                    <td>
+                                                        Bank Account Type
+                                                    </td>
+                                                    <td>
+                                                        <a class="psb-collapse-a" data-toggle="collapse"
+                                                            (click)="isCollapsed = !isCollapsed"
+                                                            href="javascript:void(0)">
+                                                            <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="collapse Retail-subtotal-collaps" id="collapseExample"
+                                                    [ngbCollapse]="isCollapsed">
+                                                    <table class="scroing-sub-table-Concession" summary="">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Parameter</th>
+                                                                <th>PF (%)</th>
+                                                                <th>ROI (%)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Defence Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Para Military Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Indian Coast Guard Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Central Governent Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    State Government Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Police Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">1</td>
+                                                                <td>
+                                                                    Railway Salary Package(%)
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="form-group input-number-s">
+                                                                        <div class="input-group"><input type="text"
+                                                                                value="1,00,000" class="form-control">
+                                                                            <div class="input-group-append"><span
+                                                                                    class="input-group-text">%</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="btn-add-new-rang">
+                                                        <div class="text-right d-print-none">
+                                                            <a href="javascript: void(0)"
+                                                                class="btn btn-psb btn-psbpurple"><em
+                                                                    class="mdi mdi-plus mr-1"></em>
+                                                                Add Cibil Range</a>
+                                                        </div>
+                                                    </div>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                            <input type="checkbox" id="TwoWheelerLoan" value="option1">
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>2</td>
+                                                    <td>
+                                                        <div class="sub-man-para-number">
+                                                            <label>Concession based on Bureau Score (%)<em
+                                                                    placement="top"
+                                                                    ngbtooltip="Small textplayers who are required tp maintain book"
+                                                                    class="mdi mdi-information"
+                                                                    ng-reflect-placement="top"
+                                                                    ng-reflect-ngb-tooltip="Small textplayers who are requ"></em>
+                                                            </label>
+                                                            <div class="main-content">
+                                                                <div class="psb-parameter-content-c">
+                                                                    <div
+                                                                        class="checkbox checkbox-psbpurple form-check-inline">
+                                                                        <input type="checkbox" id="Audited3years"
+                                                                            value="option1"><label for="Audited3years">
+                                                                            Credit history Greater then 6 Months</label>
+                                                                    </div>
+                                                                    <div
+                                                                        class="checkbox checkbox-psbpurple form-check-inline">
+                                                                        <input type="checkbox"
+                                                                            id="Auditedlessthen3years" value="option1"
+                                                                            checked=""><label
+                                                                            for="Auditedlessthen3years"> Credit history
+                                                                            Less then 6 Months
+                                                                        </label>
+                                                                    </div>
+                                                                    <div
+                                                                        class="checkbox checkbox-psbpurple form-check-inline">
+                                                                        <input type="checkbox" id="Presumptive"
+                                                                            value="option1"><label for="Presumptive">
+                                                                            No Credit History(-1)
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="psb-collapse-a" data-toggle="collapse"
+                                                            (click)="isCollapsed = !isCollapsed"
+                                                            href="javascript:void(0)">
+                                                            <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="collapse Retail-subtotal-collaps" id="collapseExample"
+                                                    [ngbCollapse]="isCollapsed">
+                                                  
+                                                    <div class="cibil-retail-Group ">
+                                                        <div class="reatail-sub-table-heding bt-0">
+                                                            <span>1</span>
+                                                            <span>Credit history Greater then 6 Months</span>
+                                                        </div>
+                                                        <table class="scroing-sub-table-Concession" summary="">
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Bureau Score Range</th>
+                                                                    <th>PF (%)</th>
+                                                                    <th>ROI (%)</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="btn-add-new-rang">
+                                                            <div class="text-right d-print-none">
+                                                                <a href="javascript: void(0)"
+                                                                    class="btn btn-psb btn-psbpurple"><em
+                                                                        class="mdi mdi-plus mr-1"></em>
+                                                                    Add Cibil Range</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cibil-retail-Group">
+                                                        <div class="reatail-sub-table-heding">
+                                                            <span>2</span>
+                                                            <span>Credit history Less then 6 Months</span>
+                                                        </div>
+                                                        <table class="scroing-sub-table-Concession" summary="">
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Bureau Score Range</th>
+                                                                    <th>PF (%)</th>
+                                                                    <th>ROI (%)</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td scope="row">1</td>
+                                                                    <td>
+                                                                        <div class="sub-scoring-number-retails">
+                                                                            <div class="form-group input-number-s">
+                                                                                <input type="text" value="5"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control" disabled>
+                                                                                <span class="input-margin ">To</span>
+                                                                                <input type="text" value="10"
+                                                                                    id="simpleinput"
+                                                                                    class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-group input-number-s">
+                                                                            <div class="input-group"><input type="text"
+                                                                                    value="1,00,000"
+                                                                                    class="form-control">
+                                                                                <div class="input-group-append"><span
+                                                                                        class="input-group-text">%</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="btn-add-new-rang">
+                                                            <div class="text-right d-print-none">
+                                                                <a href="javascript: void(0)"
+                                                                    class="btn btn-psb btn-psbpurple"><em
+                                                                        class="mdi mdi-plus mr-1"></em>
+                                                                    Add Range</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                            <input type="checkbox" id="TwoWheelerLoan" value="option1">
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>3</td>
+                                                    <td>
+                                                        Borrowers having accounts with the bank(%)
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group"><input type="text" value="1,00,000"
+                                                                class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">%</span></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                            <input type="checkbox" id="TwoWheelerLoan" value="option1">
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>4</td>
+                                                    <td>
+                                                        Borrowers having salary account with the bank(%)
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group"><input type="text" value="1,00,000"
+                                                                class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">%</span></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                            <input type="checkbox" id="TwoWheelerLoan" value="option1">
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>5</td>
+                                                    <td>
+                                                        Borrowers availing credit cards from the bank(%)
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group"><input type="text" value="1,00,000"
+                                                                class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">%</span></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                            <div class="btn-Add-CMR-Score-Range">
+                          <div class="text-right d-print-none">
+                            <a href="javascript: void(0)"
+                              class="btn btn-psb btn-psbpurple"><i class="mdi mdi-plus mr-1"></i>
+                              Add CMR Score Range</a>
+                          </div>
+                        </div>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #Dropdown>
+    <div ngbDropdown class="dropdown d-inline">
+        <a href="javascript:void(0);" class="action-icon" ngbDropdownToggle> <em class=" mdi mdi-dots-vertical"
+                placement="top" ngbTooltip="Menu" tooltipClass="Menutooltip"></em></a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+            <a class="dropdown-item" href="javascript: void(0);">Action</a>
+            <a class="dropdown-item" href="javascript: void(0);">Another action</a>
+            <a class="dropdown-item" href="javascript: void(0);">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript: void(0);">Separated link</a>
+        </div>
+    </div>
+</ng-template>

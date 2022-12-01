@@ -1,0 +1,208 @@
+<div class="container-fluid">
+  <app-page-title title="Scoring Model" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <!-- widget -->
+    <!-- Widget data -->
+    <div class="col-md-6 {{widgetData.length > 4 ? 'col-xl-20' : 'col-xl-3'}}"
+      *ngFor="let widget of widgetData;let i = index" (click)="activeClick(widget.tab,widget)">
+      <div
+        class="widget-rounded-circle card-box NP_Column_Revers {{ (activateTab == widget.tab || widget.completed) ? 'active-Cborder' :''}} ">
+        <div class="row">          
+          <div class="col-8 psb-col-8">
+            <div class="text-left dr-text">
+              <h3 class="text-dark mt-1" [CountTo]="widget.value" [from]="0" [duration]="1">{{ widget.value }}
+              </h3>
+              <p class="mb-1 text-truncate">{{ widget.text }} </p>
+            </div>
+          </div>
+          <div class="col-4 psb-col-4">
+            <div class="avatar-lg rounded-circle bg-soft-{{ widget.color }} border-{{ widget.color }} border">
+              <em class="{{ widget.icon }}  icon-avatar-title"></em>
+              <!-- font-22 -->
+            </div>
+          </div>
+        </div> <!-- end row-->
+      </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+  </div>
+
+  <!-- tab 0 -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont" *ngIf="scoringModelList.length > 0">
+
+          <div class="text-heading-cards" *ngIf="activateTab == 1">
+            <h4 class="main-text-heading">Active Scoring Model</h4>
+            <span class="text-muted">This scoring models are live and are being calculated against applications
+              received</span>
+          </div>
+
+          <div class="text-heading-cards" *ngIf="activateTab == 2">
+            <h4 class="main-text-heading">Saved Scoring Model</h4>
+            <span class="text-muted">These are the new scoring models you are working on, no one can see these except
+              you</span>
+          </div>
+
+          <div class="text-heading-cards" *ngIf="activateTab == 3 && isCheker">
+            <h4 class="main-text-heading">Received From Maker</h4>
+            <span class="text-muted">This scoring model are Received from checker for approval, this will go live after
+              approval</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="activateTab == 3 && !isCheker">
+            <h4 class="main-text-heading">Send to Checker</h4>
+            <span class="text-muted">This scoring model are send to checker for approval, this will go live after
+              approval</span>
+          </div>
+
+
+          <div class="text-heading-cards" *ngIf="activateTab == 4 && isCheker">
+            <h4 class="main-text-heading">Sent Back To Maker </h4>
+            <span class="text-muted">Maker have send back this scoring model, There may be some correction needed in
+              these</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="activateTab == 4 && !isCheker">
+            <h4 class="main-text-heading">Sent Back By Checker</h4>
+            <span class="text-muted">Checker have send back this scoring model, There may be some correction needed in
+              these</span>
+          </div>
+
+
+          <div class="text-heading-cards" *ngIf="activateTab == 5">
+            <h4 class="main-text-heading">InActive Scoring Model</h4>
+            <span class="text-muted">These scoring are inactive and will not be calculated against applications
+              received</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont" *ngIf="roleId === roles.ADMIN_MAKER.id">
+            <!-- *ngIf="checkButtonPermission('SCORING_ADD')" -->
+            <div class="Add-new-btn-all">
+              <a (click)="toNewScoring()" class="btn btn-psbpurple"><em class="fmdi fmdi-plus mr-1"></em>
+                Add New Scoring Model</a>
+            </div>
+          </div>
+          <!-- end col-->
+        </div>
+        <div class="table-responsive" *ngIf="scoringModelList.length > 0">
+          <div class="table-responsive"> 
+            <table class="Common-ps-SS-NP Mobile_table_View_NP" summary="All List Details View">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Scoring Model Name</th>
+                  <th *ngIf="activateTab == 3">Request Types</th>
+                  <!-- <th>Product Category</th> -->
+                  <!-- <th class="RequestType-PS" *ngIf="activateTab == 3 && roleId === roles.ADMIN_CHECKER">Request Type
+                  </th> -->
+                  <!-- <th class="RequestType-PS" *ngIf="activateTab == 4">Checker Decision</th> -->
+                  <th class="Vesion-PS">Version</th>
+                  <th class="LastOfTypedate-PS">Last Modified</th>
+                  <th class="NP_Action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let customer of paginatedData;let i = index"> -->
+                <tr
+                  *ngFor="let score of scoringModelList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index;">
+                  <td data-label="Id">
+                    {{(pageSize*(page-1)) + (i+1)}}
+                  </td>
+                  <td data-label="Scoring Model Name">
+                    {{ score.name }}
+                  </td>
+                  <td data-label="Request Type" *ngIf="activateTab == 3">
+                    {{score?.requestType}}
+                  </td>
+                  <!-- <td data-label="Product Category">
+                    {{productCategory}}
+                  </td> -->
+                  <td data-label="Version" class="Vesion-PS">
+                    V {{ score.version || '0.1'}}
+                  </td>
+                  <td data-label="Last Modified" class="LastOfTypedate-PS">
+                    {{ score.lastModifiedDate | date:'medium' }}
+                  </td>
+                  <td data-label="Action" class="NP_Action">
+                    <div>
+                      <div ngbDropdown container="body" class="dropdown d-inline">
+                        <a href="javascript:void(0);" class="action-icon" ngbDropdownToggle> <em class="mdi mdi-dots-horizontal"
+                            placement="top" ngbTooltip="Menu" tooltipClass="Menutooltip"></em></a>
+                        <div class="dropdown-menu NP_Drop_Hover" ngbDropdownMenu>
+                          <ng-container *ngIf="roleId === roles.ADMIN_MAKER.id">
+                            <button type="button" class="dropdown-item" (click)="openScoringModel(score, score.statusId,1)"
+                            *ngIf="(activateTab == 2 || activateTab == 1 || activateTab == 4)"><em class="fmdi fmdi-edit"></em>Edit Scoring</button>
+                            <!--  &&  checkButtonPermission('SCORING_EDIT') -->
+                          </ng-container>
+                         <!-- <button type="button" class="dropdown-item"><em class="fmdi fmdi-lock"></em>Deactivate Scoring</button> -->
+                          
+                          <button type="button" class="dropdown-item" (click)="openScoringModel(score, score.statusId,2)"><em class="fmdi fmdi-eye"></em> View Scoring</button>
+                           <!-- *ngIf="checkButtonPermission('SCORING_VIEW')" -->
+                                          <!-- <button type="button" *ngIf="checkButtonPermission('SCORING_DOWNLOAD')"  class="dropdown-item"> <em class="mdi mdi-download" placement="top"
+                                              ngbTooltip="Download Scoring in PDF"></em></button> -->
+                          <ng-container *ngIf="roleId === roles.ADMIN_MAKER.id">
+                            <button type="button" class="dropdown-item" (click)="deleteScoring(score.id)"
+                            *ngIf="activateTab == 2 "><em class="fmdi fmdi-delete"></em>Delete Scoring</button>
+                    
+                             <!-- <button type="button" (click)="inActiveScoring(score,1)" class="dropdown-item"
+                                            *ngIf="(activateTab == 1) && score.statusId == 3 && checkButtonPermission('SCORING_INACTIVE')">
+                                            <em class="mdi mdi-lock" placement="top" ngbTooltip="In Active Scoring"></em></button> -->
+                          </ng-container>
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- <tbody *ngIf="scoringModelList.length == 0">
+                <tr>
+                  <strong> No Data Found for Scoring</strong>
+                </tr>
+              </tbody> -->
+            </table>
+          </div>
+          <div class="row pagination-table">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                {{((pageSize*(page-1))+1)}} to
+                {{(pageSize*page) > (scoringModelList.length) ? (scoringModelList.length) : (pageSize*page)}} of
+                {{scoringModelList.length}}
+                entries
+              </div>
+            </div>
+            <!-- <div class="dataTables_length" id="tickets-table_length" *ngIf="scoringModelList.length > pageSize"><label
+                class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [(ngModel)]="pageSize" [items]="PageSelectNumber">
+                </ng-select> entries
+              </label></div> -->
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-4">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [maxSize]=3 [collectionSize]="scoringModelList.length" [(page)]="page"
+                  [pageSize]="pageSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+
+        <div class="table-No-Data" *ngIf="scoringModelList.length ==  0">
+          <div class="Com-No-data-Found-NP">
+            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+            <strong class="No-Data-pad-2"> Scoring List is Empty</strong>
+
+            <div class="btn-no-Data" *ngIf="roleId === roles.ADMIN_MAKER.id">
+              <!-- *ngIf="checkButtonPermission('SCORING_ADD')" -->
+              <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="toNewScoring()"><em
+                  class="mdi mdi-plus mr-1"></em>
+                Add New Scoring Model</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

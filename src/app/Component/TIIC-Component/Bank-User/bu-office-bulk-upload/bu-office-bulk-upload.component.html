@@ -1,0 +1,145 @@
+<div class="container-fluid">
+    <app-page-title title="Office Bulk Upload" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row ">
+      <div class="col-lg-12">
+        <div class="card-box">
+          <div class="col-12 float-left">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h4 class="main-text-heading">Bulk Upload</h4>
+                <p class="text-muted">Please match format with sample files to avoid any type of mistake while
+                  adding users.</p>
+              </div>
+  
+              <div class="Btn-Drop_Down-dual-Cont">
+                <a href="javascript:void(0)" class="btn btn-psb btn-outline-psbpurple"
+                  href="assets\user-management\branch_office_bulk_upload.xlsx"><em class="fmdi fmdi-download mr-1"></em>Office Template Download</a>
+              </div>
+            </div><!-- end col -->
+          </div>
+  
+          <div class="col-12 float-left">
+            <div class="dragDrop-Common" appDragDrop (fileDropped)="onFileDropped($event)">
+              <div class="files-list">
+                <div class="single-file" *ngFor="let file of files; let i = index">
+                  <div class="File-Progress">
+                    <div class="file-icon">
+                      <em class="fmdi fmdi-file"></em>
+                    </div>
+                    <div class="info">
+                      <h4 class="name">
+                        {{ file?.name }}
+                      </h4>
+                    </div>
+                    <div class="delete" (click)="deleteFile(i)">
+                      <em class="fmdi fmdi-delete mr-1"></em> Remove
+                    </div>
+                  </div>
+                  <ngb-progressbar class="Progreebar-File" value="{{file.progress}}" [max]="100" height="4px">
+                  </ngb-progressbar>
+                </div>
+              </div>
+              <div class="Input-text-Fill-Cutome" *ngIf="files.length<1">
+                <input class="File-input-common" type="file" accept=".xls, .xlsx" #fileDropRef id="fileDropRef" multiple
+                  (change)="fileBrowseHandler($event.target.files)" />
+                <div class="Input-text-File">
+                  <span class="file-upload-icon"><em class="fmdi fmdi-upload"></em></span>
+                  <p class="Drop-text-common" for="fileDropRef">Drag and drop file or click here
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 float-left mt-2">
+            <div class="text-btn jc-end">
+              <div class="text-right d-print-none">
+                <!-- <a href="javascript: void(0)" class="btn btn-psb btn-outline-psbpurple"
+                  (click)="User_read_instruction_SucessFully();">
+                  <em class="fmdi fmdi-info mr-1"></em> Read Instructions</a> -->
+                <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="uploadFile();">
+                  <em class="fmdi fmdi-upload mr-1"></em> Upload File</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card-box">
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">Upload Basic Details</h4>
+              <span class="text-muted">Following is the history of your bulk uploads. View detailed records
+                by downloading successful, failed or total entries.</span>
+            </div>
+          </div>
+  
+          <div class="table-responsive">
+            <table class="Added-Borrowers-History Mobile_table_View_NP">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>File Name</th>
+                  <th>Uploaded On</th>
+                  <th>Successful Entries</th>
+                  <th>Failed Entries</th>
+                  <th>Total Entries</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="fileHistoryList.length > 0">
+                  <tr *ngFor="let obj of rowData;let i =  index">
+                    <td data-label="Sr. No.">{{startIndex + i}}</td>
+                    <td data-label="File Name">{{ obj.originalFileName ? obj.originalFileName : ''}}</td>
+                    <td data-label="Uploaded On">{{obj.createdDate ? (obj.createdDate |date:'dd MMM y') :''}}</td>
+                    <td data-label="Successful Entries"><span class="IC-text-NP">{{obj.successCount ? obj.successCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,0)'><em class="fmdi fmdi-download IC-green"></em></a></span></td>
+                    <td data-label="Failed Entries"><span class="IC-text-NP">{{obj.failCount ? obj.failCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,1)'><em class="fmdi fmdi-download IC-red"></em></a></span></td>
+                    <td data-label="Total Entries"><span class="IC-text-NP">{{obj.totalCount ? obj.totalCount : 0}}<a class="ml-1" href="javascript: void(0)" (click)='downloadFile(obj.fileId,2)'><em class="fmdi fmdi-download"></em></a></span></td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+            <div class="row pagination-table Mobile_Pagination" *ngIf="fileHistoryList.length > 0">
+              <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
+                  {{startIndex}} to
+                  {{endIndex}} of {{totalData}}
+                  entries
+                </div>
+              </div>
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Show
+                  <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                    [(ngModel)]="pageSize" [items]="PageSelectNumber" [clearable]="false"
+                    (ngModelChange)="getPaginationData()">
+                  </ng-select> entries
+                </label></div>
+              <!-- Pagination -->
+              <div class="col-sm-12 col-md-5">
+                <div class="text-md-right float-md-right pagination-rounded">
+                  <ngb-pagination [collectionSize]="totalData" [maxSize]="3" [(page)]="page" [pageSize]="pageSize"
+                    (pageChange)="getPaginationData();">
+                  </ngb-pagination>
+                </div>
+              </div>
+              <!-- End Pagination -->
+            </div>
+            <div class="table-No-Data" *ngIf="fileHistoryList.length == 0 ">
+              <div class="Com-No-data-Found-NP">
+                <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+                <strong class="No-Data-pad-2"> Currently this list is Empty</strong>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+
+  </div>
+  

@@ -1,0 +1,27 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">Bulk Upload</h4>
+    <span class="text-muted">Your file has been uploaded successfully.</span>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="common-FileCount-View Total-Entries">
+          <span class="Total-sr">Total Mapping Uploaded</span>
+          <span>{{countList.totalCount || 0}}</span>
+        </div>
+        <div class="common-FileCount-View Successfully-Entries">
+          <span class="Successfully-sr"> Successfully Uploaded Mapping</span>
+          <span>{{countList.successfulCount || 0}}</span>
+        </div>
+        <div class="common-FileCount-View Failed-Entries">
+          <span class="Failed-sr"> Failed Mapping</span>
+          <span>{{countList.failedCount || 0}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a  data-dismiss="modal"
+    class="btn btn-psb btn-psbpurple waves-effect" (click)="proceed()" >Proceed </a>
+  </div>
+  

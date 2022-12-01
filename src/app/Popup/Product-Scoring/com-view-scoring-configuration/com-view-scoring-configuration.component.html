@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h4 class="modal-title">Scoring Configuration</h4>
+  
+    <!-- <button type="button" class="close" (click)="modal('Cross click')" aria-hidden="true">×</button> -->
+  </div>
+  <div class="modal-body Modal-scroll_NP">
+    <div class="row m-0">
+      <div class="col-md-12 p-0">
+        <div class="slimScroll-psb-cotent" appSlimScroll>
+            <ng-container *ngFor="let config of editConfigurationParamter">
+                <div class="Product-Config-View-td">
+                  <span>{{config.enumName}}</span>
+                    <span class="Txt-DG">
+                      <p *ngFor="let value of config.list ">{{value.checked==true?value.value:''}}</p>
+                    </span>
+                </div>
+              </ng-container>
+          <!-- <span>Borrower Type Home</span>
+            <span class="Txt-DG">
+              <p>Salaried</p>
+              <p>Self Employed</p>
+              <p>Pensioner</p>
+              <p>Professional</p>
+              <p>Other</p>
+            </span> -->
+  
+          <!-- <div class="Product-Config-View-td">
+            <span>Construction Of House</span>
+            <span class="Txt-DG">
+              <p>Completion of under construction residential unit</p>
+              <p>Construction of new residential unit</p>
+            </span>
+          </div>
+          <div class="Product-Config-View-td">
+            <span>Purchase Of Flat</span>
+            <span class="Txt-DG">
+              <p>Purchase of new / Old House</p>
+              <p>Purchase of non-agricultural plot of land for Constructing residential unit</p>
+            </span>
+          </div>
+          <div class="Product-Config-View-td">
+            <span>Repair</span>
+            <span class="Txt-DG">
+              <p>Renovation of existing residential unit (Fixed furnishing, immovable enhancement which added to the
+                value)</p>
+              <p>Expansion of House / Flat / Bunglow</p>
+            </span>
+          </div> -->
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  <div class="modal-footer jc_center">
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.close('Ok')">Ok</a>
+  </div>

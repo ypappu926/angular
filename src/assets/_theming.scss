@@ -1,0 +1,65 @@
+// nikul css
+$black-87-opacity: rgba(black, 0.87);
+// @deprecated renamed to $light-primary-text.
+// @breaking-change 8.0.0
+$white-87-opacity: rgba(white, 0.87);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-12-opacity: rgba(black, 0.12);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-12-opacity: rgba(white, 0.12);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-6-opacity: rgba(black, 0.06);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-6-opacity: rgba(white, 0.06);
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$mat-CommonColor: (PrimaryColors:var(--primaryColor),
+  psb-gray:var(--secondaryColor),
+  psb-red:#FF0909,
+  psb-white:#ffffff,
+  psb-black:#000000,
+  psb-mainlyblue:#f6f9ff,
+  psb-skyblue:#0833AA,
+  psb-darkgrey:#999999,
+  psb-pink:#FFF2F2,
+  psb-orange:#FF9900,
+  psb-darkblue:#25386C,
+  psb-lightblue:#EDEDE7,
+  psb-silver:#F6F6FA,
+  psb-green:#14BE46,
+  psb-warning:#ffa000,
+  psb-info:#38a7ff,
+  psb-error:#eb1818,
+  psb-success:#43a047,
+  psb-border:#F6F6FA,
+  psb-cyanblue:#ECF3FF,
+  psb-lightgray:#F0F0F0,
+  contrast: (50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    PrimaryColors: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  ));

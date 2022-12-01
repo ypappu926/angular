@@ -1,0 +1,66 @@
+<div class="modal-header d-block">
+  <h4 class="modal-title">Committee Member</h4>
+  <span class="text-muted">
+    Select the District, Lead Bank Manager and General Manager.
+  </span>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <label>District *</label>
+        <ng-select placeholder="Select any one" [items]="districtList" name="popUpObj.districtId"
+          [(ngModel)]="popUpObj.districtId" bindValue="id" bindLabel="districtName" (change)="getLbmGmUserList()">
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label>Lead Bank Manager *</label>
+        <ng-select placeholder="Select LBM" [items]="lbmUserList" name="popUpObj.lbmUserId"
+          [(ngModel)]="popUpObj.lbmUserId" bindValue="userId" bindLabel="fullName"></ng-select>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label>General Manager *</label>
+        <ng-select placeholder="Select GM" [items]="gmUserList" name="popUpObj.gmUserId" [(ngModel)]="popUpObj.gmUserId"
+          bindValue="userId" bindLabel="fullName"></ng-select>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label>Add Meeting Link</label>
+        <input type="text" placeholder="Enter Meeting Link" class="form-control" autocomplete="off" [(ngModel)]="popUpObj.meetingLink">
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label>Select Meeting Date</label>
+        <div class="psb-input-group clockpicker">
+          <input ngbDatepicker placeholder="Select Meeting Date" class="form-control" [readonly]="true" #d="ngbDatepicker" [(ngModel)]="popUpObj.meetingDate">
+          <div class="psb-input-group-append">
+            <span class="psb-input-group-text" (click)="d.toggle()"><i class="mdi mdi-calendar"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-group">
+        <label>Select Meeting Time</label>
+        <div class="input-PS-Valid Valid_NP">
+          <div class="Time_Picker_NP">
+            <input class="form-control" placeholder="Select Meeting Time" [ngxTimepicker]="defaultValue" [(ngModel)]="popUpObj.meetingTime"
+              readonly>
+            <ngx-material-timepicker-toggle class="NP_NGX-Time" [for]="defaultValue"></ngx-material-timepicker-toggle>
+            <ngx-material-timepicker #defaultValue></ngx-material-timepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="close(2)">Cancel</a>
+  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple waves-effect" (click)="close(1)">Confirm </a>
+</div>

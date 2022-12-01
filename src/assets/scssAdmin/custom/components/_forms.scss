@@ -1,0 +1,52 @@
+//
+// forms.scss
+//
+
+// Form-control light
+.form-control-light {
+    background-color: $gray-100;
+    border-color: $gray-100;
+}
+
+
+// Form elements (Color and Range)
+input.form-control[type="color"],
+input.form-control[type="range"] {
+    min-height: 39px;
+}
+
+
+// Custom select
+.custom-select.is-invalid, .form-control.is-invalid,.custom-select:invalid, .form-control:invalid,
+.custom-select.is-valid, .form-control.is-valid, .custom-select:valid,.form-control:valid {
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+// COmment box
+.comment-area-box {
+    .form-control {
+        border-color: $gray-300;
+        border-radius: $input-border-radius $input-border-radius 0 0;
+    }
+    .comment-area-btn {
+        background-color: $gray-100;
+        padding: 10px;
+        border: 1px solid $gray-300;
+        border-top: none;
+        border-radius: 0 0 $input-border-radius $input-border-radius;
+    }
+}
+
+// .was-validated .ng-select:invalid, .ng-select.is-invalid {
+   
+//     .ng-select-container{
+//         border-color: #E02020 !important;
+        // padding-right: calc(1.5em + 0.9rem) !important;
+        // background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23E02020' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23E02020' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+        // background-repeat: no-repeat;
+        // background-position: right calc(0.375em + 0.1875rem) center;
+        // background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+//     }
+// }

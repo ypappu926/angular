@@ -1,0 +1,20 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">Give Recommendation</h4>
+    <span class="text-muted">Recommedation for Proposal</span>
+</div>
+<div class="modal-body">
+
+    <div class="col-12">
+        <div class="form-group">
+            <label>Recommedation *</label>
+            <input type="text" placeholder="Enter value" class="form-control" autocomplete="off" 
+                [(ngModel)]="remarks" name="remarks"
+                maxlength="200" appInputRestriction [regexType]="4" [isNgModel]="true" [ngModel]="remarks" >
+        </div>
+        <!-- (keypress)="commonMethods.keyPressEvent($event, 4)" -->
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-psb btn-secondary waves-effect" (click)="close(false)">Cancel</button>
+    <button type="button" class="btn btn-psb btn-psbpurple waves-effect" (click)="close(true)">Proceed </button>
+</div>

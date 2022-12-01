@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />
+  <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/6.1.95/css/materialdesignicons.min.css">
+
+  <script>
+    window.Promise || document.write(
+      '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>');
+    window.Promise || document.write(
+      '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+    );
+    window.Promise || document.write('<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>');
+
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+  <script type="text/javascript">
+    (function(doc) {
+
+        var addEvent = 'addEventListener',
+            type = 'gesturestart',
+            qsa = 'querySelectorAll',
+            scales = [1, 1],
+            meta = qsa in doc ? doc[qsa]('meta[name=viewport]') : [];
+
+        function fix() {
+            meta.content = 'width=device-width,minimum-scale=' + scales[0] + ',maximum-scale=' + scales[1];
+            doc.removeEventListener(type, fix, true);
+        }
+
+        if ((meta = meta[meta.length - 1]) && addEvent in doc) {
+            fix();
+            scales = [.25, 1.6];
+            doc[addEvent](type, fix, true);
+        }
+
+    }(document));
+</script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"> -->
+</head>
+
+<body>
+  <app-root></app-root>
+  <!-- <script src="assets/Js/freeze-table.js"></script> -->
+</body>
+
+</html>

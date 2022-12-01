@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h4 class="modal-title">Choose scoring parameters</h4>
+  <div class="modal-heading-g jc-FEnd">
+    <div class="form-group-input ">
+      <div class="symbole-input">
+        <i class="mdi mdi-magnify"></i>
+        <input type="text" class="form-control" placeholder="Search Parameter" [(ngModel)]="searchText"
+          (keyup)="filterText(searchText)" />
+
+      </div>
+    </div>
+  </div>
+  <!-- <button type="button" class="close" (click)="closeModal()" aria-hidden="true">×</button> -->
+</div>
+<div class="modal-body Modal-scroll">
+  <div class="row m-0">
+    <div class="col-md-12 p-0">
+      <div class="checkbox-parameters-m">
+        <div class="checkbox checkbox-psbpurple form-check-inline">
+          <input type="checkbox" id="selectAll" [(ngModel)]="selectAll" [checked]="selectAll" (ngModelChange)="selectAllFields()">
+          <label for="selectAll">Select All
+          </label>
+        </div>
+      </div>
+      <div class="popup-sub-parameter">
+        <span>Score Parameters</span>
+        <span>Source</span>
+      </div>
+      <div class="checkbox-parameters-m" *ngFor="let item of scoringModelData.fieldsList|filter:searchText;let i = index">
+        <div class="checkbox checkbox-psbpurple form-check-inline">
+          <input type="checkbox" id="score_{{i}}" [(ngModel)]="item.isConsider" [checked]="item.isConsider"
+            (ngModelChange)="countSelected()" [disabled]="item.isDisable">
+          <label for="score_{{i}}"> {{item.fieldName}}({{item.riskName}})
+          </label>
+        </div>
+        <span>{{item.source}}</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal-footer footer-text-m">
+  <span><strong>{{selectedCount}} parameters selected</strong></span>
+  <div class="btn-footer-g jc-FEnd">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="closeModal()">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="saveData()">Save changes</a>
+  </div>
+</div>

@@ -1,0 +1,349 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+  <app-page-title title="{{'APPLICATIONS.APPLICATIONS' | translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row" >
+    <div class="col-lg-12 parent">
+      <ng-container  *ngIf="(pageData && pageData.type) == 1"> 
+        <div class="card-box btn-tabs" id="stick-headerN">
+          <div class="nav-bordered tab-badge NP_tab_Flex">
+            <ul class="nav nav-tabs Common-tab-Badge pt-0 customdropdown_mobile">
+              <li class="init hide">{{'APPLICATIONS.SELECT' | translate}}</li>
+              <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1)">
+                <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                  <h3 class="notification-list loan-tsv-badge">{{totalConsentCount}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.TOTAL_CONSENT_UPLOAD' | translate}}</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab2" (click)="changeTab(2)">
+                <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                  <h3 class="notification-list loan-tsv-badge">{{inProcessCount}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.CONSENT_PENDING' | translate}}</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab3" (click)="changeTab(3)">
+                <a class="nav-link" [ngClass]="{ active : tab == 3 || tab == 5 || tab == 6 }">
+                  <h3 class="notification-list loan-tsv-badge">{{consentReceivedCount}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.CONSENT_RECEIVED' | translate}}</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab4" (click)="changeTab(4)">
+                <a class="nav-link" [ngClass]="{ active : tab == 4 }">
+                  <h3 class="notification-list loan-tsv-badge">{{inActiveCount}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.LINK_EXPIRED' | translate}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+       
+      </ng-container>
+      <ng-container  *ngIf="(pageData && pageData.type) == 2">
+        <div class="card-box btn-tabs" id="stick-headerN">
+          <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+            <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+              <li class="init hide">{{'APPLICATIONS.SELECT' | translate}}</li>
+              <li class="nav-item Common-badge-C4 Two_TabAfter" id="tab7" (click)="changeTab(7)">
+                <a class="nav-link" [ngClass]="{ active : tab == 7 || tab == 9 || tab == 10 }">
+                  <h3 class="notification-list loan-tsv-badge">{{detailsPendingCount || 0}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.PENDING_APPLICATIONS' | translate}}</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab8" (click)="changeTab(8)">
+                <a class="nav-link" [ngClass]="{ active : tab == 8 }">
+                  <h3 class="notification-list loan-tsv-badge">{{detailsUplodedCount || 0}}</h3>
+                  <span class="text-muted">{{'APPLICATIONS.COMPLETED_APPLICATIONS' | translate}}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>      
+      </ng-container>
+
+        <!-- Expier cont IN-Active -->
+        <div class="Common-Requested active-Rejected NP_mt-1" *ngIf="tab == 4">
+          <span class="txt-icon-info">{{'APPLICATIONS.KINDLY_NOTE' | translate}}</span>
+          <span class="color_black">The Borrower Link will be Inactive after {{expiredInDays}} days from the date Consent has been initiated </span>
+          <!-- <span class="color_black">2. The Scheme is already obtained by borrower.</span>
+          {{'APPLICATIONS.BORROWER_LINK_WILL_BE_INACTIVE_AFTER_5_DAYS' | translate}}
+          -->
+        </div>
+      <!-- Expier cont IN-Active -->
+
+      <div class="card-box" >
+        <!-- Card SubTab Cont View Start with Nikul Dont Change -->
+        <ng-container  *ngIf="(pageData && pageData.type) == 1"> 
+          <div class="card-box btn-tabs Tab_Card_P0_NP" id="stick-headerN" *ngIf="tab == 3 || tab == 5 || tab == 6">
+            <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex_Auto_Multi">
+              <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo">
+                <li class="initTwo TwoDrop hide">{{'APPLICATIONS.SELECT' | translate}}</li>
+                <li class="nav-item Common-badge-C4" id="tab12" (click)="changeTab(5)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 5 }">
+                    <span class="text-muted notification-list loan-tsv-badge">{{'APPLICATIONS.CONSENT_RECEIVED_YES' | translate}}<span
+                        class="badge badge-danger rounded-circle " [ngClass]="consentReceivedYesCount > 0 ? 'noti-icon-badge':''">{{consentReceivedYesCount == 0?'':consentReceivedYesCount}}</span></span>
+                  </a>
+                </li>
+                <li class="nav-item Common-badge-C4" id="tab13" (click)="changeTab(6)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 6 }">
+                    <span class="text-muted notification-list loan-tsv-badge">{{'APPLICATIONS.CONSENT_RECEIVED_NO' | translate}}<span
+                        class="badge badge-danger rounded-circle " [ngClass]="consentReceivedNoCount > 0 ? 'noti-icon-badge':''" >{{consentReceivedNoCount == 0?'':consentReceivedNoCount}}</span></span>
+                  </a>
+                </li>
+              </ul>
+  
+              <!-- <ul class="nav nav-tabs Common-tab-Badge NP_tab_Flex_Auto SubCustomMobileThree NP_MT_1_5">
+                <li class="initThree ThreeDrop hide">Select</li>
+                <li class="nav-item Common-badge-C4 position-rel" id="tab7" (click)="changeTab(7)">
+                  <a class="nav-link PB_0" [ngClass]="{ active : tab == 7 }">
+                    <span class="text-muted notification-list loan-tsv-badge">Applicant Details Pending by Head Office<span
+                        class="badge badge-danger rounded-circle " [ngClass]="detailsPendingCount > 0 ? 'noti-icon-badge':''">{{detailsPendingCount == 0?'':detailsPendingCount}}</span></span>
+                  </a>
+                </li>
+                <li class="nav-item Common-badge-C4 position-rel" id="tab8" (click)="changeTab(8)">
+                  <a class="nav-link PB_0" [ngClass]="{ active : tab == 8 }">
+                    <span class="text-muted notification-list loan-tsv-badge">Applicant Details Pending by Branch Office<span
+                        class="badge badge-danger rounded-circle " [ngClass]="detailsPendingBO > 0 ? 'noti-icon-badge':''">{{detailsPendingBO == 0?'':detailsPendingBO}}</span></span>
+                  </a>
+                </li>
+  
+                <li class="nav-item Common-badge-C4 position-rel" id="tab9" (click)="changeTab(9)">
+                  <a class="nav-link PB_0" [ngClass]="{ active : tab == 9 }">
+                    <span class="text-muted notification-list loan-tsv-badge">Applicant Details Completed<span
+                      class="badge badge-danger rounded-circle " [ngClass]="detailsUplodedCount > 0 ? 'noti-icon-badge':''">{{detailsUplodedCount == 0?'':detailsUplodedCount}}</span></span>
+  
+                  </a>
+                </li>
+  
+              </ul> -->
+              
+            </div>
+          </div>
+        </ng-container>
+        <ng-container  *ngIf="(pageData && pageData.type) == 2"> 
+          <div class="btn-tabs MB_1_5_NP Tab_Card_P0" id="stick-headerN" *ngIf="tab == 7 || tab == 9 || tab == 10">
+            <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex_Auto_Multi">
+              <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full pt-0 SubCustomMobileTwo">
+                <li class="initTwo hide">{{'APPLICATIONS.SELECT' | translate}}</li>
+                <li class="nav-item Common-badge-C4" id="tab9" (click)="changeTab(9)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 9 }">
+                    <span class="text-muted notification-list loan-tsv-badge">{{'APPLICATIONS.PENDING_BY_HO' | translate}}<span
+                      class="badge badge-danger rounded-circle " [ngClass]="detailsPendingHO > 0 ? 'noti-icon-badge':''">{{detailsPendingHO == 0?'':detailsPendingHO}}</span></span>
+                  </a>
+                </li>
+                <li class="nav-item Common-badge-C4" id="tab10" (click)="changeTab(10)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 10 }">
+                    <span class="text-muted notification-list loan-tsv-badge">{{'APPLICATIONS.PENDING_BY_BO' | translate}}<span
+                      class="badge badge-danger rounded-circle " [ngClass]="detailsPendingBO > 0 ? 'noti-icon-badge':''">{{detailsPendingBO == 0?'':detailsPendingBO}}</span></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+        <!-- Card SubTab Cont View Start with Nikul Dont Change -->
+
+        <!-- table Content changes start with nikul -->
+        <ng-container *ngIf="showData()">
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards" *ngIf="tab == 1">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_DETAILS_UPLOADED' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWER_CONSENT_IS_INITIATED' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 2">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_IN_PROCESS' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWER_CONSENT_IS_NOT_RECEIVED' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 3">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_RECEIVED' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWER_GIVEN_CONSENT' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 4">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_IN_ACTIVE' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWER_CONSENT_IS_NOT_RECEIVED' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 5">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_RECEIVED_AS_YES' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWE_GIVEN_CONSENT_AS_YES' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 6">
+            <h4 class="main-text-heading">{{'APPLICATIONS.CONSENT_RECEIVED_AS_NO' | translate}}</h4>
+            <span class="text-muted">{{'APPLICATIONS.LIST_OF_BORROWER_GIVEN_CONSENT_AS_NO' | translate}}</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="tab == 7 || tab == 8 || tab == 9 || tab == 10">
+            <h4 class="main-text-heading">{{'APPLICATIONS.APPLICANT_DETAILS' | translate}}</h4>
+            <span class="text-muted" *ngIf="tab == 7">{{'APPLICATIONS.PENDING_APPLICATIONS' | translate}}</span>
+            <span class="text-muted" *ngIf="tab == 8">{{'APPLICATIONS.COMPLETED_APPLICATIONS' | translate}}</span>
+            <span class="text-muted" *ngIf="tab == 9">{{'APPLICATIONS.APPLICATION_IS_PENDING_FOR_HO' | translate}}</span>
+            <span class="text-muted" *ngIf="tab == 10">{{'APPLICATIONS.APPLICATION_IS_PENDING_FOR_BO' | translate}}</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple" (click)="downloadAllUser()"><i
+                class="fmdi fmdi-download mr-2"></i>{{'APPLICATIONS.DOWNLOAD_ALL' | translate}}</a>
+
+            <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple" *ngIf="tab == 4" (click)="sendLinksToBorrower()"><i
+                    class="fmdi fmdi-link mr-2"></i>{{'APPLICATIONS.SEND_LINK_TO_BORROWER' | translate}}</a>
+          </div>
+        </div>
+
+        <!-- table Report and Filter data -->
+        <div class="table-responsive">
+          <table  class="CommonTable_NP Mobile_table_View_NP">
+            <!--Common-ps-Subsidy-NP  [ngClass]="tab == 4 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{'APPLICATIONS.NAME_OF_UNIT' | translate}}</th>
+                <th>{{'APPLICATIONS.EMAIL_ID' | translate}}</th>
+                <th>{{'APPLICATIONS.MOBILE_NO' | translate}}</th>
+                <th *ngIf="tab == 8 || tab == 10">{{'APPLICATIONS.OFFICER_ASSIGNED' | translate}}</th>
+                <th *ngIf="tab == 1 || tab == 3 || tab == 5 || tab == 7 || tab == 9">{{'APPLICATIONS.STATUS' | translate}}</th>
+                <th *ngIf="tab == 1 || tab == 2 || tab == 3 || tab == 4 || tab == 5 || tab == 6">{{'APPLICATIONS.CONSENT_INITIATED_DATE' | translate}}</th>
+                <th *ngIf="tab == 3 || tab == 5 || tab == 6">{{'APPLICATIONS.CONSENT_RECEIVED_DATE' | translate}}</th>
+                <th class="NP_Action" *ngIf="tab == 4 || tab == 7 || tab == 8 || tab == 9 || tab == 10">{{'APPLICATIONS.ACTION' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="Mobile_View_Filter_Hide_NP">
+                <td>&nbsp;</td>
+                <td> <input type="text" class="form-control" placeholder="{{'APPLICATIONS.SEARCH_NAME_OF_UNIT' | translate}}"[(ngModel)]="searchName" appInputRestriction [regexType]="5" [isNgModel]="true" [ngModel]="searchName" (ngModelChange)="debounceEventForFilter()"></td> <!-- <input type="text" class="form-control"> (keypress)="omit_special_char($event)"  -->
+                <td><input type="text" class="form-control" placeholder="{{'APPLICATIONS.SEARCH_EMAIL' | translate}}" [(ngModel)]="searchEmail"  (ngModelChange)="debounceEventForFilter()"></td><!--(keypress)="omit_special_char($event)"-->
+                <td><input type="text" class="form-control"  placeholder="{{'APPLICATIONS.SEARCH_MOBILE' | translate}}" [(ngModel)]="searchMobile" appInputRestriction [regexType]="5" [isNgModel]="true" [ngModel]="searchMobile" (ngModelChange)="debounceEventForFilter()" (ngModelChange)="debounceEventForFilter()"></td> <!-- <input type="text" class="form-control"> (keypress)="omit_special_char($event)"  -->  
+                <td *ngIf="tab == 8 || tab == 10"><input type="text" class="form-control"  placeholder="{{'APPLICATIONS.SEARCH_OFFICER_ASSIGNED' | translate}}" [(ngModel)]="searchOfficerAssign"  (ngModelChange)="debounceEventForFilter()"></td>
+                <td *ngIf="tab == 1 || tab == 3 || tab == 5 || tab == 7 || tab == 9">
+                  <ng-select placeholder="{{'APPLICATIONS.SELECT_STATUS' | translate}}" class="" bindValue="id" bindLabel="name" [clearable]="true"
+                    [(ngModel)]="consentStatusId" [items]="statusList" (ngModelChange)="getStatusList()" name="statusId">
+                    <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                      <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                    </ng-template>
+                  </ng-select>
+                </td>
+                <td *ngIf="tab == 1 || tab == 2 || tab == 3 || tab == 4 || tab == 5 || tab == 6">
+                  <div class="psb-input-group">
+                    <input  type="text"  ngbDatepicker class="form-control" placeholder="{{'APPLICATIONS.DD_MM_YYYY' | translate}}"
+                    #date="ngbDatepicker" [(ngModel)]="consentInitiatedFromDate" [maxDate]="maxDate" [readonly]="true"
+                    (ngModelChange)="getStatusList()">
+                    <div class="psb-input-group-append" (click)="date.toggle()">
+                        <span class="psb-input-group-text"><em
+                                class="fmdi fmdi-caret-down"></em></span>
+                    </div>
+                  </div>
+                </td>
+                <!-- (dateSelect)="onDateSelection($event)" -->
+
+                <td *ngIf="tab == 3 || tab == 5 || tab == 6">
+                  <div class="psb-input-group">
+                    <input ngbDatepicker class="form-control" placeholder="{{'APPLICATIONS.DD_MM_YYYY' | translate}}"
+                    #date1="ngbDatepicker" [(ngModel)]="consentReceivedFromDate"
+                      [maxDate]="maxDate" [readonly]="true"
+                    (ngModelChange)="getStatusList()">
+                      <div class="psb-input-group-append" (click)="date1.toggle()">
+                          <span class="psb-input-group-text"><em
+                                  class="fmdi fmdi-caret-down"></em></span>
+                      </div>
+                  </div>
+                  <!-- [disabled]="consentInitiatedFromDate == undefined" [minDate]="fromNGDate"  -->
+                </td>
+                <td class="NP_Action" *ngIf="tab == 4 || tab == 7 || tab == 8 || tab == 9 || tab == 10">&nbsp;</td>
+              </tr>
+
+              <tr class="{{tab == 9 && customer.statusName == 'New' ? 'Active_TR' : ''}}" *ngFor="let customer of BankUserData;let i = index">
+                <!-- <td data-label="Select" *ngIf="tab == 4">
+                  <div class="checkbox checkbox-psbpurple checkbox-single" placement="top" ngbTooltip="Select All">
+                    <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                    <label></label>
+                  </div>
+                </td> -->
+                <td data-label="Sr. No.">
+                  {{startIndex + i + 1}}
+                </td>
+                <td attr.data-label="{{'APPLICATIONS.NAME_OF_UNIT' | translate}}">
+                  {{customer.entityName}}
+                </td>
+                <td attr.data-label="{{'APPLICATIONS.EMAIL_ID' | translate}}">
+                  {{ customer.email || 'NA'}}
+                </td>
+                <td attr.data-label="{{'APPLICATIONS.MOBILE_NO' | translate}}">
+                  {{ customer.mobile }}
+                </td>
+                <td attr.data-label="{{'APPLICATIONS.OFFICER_ASSIGNED' | translate}}" *ngIf="tab == 8 || tab == 10">{{customer.officerName | translate}}</td>
+                <td attr.data-label="{{'APPLICATIONS.STATUS' | translate}}" *ngIf="tab == 1 || tab == 3 || tab == 5 || tab == 7 || tab == 9">
+                  <div class="Comon-Dot-text">
+                    <div class="{{tab == 9 ? (customer.statusName == 'New' ? 'green-dot':'warning-dot') : '{{customer.className}}'}}"></div>&nbsp; {{customer.statusName}}
+                    <!-- {{getStatus(customer.status, 'class')}} -->
+                    <!-- {{getStatus(customer.status, 'value')}}  -->
+                  </div> 
+                </td>
+                <!-- <td data-label="Consent Status" *ngIf="tab == 3">
+                    {{customer.status != 1 && customer.status != 2 && customer.status != 4 ? 'Yes':'No'}}
+                </td>
+                <td data-label="Upload Status" *ngIf="tab == 5">
+                  {{customer.status == 7?'Yes':'No'}}
+              </td> -->
+                
+                <td attr.data-label="{{'APPLICATIONS.CONSENT_INITIATED_DATE' | translate}}" *ngIf="tab == 1 || tab == 2 || tab == 3 || tab == 4 || tab == 5 || tab == 6">
+                  {{(customer.consentInitiatedDate | date: 'dd MMM y') || ''}}
+                </td>
+                <td attr.data-label="{{'APPLICATIONS.CONSENT_RECEIVED_DATE' | translate}}" *ngIf="tab == 3 || tab == 5 || tab == 6">
+                    {{(customer.consentReceivedDate | date: 'dd MMM y') || ''}}
+                  </td>
+                <!-- <td data-label="Notification Status" *ngIf="tab == 4" style="text-align: center;">
+                    {{customer.notificationStatus == null?'-':customer.notificationStatus == 1?'In Process': customer.notificationStatus == 2?'Succss':'Failed'}}
+                </td> -->
+                <td attr.data-label="{{'APPLICATIONS.ACTION' | translate}}" class="NP_Action" *ngIf="tab == 4 || tab == 7 || tab == 8 || tab == 9 || tab == 10">
+                  <!-- <div> -->
+                    <!-- <em class="fmdi fmdi-file-text"></em> -->
+                    <a *ngIf="tab == 4" href="javascript:void(0);" class="action-icon" (click)="sendLinksToBorrower(customer.id);"><em class="fmdi fmdi-mail-send" placement="top"
+                        ngbTooltip="Send Link"></em></a>
+                    <a *ngIf="tab == 9" href="javascript:void(0);" class="action-icon" (click)="editDetails(customer);"><em class="fmdi fmdi-edit" placement="top"
+                          ngbTooltip="Edit Details"></em></a>
+                    <a *ngIf="tab == 8 || tab == 10" href="javascript:void(0);" class="action-icon" (click)="ResetPassword_Popup(customer.userId,customer.boEmailId)" ><em
+                            class="fmdi fmdi-refresh" placement="top" ngbTooltip="Reset Password"></em></a>
+                    <a *ngIf="tab == 7 || tab == 8 || tab == 10" href="javascript:void(0);" class="action-icon" (click)="viewDetails(customer);"><em class="fmdi fmdi-eye" placement="top"
+                            ngbTooltip="View Details"></em></a>
+                  <!-- </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row pagination-table Mobile_Pagination" *ngIf="BankUserData.length > 0">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+              {{'APPLICATIONS.SHOWING' | translate}}
+                {{((pageSize*(page-1))+1)}} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+                {{'APPLICATIONS.ENTRIES' | translate}}
+            </div>
+          </div>
+          <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">{{'APPLICATIONS.SHOW' | translate}}
+              <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+              [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getStatusList()">
+              </ng-select>{{'APPLICATIONS.ENTRIES' | translate}}</label></div>
+          <!-- Pagination -->
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true" 
+                [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+            </ngb-pagination>
+            </div>
+        </div>
+          <!-- End Pagination -->
+        </div>
+      </ng-container>
+      <!-- table Content changes End with nikul -->
+      <!-- No data found Content changes Start with nikul -->
+      <ng-container *ngIf="!showData()">
+        <div class="table-No-Data">
+          <div class="Com-No-data-Found-NP">
+            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+            <strong class="No-Data-pad-2">{{'APPLICATIONS.LIST_IS_EMPTY' | translate}}</strong>
+          </div>
+        </div>
+      </ng-container>
+       <!-- No data found Content changes Start with nikul -->
+      </div>
+    </div>
+  </div>
+
+</div>

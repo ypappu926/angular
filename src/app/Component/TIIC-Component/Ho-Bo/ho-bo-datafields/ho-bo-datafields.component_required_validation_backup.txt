@@ -1,0 +1,1296 @@
+<div class="container-fluid" *ngIf="applicantDetails != null && applicantDetails != undefined && flag">
+  <div class="icon-title-heading">
+    <a href="javascript:void(0)" (click)="back()"><em class="fmdi fmdi-arrow-left"></em></a>
+    <!-- <i class=""></i> -->
+    <app-page-title title="{{title}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  </div>
+  <div class="row">
+    <div class="col-12">
+  <form autocomplete="off" #applicantDetailForm="ngForm">
+    <div class="card-box btn-tabs" id="stick-headerN">
+      <div class="nav-bordered">
+        <ul class="nav nav-tabs justify-content-start">
+          <li class="nav-item" id="tab4" (click)="changeTab(1)">
+            <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+              <span class="number-text">{{'APPLICANT_DETAILS.APPLICANT_DETAILS' | translate}}</span>
+            </a>
+          </li>
+          <li class="nav-item" id="tab5" (click)="changeTab(2)">
+            <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+              <span class="number-text">{{'APPLICANT_DETAILS.UPLOAD_DETAILS' | translate}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div [hidden]="tab == 2">
+    <div class="card-box Form_GRP_NP_Text">
+      <!-- Applicant Details Start -->
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{'APPLICANT_DETAILS.APPLICANT_DETAILS' | translate}}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.NAME_OF_THE_UNIT' | translate}}</label>
+            <!-- !commonServices.isObjectNull(applicantDetailsHo.nameOfUnit) -->
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.ENTER_NAME_OF_THE_UNIT' | translate}}" class="form-control"
+              name="applicantDetails.nameOfUnit" [(ngModel)]="applicantDetails.nameOfUnit" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.nameOfUnit"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.nameOfUnit && validationObjects.nameOfUnit.obj &&
+            validationObjects.nameOfUnit.obj.required || false)) : false"
+            [pattern]="validationObjects && validationObjects.nameOfUnit && validationObjects.nameOfUnit.obj && validationObjects.nameOfUnit.obj.pattern ? validationObjects.nameOfUnit.obj.pattern : ''"
+            [validationMessage]="validationObjects && validationObjects.nameOfUnit ? validationObjects.nameOfUnit.objMsg:''" [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.CONSTITUTION' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="constitutionList" bindLabel="value" bindValue="id"
+              name="applicantDetails.constitution" [(ngModel)]="applicantDetails.constitution"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.constitution" [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.constitution && validationObjects.constitution.obj &&
+            validationObjects.constitution.obj.required || false)):false"
+              [validationMessage]="validationObjects && validationObjects.constitution ? validationObjects.constitution.objMsg:''"
+              [appValidateElement]="submittedHo"></ng-select>
+          </div>
+
+        </div>
+        <div class="col-md-6 col-lg-3 float-left" *ngIf="applicantDetails.constitution == 5">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.OTHER_CONSTITUTION' | translate}}</label>
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.OTHER_CONSTITUTION' | translate}}" class="form-control"
+              name="applicantDetails.otherConstitution" [(ngModel)]="applicantDetails.otherConstitution"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.otherConstitution">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.DATE_OF_ESTABLISHMENT' | translate}}</label>
+            <div class="psb-input-group clockpicker">
+              <input ngbDatepicker placeholder="{{'APPLICANT_DETAILS.SELECT_DATE' | translate}}" class="form-control right-br-0" #d="ngbDatepicker" readonly
+                [maxDate]="endDate" [minDate]="startDate" name="applicantDetails.dateOfEstablishment"
+                [(ngModel)]="applicantDetails.dateOfEstablishment"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.dateOfEstablishment"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.dateOfEstablishment &&
+              validationObjects.dateOfEstablishment.obj && validationObjects.dateOfEstablishment.obj.required || false)): false"
+                [validationMessage]="validationObjects && validationObjects.dateOfEstablishment ? validationObjects.dateOfEstablishment.objMsg:''"
+                [appValidateElement]="submittedHo">
+              <div class="psb-input-group-append">
+                <span class="psb-input-group-text" (click)="d.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.WHETHER_SMA' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="smaList" bindLabel="value" bindValue="id"
+              name="applicantDetails.sma" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.sma"
+              [(ngModel)]="applicantDetails.sma" [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.sma &&
+            validationObjects.sma.obj && validationObjects.sma.obj.required || false)) : false"
+              [validationMessage]="validationObjects && validationObjects.sma ? validationObjects.sma.objMsg:''"
+              [appValidateElement]="submittedHo"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.CIF_NO' | translate}}</label>
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.ENTER_CIF_NO' | translate}}" class="form-control" maxlength="11"
+              name="applicantDetails.cif" [(ngModel)]="applicantDetails.cif" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.cif"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.cif && validationObjects.cif.obj && validationObjects.cif.obj.required || false)) : false"
+              [pattern]="validationObjects && validationObjects.cif && validationObjects.cif.obj && validationObjects.cif.obj.pattern ? validationObjects.cif.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.cif ? validationObjects.cif.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.PAN' | translate}}</label>
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.ENTER_PAN' | translate}}" class="form-control" name="applicantDetails.pan"
+              [(ngModel)]="applicantDetails.pan" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.pan"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.pan && validationObjects.pan.obj && validationObjects.pan.obj.required || false)):false"
+              [pattern]="validationObjects && validationObjects.pan && validationObjects.pan.obj && validationObjects.pan.obj.pattern ? validationObjects.pan.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.pan ? validationObjects.pan.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.UDYAM_REGISTRATION_NO' | translate}}</label>
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.ENTER_UDYAM_REGISTRATION_NO' | translate}}" class="form-control"
+              name="applicantDetails.udyamRegistration" [(ngModel)]="applicantDetails.udyamRegistration"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.udyamRegistration" [required]="false"
+              [pattern]="validationObjects && validationObjects.udyamRegistration && validationObjects.udyamRegistration.obj && validationObjects.udyamRegistration.obj.pattern ? validationObjects.udyamRegistration.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.udyamRegistration ? validationObjects.udyamRegistration.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.GST_NO' | translate}}</label>
+            <input type="text" placeholder="{{'APPLICANT_DETAILS.ENTER_GST_NO' | translate}}" class="form-control" name="applicantDetails.gstNo"
+              [(ngModel)]="applicantDetails.gstNo" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.gstNo"
+              [required]="false"
+              [pattern]="validationObjects && validationObjects.gstNo && validationObjects.gstNo.obj && validationObjects.gstNo.obj.pattern ? validationObjects.gstNo.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.gstNo ? validationObjects.gstNo.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.NATURE_OF_BUSINESS' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="natureOfBusiness" bindLabel="value" bindValue="id"
+              name="applicantDetails.natureOfBusiness" [(ngModel)]="applicantDetails.natureOfBusiness"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.natureOfBusiness"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.natureOfBusiness && validationObjects.natureOfBusiness.obj && validationObjects.natureOfBusiness.obj.required || false)) : false"
+            [validationMessage]="validationObjects && validationObjects.natureOfBusiness ? validationObjects.natureOfBusiness.objMsg:''" [appValidateElement]="submittedHo"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.SIZE_OF_BUSINESS' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="sizeOfBusiness" bindLabel="value" bindValue="id"
+              name="applicantDetails.size" [(ngModel)]="applicantDetails.size"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.size"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.size && validationObjects.size.obj && validationObjects.size.obj.required || false)):false"
+              [validationMessage]="validationObjects && validationObjects.size ? validationObjects.size.objMsg:''"
+              [appValidateElement]="submittedHo"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.TYPE_OF_INDUSTRY' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="industryList" bindLabel="value" bindValue="id"
+              name="applicantDetails.typeOfIndustry" [(ngModel)]="applicantDetails.typeOfIndustry"
+              (change)="changeTypeOfIndustry($event)"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.typeOfIndustry"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.typeOfIndustry && validationObjects.typeOfIndustry.obj && validationObjects.typeOfIndustry.obj.required || false)):false"
+            [validationMessage]="validationObjects && validationObjects.typeOfIndustry ? validationObjects.typeOfIndustry.objMsg:''" [appValidateElement]="submittedHo"></ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'APPLICANT_DETAILS.TYPE_OF_PRODUCT' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="industryProductList" bindLabel="value" bindValue="id"
+              name="applicantDetails.typeOfProduct" [(ngModel)]="applicantDetails.typeOfProduct"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.typeOfProduct"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.typeOfProduct && validationObjects.typeOfProduct.obj && validationObjects.typeOfProduct.obj.required || false)):false"
+            [validationMessage]="validationObjects && validationObjects.typeOfProduct ? validationObjects.typeOfProduct.objMsg:''" [appValidateElement]="submittedHo"></ng-select>
+          </div>
+        </div>
+
+      </div>
+      <!-- Applicant Details End -->
+      <div class="card-box Form_GRP_NP_Text" [hidden]="tab == 2">
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">Select Lending Bank</h5>
+          </div>
+        </div>
+        </div>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <ng-select placeholder="Select Lending Bank" [items]="campOrgList" bindLabel="name" bindValue="id"
+                    name="applicantDetails.campOrgId" [clearable]="false" [(ngModel)]="applicantDetails.campOrgId"  validationControlName="applicantDetails.campOrgId"
+                    [appValidateElement]="submittedHo" [disabled]="isViewMode || (disableFlag && applicantDetailsHo?.campOrgId)"
+                    [required]="saveButton ? false : (hoUser ? false : true)"
+                    (change)="setdisplayContacts();">
+            </ng-select>
+          </div>
+        </div>
+        </div>
+
+      </div>
+      <!-- Address and Other Details Start -->
+      <ng-container *ngIf="displayContacts">
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{'CONTACT_DETAILS.CONTACT_DETAILS' | translate}}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_1_5"
+        *ngFor="let factoryAddress of applicantDetails.factoryAddressList; let i=index">
+        <div class="Main-heading-dual-Cont">
+           <div class="text-heading-cards"><!-- :- {{(isViewMode) }} - {{ (applicantDetailsHo?.factoryAddressList[i]?.isPrimary == true) }} - {{disableFlag}} -->
+            <h5 class="main-text-heading">{{'CONTACT_DETAILS.FACTORY_ADDRESS' | translate}} - {{i+1}} </h5>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <div class="checkbox checkbox-psbpurple form-check-inline">
+              <input type="checkbox" name="applicantDetails?.factoryAddressList[{{i}}]?.isPrimary"
+                [(ngModel)]="factoryAddress.isPrimary"
+                (click)="changePrimaryAddress(i)"
+                [disabled]="(isViewMode) || (disableFlag && applicantDetailsHo?.factoryAddressList[i]?.isPrimary == true)">
+              <label for="applicantDetails.factoryAddressList[{{i}}].isPrimary"> {{'CONTACT_DETAILS.PRIMARY_ADDRESS' | translate}} </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="NP_Com_Group">
+          <div class="NP_Com_Group">
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.ADDRESS' | translate}}</label>
+                <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_ADDRESS' | translate}}" class="form-control"
+                  name="applicantDetails.factoryAddressList[{{i}}].address" [(ngModel)]="factoryAddress.address"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] &&  applicantDetailsHo.factoryAddressList[i].address"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true):false" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Address is required.'}"
+                  (change)="updateFactoryAddressList();updateFactoryRegisterAddressList();">
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.CITY_TOWN' | translate}}</label>
+                <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_CITY_TOWN' | translate}}" class="form-control"
+                  name="applicantDetails.factoryAddressList[{{i}}].cityOrTown" [(ngModel)]="factoryAddress.cityOrTown"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] && applicantDetailsHo.factoryAddressList[i].cityOrTown"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true):false" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'CityTown is required.'}">
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.PINCODE' | translate}}</label>
+                <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="pincodeList"
+                 bindLabel="pincode" bindValue="pincode" name="applicantDetails.factoryAddressList[{{i}}].pincode" [appValidateElement]="submittedHo"
+                [clearable]="false" required
+                 [(ngModel)]="factoryAddress.pincode"
+                 [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] && applicantDetailsHo.factoryAddressList[i].pincode"
+                 [validationMessage]="{'required': 'pincode is required.','pattern':'Enter valid pincode'}">
+              </ng-select>
+              </div>
+            </div>
+
+
+
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.PHONE_NO' | translate}}</label>
+                <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_PHONE_NO' | translate}}" class="form-control"
+                  name="applicantDetails.factoryAddressList[{{i}}].phoneNo" [(ngModel)]="factoryAddress.phoneNo"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] && applicantDetailsHo.factoryAddressList[i].phoneNo"
+                  (keypress)="numberOnly($event)" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true):false" [appValidateElement]="submittedHo"
+                  pattern="^[6789]\d{9,10}" maxlength="11" minlength="10"
+                  [validationMessage]="{'required': 'Phone no is required.','pattern': 'Enter valid phone no'}">
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.EMAIL' | translate}}</label>
+                <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_EMAIL' | translate}}" class="form-control"
+                  name="applicantDetails.factoryAddressList[{{i}}].email" [(ngModel)]="factoryAddress.email"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] && applicantDetailsHo.factoryAddressList[i].email"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true):false" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'EmailId is required.','pattern': 'Please, Enter valid emailid.'}">
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>{{'CONTACT_DETAILS.WEBSITE' | translate}}</label>
+                <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_WEBSITE' | translate}}" class="form-control"
+                  name="applicantDetails.factoryAddressList[{{i}}].website" [(ngModel)]="factoryAddress.website"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.factoryAddressList && applicantDetailsHo.factoryAddressList[i] && applicantDetailsHo.factoryAddressList[i].website"
+                  [required]="false" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Website is required.'}">
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <app-address-master
+          [address]="applicantDetails.factoryAddressList[i]"
+          [isDisable]="isViewMode"
+          [isHoBoValidation]="true"
+          [otherDisableFlag]="disableFlag"
+          [data]="applicantDetailsHo?.factoryAddressList[i]"
+          [submitted]="submittedHo"
+          [isRemoveRequired]="(saveButton || hoUser) ? true : false"
+          (onFieldBlur)="updateFactoryAddressList();updateFactoryRegisterAddressList();"
+          [formName]="'applicantDetails.factoryAddressList[' + i + ']'"
+          [campOrgId]="applicantDetails.campOrgId">
+        </app-address-master>
+
+      </div>
+      <div class="NP_Com_Group btn_table_right MB_1_5" *ngIf="!isViewMode">
+        <a class="btn btn-outline-psbpurple" href="javascript:void(0)" (click)="addNewFactoryAddress()"><em
+            class="fmdi fmdi-plus mr-1"></em>
+            {{'CONTACT_DETAILS.ADD_FACTORY_ADDRESS' | translate}}</a>
+      </div>
+
+
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">{{'CONTACT_DETAILS.REGISTERED_OFFICE_ADDRESS' | translate}}</h5>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <div class="checkbox checkbox-psbpurple form-check-inline mr-2">
+              <input type="checkbox" id="factoryaddress" [value]="true" name="applicantDetails.isSameAsFactoryAddress"
+                [(ngModel)]="applicantDetails.isSameAsFactoryAddress"
+                (change)="resetAddress(applicantDetails.registeredAddress,applicantDetails.isSameAsFactoryAddress, 1, true)"
+                [disabled]="(isViewMode) || (disableFlag && applicantDetailsHo.isSameAsFactoryAddress)">
+              <label for="factoryaddress"> {{'CONTACT_DETAILS.SAME_AS_FACTORY_ADDRESS' | translate}}</label>
+            </div>
+            <div *ngIf="applicantDetails.isSameAsFactoryAddress">
+              <ng-select placeholder="{{'CONTACT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="factoryAddressLst"
+                bindLabel="value" bindValue="id" name="applicantDetails.registerCopyAddressId"
+                [(ngModel)]="applicantDetails.registerCopyAddressId"
+                [disabled]="(isViewMode) || (disableFlag && applicantDetailsHo.registerCopyAddressId)"
+                (change)="copyAddress(true)"
+                [required]="saveButton ? false : sendToBo ? true:false"
+                [appValidateElement]="submittedHo"
+                (onFieldBlur)="updateFactoryAddressList();updateFactoryRegisterAddressList();"
+                [validationMessage]="{'required': 'Registered address is required.'}"></ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="NP_Com_Group" *ngIf="!applicantDetails.isSameAsFactoryAddress">
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.ADDRESS' | translate}}</label>
+            <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_ADDRESS' | translate}}" class="form-control"
+              [disabled]="isViewMode || (disableFlag && applicantDetailsHo.registeredAddress.address)"
+              name="applicantDetails.registeredAddress.address" [(ngModel)]="applicantDetails.registeredAddress.address"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[0] && validationObjects.registeredAddress[0].address &&
+            validationObjects.registeredAddress[0].address.obj && validationObjects.registeredAddress[0].address.obj.required || false)) : false"
+              [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[0] &&
+            validationObjects.registeredAddress[0].address ? validationObjects.registeredAddress[0].address.objMsg:''"
+              [appValidateElement]="submittedHo"
+              (change)="updateFactoryRegisterAddressList();">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.CITY_TOWN' | translate}}</label>
+            <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_CITY_TOWN' | translate}}" class="form-control"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.registeredAddress.cityOrTown"
+              name="applicantDetails.registeredAddress.cityOrTown"
+              [(ngModel)]="applicantDetails.registeredAddress.cityOrTown"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[1] && validationObjects.registeredAddress[1].cityOrTown && validationObjects.registeredAddress[1].cityOrTown.obj && validationObjects.registeredAddress[1].cityOrTown.obj.required || false)):false"
+              [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[1] && validationObjects.registeredAddress[1].cityOrTown ? validationObjects.registeredAddress[1].cityOrTown.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.ENTER_PINCODE' | translate}}</label>
+            <ng-select placeholder="{{'APPLICANT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="pincodeList"
+             bindLabel="pincode" bindValue="pincode" name="applicantDetailsHo.registeredAddress.pincode" [appValidateElement]="submittedHo"
+            [clearable]="false"
+             [(ngModel)]="applicantDetails.registeredAddress.pincode"
+             [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.registeredAddress.pincode"
+             [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[2] && validationObjects.registeredAddress[2].pincode && validationObjects.registeredAddress[2].pincode.obj && validationObjects.registeredAddress[2].pincode.obj.required || false)) : false"
+             [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[2] && validationObjects.registeredAddress[2].pincode ? validationObjects.registeredAddress[2].pincode.objMsg:''"
+             [appValidateElement]="submittedHo">
+          </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.PHONE_NO' | translate}}</label>
+            <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_PHONE_NO' | translate}}" class="form-control"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.registeredAddress.phoneNo" maxlength="11" minlength="10"
+              name="applicantDetails.registeredAddress.phoneNo" [(ngModel)]="applicantDetails.registeredAddress.phoneNo"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[5] && validationObjects.registeredAddress[5].phoneNo && validationObjects.registeredAddress[5].phoneNo.obj && validationObjects.registeredAddress[5].phoneNo.obj.required || false)):false"
+              [pattern]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[5] && validationObjects.registeredAddress[5].phoneNo && validationObjects.registeredAddress[5].phoneNo.obj && validationObjects.registeredAddress[5].phoneNo.obj.pattern ? validationObjects.registeredAddress[5].phoneNo.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[5] && validationObjects.registeredAddress[5].phoneNo ? validationObjects.registeredAddress[5].phoneNo.objMsg:''"
+              [appValidateElement]="submittedHo" (keypress)="numberOnly($event)">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.EMAIL' | translate}}</label>
+            <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_EMAIL' | translate}}" class="form-control"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.registeredAddress.email"
+              name="applicantDetails.registeredAddress.email" [(ngModel)]="applicantDetails.registeredAddress.email"
+              [required]="saveButton ? false : sendToBo ? (hoUser ? false : (validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[3] && validationObjects.registeredAddress[3].email && validationObjects.registeredAddress[3].email.obj && validationObjects.registeredAddress[3].email.obj.required || false)):false"
+              [pattern]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[3] && validationObjects.registeredAddress[3].email && validationObjects.registeredAddress[3].email.obj && validationObjects.registeredAddress[3].email.obj.pattern ? validationObjects.registeredAddress[3].email.obj.pattern : ''"
+              [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[3] && validationObjects.registeredAddress[3].email ? validationObjects.registeredAddress[3].email.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 float-left">
+          <div class="form-group">
+            <label>{{'CONTACT_DETAILS.WEBSITE' | translate}}</label>
+            <input type="text" placeholder="{{'CONTACT_DETAILS.ENTER_WEBSITE' | translate}}" class="form-control"
+              [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.registeredAddress.website"
+              name="applicantDetails.registeredAddress.website" [(ngModel)]="applicantDetails.registeredAddress.website"
+              [required]="false"
+              [validationMessage]="validationObjects && validationObjects.registeredAddress && validationObjects.registeredAddress[4] && validationObjects.registeredAddress[4].website ? validationObjects.registeredAddress[4].website.objMsg:''"
+              [appValidateElement]="submittedHo">
+          </div>
+        </div>
+      </div>  -->
+
+      <ng-container *ngIf="!applicantDetails.isSameAsFactoryAddress && applicantDetails.registeredAddress">
+        <app-address-master
+            [address]="applicantDetails.registeredAddress"
+            [isDisable]="isViewMode"
+            [isHoBoValidation]="true"
+            [otherDisableFlag]="disableFlag"
+            [isRemoveRequired]="(saveButton || hoUser) ? true : false"
+            [data]="applicantDetailsHo.registeredAddress"
+            [submitted]="submittedHo"
+            (onFieldBlur)="updateFactoryAddressList();updateFactoryRegisterAddressList();"
+            [formName]="'applicantDetails.registeredAddress'"
+            [campOrgId]="applicantDetails.campOrgId">
+        </app-address-master>
+      </ng-container>
+
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">{{'CONTACT_DETAILS.CORRESPONDENCE_ADDRESS' | translate}}</h5>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <div class="checkbox checkbox-psbpurple form-check-inline mr-2">
+              <input type="checkbox" id="factoryregisteredaddress"
+                name="applicantDetails.isSameAsRegisterFactoryAddress" [value]="1"
+                [(ngModel)]="applicantDetails.isSameAsRegisterFactoryAddress"
+                (change)="resetAddress(applicantDetails.correspondenceAddress, applicantDetails.isSameAsRegisterFactoryAddress, 2, applicantDetails.isSameAsFactoryAddress == true ? true : false )"
+                [disabled]="(isViewMode) || (disableFlag && applicantDetailsHo.isSameAsRegisterFactoryAddress)">
+              <label for="factoryregisteredaddress"> {{'CONTACT_DETAILS.SAME_AS_FACTORY_REGISTERED_ADDRESS' | translate}} </label>
+            </div>
+            <div *ngIf="applicantDetails.isSameAsRegisterFactoryAddress">
+              <ng-select placeholder="{{'CONTACT_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="factoryRegisterAddressLst"
+                bindLabel="value" bindValue="id" name="applicantDetails.correspondenceCopyAddressId"
+                [(ngModel)]="applicantDetails.correspondenceCopyAddressId"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.correspondenceCopyAddressId"
+                (change)="copyAddress(false)"
+                [required]="saveButton ? false : sendToBo ? true:false"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required': 'Correspondence address is required.'}"></ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [form]="applicantDetailForm" -->
+      <ng-container *ngIf="!applicantDetails.isSameAsRegisterFactoryAddress  && applicantDetails.correspondenceAddress">
+        <app-address-master
+            [address]="applicantDetails.correspondenceAddress"
+            [isDisable]="isViewMode"
+            [isHoBoValidation]="true"
+            [otherDisableFlag]="disableFlag"
+            [isRemoveRequired]="(saveButton || hoUser) ? true : false"
+            [data]="applicantDetailsHo.correspondenceAddress"
+            [submitted]="submittedHo || submitted"
+            [formName]="'applicantDetails.correspondenceAddress'"
+            [campOrgId]="applicantDetails.campOrgId">
+        </app-address-master>
+      </ng-container>
+      </ng-container>
+      <!-- Address and Other Details End -->
+    </div>
+
+    <div class="card-box Form_GRP_NP_Text">
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{'PROMOTER_DETAILS.PROMOTER_DETAILS' | translate}}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_1_5 NPM_BT_0 pt-0" >
+        <table class="NP_Com_Form_Table Mobile_table_View_NP" *ngIf="applicantDetails.promoterDetailsList.length > 0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>{{'PROMOTER_DETAILS.NAME' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.EMAIL_ID' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.MOBILE_NO' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.ADDRESS' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.AADHAR_NO' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.PAN' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.DOB' | translate}}</th>
+              <th>{{'PROMOTER_DETAILS.NETWORTH' | translate}}</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let promoterDetails of applicantDetails.promoterDetailsList;let i = index">
+              <td data-label="Sr.No">{{i+1}}</td>
+              <td attr.data-label="{{'BO_DASHBOARD.NAME_OF_UNIT' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_NAME' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].name"
+                  name="applicantDetails.promoterDetailsList[{{i}}].name" [(ngModel)]="promoterDetails.name"
+                  pattern="^[a-zA-Z ]+$" [appValidateElement]="submittedHo" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true):false"
+                  [validationMessage]="{'required': 'Name is required.','pattern': 'Please, Enter valid Name.'}">
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.EMAIL_ID' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_EMAIL_ID' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].emailId"
+                  name="applicantDetails.promoterDetailsList[{{i}}].emailId" [(ngModel)]="promoterDetails.emailId"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [appValidateElement]="submittedHo"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                  [validationMessage]="{'required': 'EmailId is required.','pattern': 'Please, Enter valid emailid.'}">
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.MOBILE_NO' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_MOBILE_NO' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].mobileNo"
+                  name="applicantDetails.promoterDetailsList[{{i}}].mobileNo" [(ngModel)]="promoterDetails.mobileNo"
+                  (keypress)="numberOnly($event)" pattern="^[6789]\d{9}" [maxlength]="10"
+                  [appValidateElement]="submittedHo" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                  [validationMessage]="{'required': 'Mobile No is required.','pattern': 'Please, Enter valid Mobile Number.'}">
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.ADDRESS' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_ADDRESS' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].address"
+                  name="applicantDetails.promoterDetailsList[{{i}}].address" [(ngModel)]="promoterDetails.address"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Address is required.'}">
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.AADHAR_NO' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_AADHAR_NO' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].aadhaarNo"
+                  name="applicantDetails.promoterDetailsList[{{i}}].aadhaarNo" [(ngModel)]="promoterDetails.aadhaarNo"
+                  [required]="false" (keypress)="numberOnly($event)" pattern="^((\\+91-?)|0)?[0-9]{12}$"
+                  [maxlength]="12" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Aadhaar no is required.','pattern': 'Please, Enter 12 digit Aadhaar Number.','maxlength':'Please, Enter 12 digit Aadhaar Number.'}">
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.PAN' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_PAN' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].pan"
+                  name="applicantDetails.promoterDetailsList[{{i}}].pan" [(ngModel)]="promoterDetails.pan"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" pattern="^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$"
+                  [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required':'Pan number is required','pattern':'Enter valid pan NUMBER'}">
+              </td>
+              <!-- <td>
+                <input type="text" placeholder="Enter date" class="form-control" [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList[i].dateOfBirth"
+                 name="applicantDetails.promoterDetailsList[{{i}}].dateOfBirth" [(ngModel)]="promoterDetails.dateOfBirth"
+                 [required]="hoUser ? false : true" [appValidateElement]="submittedHo"   [validationMessage]="{'required': 'DateOfBirth is rquired'}">
+              </td> -->
+              <td attr.data-label="{{'PROMOTER_DETAILS.DOB' | translate}}">
+
+                <div class="psb-input-group clockpicker">
+                  <input ngbDatepicker placeholder="{{'PROMOTER_DETAILS.SELECT_DATE' | translate}}" class="form-control" #d3="ngbDatepicker" readonly
+                    [minDate]="startDate"
+                    [disabled]="(isViewMode) || disableFlag&& applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i]  && applicantDetailsHo.promoterDetailsList[i].dateOfBirth"
+                    name="applicantDetails.promoterDetailsList[{{i}}].dateOfBirth"
+                    [(ngModel)]="promoterDetails.dateOfBirth" [maxDate]="endDate" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                    [appValidateElement]="submittedHo" [validationMessage]="{'required': 'DateOfBirth is rquired'}">
+                  <div class="psb-input-group-append">
+                    <span class="psb-input-group-text" (click)="d3.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                  </div>
+                </div>
+
+              </td>
+              <td attr.data-label="{{'PROMOTER_DETAILS.NETWORTH' | translate}}">
+                <input type="text" placeholder="{{'PROMOTER_DETAILS.ENTER_NETWORTH' | translate}}" class="form-control"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.promoterDetailsList && applicantDetailsHo.promoterDetailsList[i] && applicantDetailsHo.promoterDetailsList[i].networth"
+                  name="applicantDetails.promoterDetailsList[{{i}}].networth" [(ngModel)]="promoterDetails.networth"
+                  [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Networth is required'}" (keypress)="numberOnly($event)" appCurrencyInputDirective>
+              </td>
+              <td data-label="Action" *ngIf="i>0 && (!isViewMode)">
+                <a href="javascript:void(0)" class="icon-danger" (click)="removePromoterDetails(i)"><em class="fmdi fmdi-close"></em></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="NP_Com_Group btn_table_right" *ngIf="!isViewMode">
+          <a class="btn btn-psb btn-outline-psbpurple" href="javascript:void(0)" (click)="addNewPromoterDetails()"><em
+              class="fmdi fmdi-plus mr-1"></em>
+            {{applicantDetails.promoterDetailsList.length > 0?'Add More':'Add'}}</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card-box Form_GRP_NP_Text"
+      *ngFor="let existingDetails of applicantDetails.creditDetailsList;let i = index">
+      <div class="NP_Com_Group">
+        <div class="NP_Com_Group">
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h5 class="main-text-heading">{{'EXISTING_LOAN_DETAILS.EXISTING_LOAN_DETAILS' | translate}} - {{i+1}}</h5>
+            </div>
+            <div class="Btn-Drop_Down-dual-Cont" *ngIf="!isViewMode && i>0">
+              <div class="NPBtn-Download">
+                <a class="btn btn-outline-danger" href="javascript:void(0)" (click)="removeCollateral(i)"><em
+                    class="fmdi fmdi-delete mr-1"></em>
+                    {{'EXISTING_LOAN_DETAILS.REMOVE' | translate}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- *ngFor="let stepAction of workflowData.step.stepActions;let i = index" -->
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.MOBILE_NO_OF_IN_CHARGE_BRANCH' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_MOBILE_NO' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].mobileNo"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i]  && applicantDetailsHo.creditDetailsList[i].mobileNo" (keypress)="numberOnly($event)"
+                [(ngModel)]="existingDetails.mobileNo" (keypress)="numberOnly($event)"
+                pattern="^[6789]\d{9}" [appValidateElement]="submittedHo" maxlength="10"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                [validationMessage]="{'required': 'Mobile No is required.','pattern': 'Enter valid mobile number.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.EMAIL_ID_OF_BRANCH_SANCTIONED_THE_LOAN' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_EMAILID' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i]  && applicantDetailsHo.creditDetailsList[i].emailId"
+                name="applicantDetails.creditDetailsList[{{i}}].emailId" [(ngModel)]="existingDetails.emailId"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [appValidateElement]="submittedHo"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                [validationMessage]="{'required': 'EmailId is required.','pattern': 'Please, Enter valid emailid.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.LOAN_ACCOUNT_NO' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_LOAN_ACCOUNT_NO' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].loanAccNo"
+                name="applicantDetails.creditDetailsList[{{i}}].loanAccNo" [(ngModel)]="existingDetails.loanAccNo"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" [appValidateElement]="submittedHo"
+                pattern="^[a-zA-Z0-9]*$" [validationMessage]="{'required': 'Loan account no is required','pattern': 'Enter valid loan account no.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.LOAN_VALUE' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_LOAN_VALUE' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].loanValue"
+                name="applicantDetails.creditDetailsList[{{i}}].loanValue" [(ngModel)]="existingDetails.loanValue"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" (keypress)="numberOnly($event)" pattern="^[0-9]*$"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required': 'Loan value is required','pattern':'Enter valid Loan value'}" appCurrencyInputDirective>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.SANCTION_DATE' | translate}}</label>
+              <div class="psb-input-group clockpicker">
+                <input ngbDatepicker placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_SANCTION_DATE' | translate}}" class="form-control right-br-0"
+                  [maxDate]="endDate" [minDate]="startDate" #d1="ngbDatepicker" readonly
+                  name="applicantDetails.creditDetailsList[{{i}}].sanctionDate"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].sanctionDate"
+                  [(ngModel)]="existingDetails.sanctionDate" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                  [appValidateElement]="submittedHo" [validationMessage]="{'required': 'Sanction Date is required'}"
+                  (dateSelect)="checkSanctionDisburseDate(i)" >
+                <div class="psb-input-group-append">
+                  <span class="psb-input-group-text" (click)="d1.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.DISBURSEMENT_DATE' | translate}}</label>
+              <div class="psb-input-group clockpicker">
+                <input ngbDatepicker placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_DISBURSEMENT_DATE' | translate}}" class="form-control right-br-0"
+                  [maxDate]="endDate" [minDate]="existingDetails.minDDate" #d2="ngbDatepicker" readonly
+                  name="applicantDetails.creditDetailsList[{{i}}].disbursementDate"
+                  [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].disbursementDate"
+                  [(ngModel)]="existingDetails.disbursementDate" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                  [appValidateElement]="submittedHo"
+                  [validationMessage]="{'required': 'Disbursement Date is required'}">
+                <div class="psb-input-group-append">
+                  <span class="psb-input-group-text" (click)="d2.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.LTV' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_LTV' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].ltv"
+                name="applicantDetails.creditDetailsList[{{i}}].ltv" [(ngModel)]="existingDetails.ltv"
+                [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" pattern="^(100(\.0{1,2})?|[0-9]{0,2}(\.\d{1,2})?)$"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required': 'LTV is required','pattern':'Enter valid ltv'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.OUTSTANDING_AMOUNT' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_AMOUNT' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].outStandingAmount"
+                name="applicantDetails.creditDetailsList[{{i}}].outStandingAmount"
+                [(ngModel)]="existingDetails.outStandingAmount" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false" pattern="^[0-9]*$"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required': 'Outstanding Amount is required','pattern':'Enter valid Outstanding Amount'}" appCurrencyInputDirective>
+            </div>
+          </div>
+        </div>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h5 class="main-text-heading">{{'EXISTING_LOAN_DETAILS.AMOUNT_OF_LOAN_OVERDUE' | translate}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.PRINCIPAL_AMOUNT' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_PRINCIPAL_AMOUNT' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].overDuePrincipleAmount"
+                name="applicantDetails.creditDetailsList[{{i}}].overDuePrincipleAmount"
+                [(ngModel)]="existingDetails.overDuePrincipleAmount" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                (keypress)="numberOnly($event)" pattern="^[0-9]*$" [appValidateElement]="submittedHo"
+                [validationMessage]="{'required':'Principal amount is required','pattern':'Enter valid Principal Amount'}" appCurrencyInputDirective>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'EXISTING_LOAN_DETAILS.INTEREST_AMOUNT' | translate}}</label>
+              <input type="text" placeholder="{{'EXISTING_LOAN_DETAILS.ENTER_INTEREST_AMOUNT' | translate}}" class="form-control"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].overDueInterestAmount"
+                name="applicantDetails.creditDetailsList[{{i}}].overDueInterestAmount"
+                [(ngModel)]="existingDetails.overDueInterestAmount" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required':'Interest amount is required','pattern':'Enter valid Interest amount'}" appCurrencyInputDirective>
+            </div>
+          </div>
+        </div>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h4 class="m-0">{{'COLLATERAL_DETAILS.COLLATERAL_DETAILS' | translate}}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="Main-heading-dual-Cont">
+            <div class=" text-heading-cards">
+              <h5 class="m-0">{{'COLLATERAL_DETAILS.DO_YOU_HAVE_ANY_COLLATERAL' | translate}}</h5>
+            </div>
+            <div class="Btn-Drop_Down-dual-Cont">
+              <div class="btn-group btn-group-toggle NP_W195px" ngbRadioGroup name="Doyoucollateral">
+                <label ngbButtonLabel class="btn tab-product-name"
+                  [ngClass]="existingDetails.isCollateral==true?'activet-border':''">
+                  <input ngbButton type="radio" [value]="true"
+                    name="applicantDetails.creditDetailsList[{{i}}].isCollateralyes"
+                    [disabled]="(isViewMode) || disableFlag && (applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].isCollateral)?true:false"
+                    [(ngModel)]="existingDetails.isCollateral"> Yes
+                </label>
+                <label ngbButtonLabel class="btn tab-product-name"
+                  [ngClass]="existingDetails.isCollateral==false?'activet-border':''">
+                  <input ngbButton type="radio" [value]="false"
+                    name="applicantDetails.creditDetailsList[{{i}}].isCollateralno"
+                    [disabled]="(isViewMode) || disableFlag && (applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].isCollateral)?true:false"
+                    [(ngModel)]="existingDetails.isCollateral"> No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- collateral form Yes & NO Cont show & hide  -->
+
+        <div class="NP_Com_Group NP_BT_PT_1_5" *ngIf="existingDetails.isCollateral==true">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.TYPE_OF_COLLATERAL' | translate}}</label>
+              <ng-select placeholder="{{'COLLATERAL_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="typeOfCollateral" bindLabel="value" bindValue="id"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].typeOfCollateral"
+                name="applicantDetails.creditDetailsList[{{i}}].typeOfCollateral"
+                [(ngModel)]="existingDetails.typeOfCollateral" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                [appValidateElement]="submittedHo" [validationMessage]="{'required':'Type of Collateral is required'}">
+              </ng-select>
+            </div>
+
+          </div>
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="existingDetails.typeOfCollateral == 5">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.OTHER_COLLATERAL_DETAILS' | translate}}</label>
+              <input type="text" placeholder="{{'COLLATERAL_DETAILS.ENTER_OTHER_COLLATERAL' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].otherCollateral"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].otherCollateral"
+                [(ngModel)]="existingDetails.otherCollateral">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.LOCATION_OF_COLLATERAL' | translate}}</label>
+              <input type="text" placeholder="{{'COLLATERAL_DETAILS.ENTER_VALUE' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].location"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].location"
+                [(ngModel)]="existingDetails.location" [required]="false"
+                [appValidateElement]="submittedHo"
+                [validationMessage]="{'required':'Location of Collateral is required'}">
+              <!-- <ng-select placeholder="Select any one" [items]="selectValue" name="existingDetails.location" [(ngModel)]="existingDetails.location"></ng-select> -->
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.VALUE_AT_THE_TIME_OF_SANCTION' | translate}}</label>
+              <input type="text" placeholder="{{'COLLATERAL_DETAILS.ENTER_VALUE' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].valueAtSanctionTime"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].valueAtSanctionTime"
+                [(ngModel)]="existingDetails.valueAtSanctionTime" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                (keypress)="numberOnly($event)" [appValidateElement]="submittedHo"
+                [validationMessage]="{'required':'Value is required'}" appCurrencyInputDirective>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.CURRENT_VALUE' | translate}}</label>
+              <input type="text" placeholder="{{'COLLATERAL_DETAILS.ENTER_VALUE' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].currentValue"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].currentValue"
+                [(ngModel)]="existingDetails.currentValue" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                (keypress)="numberOnly($event)" [appValidateElement]="submittedHo"
+                [validationMessage]="{'required':'Current value is required'}" appCurrencyInputDirective>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.COLLATERAL_IS_ALREADY_ENCUMBERED' | translate}}</label>
+              <ng-select placeholder="{{'COLLATERAL_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="isAlreadyEncumberedOp" bindLabel="value" bindValue="id"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].alreadyEncumbered"
+                name="applicantDetails.creditDetailsList[{{i}}].alreadyEncumbered"
+                [(ngModel)]="existingDetails.alreadyEncumbered" [required]="saveButton ? false : sendToBo ? (hoUser ? false : true) : false"
+                [appValidateElement]="submittedHo" [validationMessage]="{'required':'AlreadyEncumbered is required'}">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="existingDetails.alreadyEncumbered == 1">
+            <div class="form-group">
+              <label>{{'COLLATERAL_DETAILS.NAME_OF_THE_FINANCIAL_INSTITUTION' | translate}}</label>
+              <input type="text" placeholder="{{'COLLATERAL_DETAILS.ENTER_VALUE' | translate}}" class="form-control"
+                name="applicantDetails.creditDetailsList[{{i}}].nameOfFinancialInstitution"
+                [disabled]="(isViewMode) || disableFlag && applicantDetailsHo.creditDetailsList && applicantDetailsHo.creditDetailsList[i] && applicantDetailsHo.creditDetailsList[i].nameOfFinancialInstitution"
+                [(ngModel)]="existingDetails.nameOfFinancialInstitution">
+            </div>
+          </div>
+        </div>
+        <!-- collateral form Yes & NO Cont show & hide  -->
+      </div>
+    </div>
+
+    <div class="NP_Com_Group Btn_BG_Add_NEW PB_1_5" *ngIf="!isViewMode">
+      <a class="btn btn-psb btn-outline-psbpurple" href="javascript:void(0)" (click)="addNewCollateral()"><em
+          class="fmdi fmdi-plus mr-1"></em>
+          {{'COLLATERAL_DETAILS.ADD_MORE_EXISTING_LOAN_DETAILS' | translate}}</a>
+    </div>
+  </div>
+
+  <div [hidden]="tab == 1">
+
+    <div class="card-box">
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">{{'UPLOAD_ITR_DETAILS.UPLOAD_ITR_DETAILS' | translate}}</h5>
+            <span class="text-muted">{{'UPLOAD_ITR_DETAILS.ITR_IN_XML_PDF' | translate}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_PB_1_5">
+        <div class="single-user-um p-0">
+        <div class="col-md-6 col-xl-3 float-left NP_Height_Com" *ngFor="let item of itrDisplayYearList; let i = index">
+          <div class="NP_ITR_UP">
+            <label class="txt-over">{{'UPLOAD_ITR_DETAILS.FINANCIAL_YEAR' | translate}} {{item.displayYear}} <span *ngIf="item.isMandatory">*</span></label>
+            <div class="NP_file_label" #stepWT>
+              <div class="file-upload-itr">
+                <div class="mat-fileupload">
+                  <em class="fmdi fmdi-file-text mr-2"></em>
+                  <span class="txt-over" *ngIf="item.viewRequest == null">
+                    {{item.name != undefined ? item.name : 'Select a file to upload'}}
+                  </span>
+                  <span class="txt-over" *ngIf="item.viewRequest != null && item.viewRequest.fileName != null">
+                    {{(item.viewRequest.fileName| slice: 0:30)}}
+                  </span>
+                </div>
+                <input type='file' id="itr1" class="custom-file-input"
+                  (change)="handleFileInput($event.target.files,itrDisplayYearList,item)"
+                  accept="text/xml,application/xml,application/pdf" [disabled] ="isViewMode">
+                <!-- <button mat-icon-button class="f-w-icon" title="Cancel" *ngIf="name.itr1 != '' && isRemoveBtn"
+                  (click)="removeFile(name.itr1,1)" [disabled] ="isViewMode">
+                  <img src="assets/images/remove-icon.svg" alt="remove" />
+                </button> -->
+              </div>
+
+
+              <a href="javascript:void(0)" class="Remove-Icon icon-danger" *ngIf ="isDeleteButtion==false" (click)="removeFile(i)" [disabled] ="isViewMode">
+                   <em class="fmdi fmdi-close"></em>
+                  </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 float-left NP_Height_Com btn_Grp_Height NP_AC_Fend" *ngIf="!isViewMode">
+          <div class="Add-new-btn-all">
+            <button class="btn btn-psb btn-psbpurple" [disabled] ="isDeleteButtion==true" (click)="uploadITRFiles()">{{'UPLOAD_ITR_DETAILS.PROCEED' | translate}}</button>
+            <!-- <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="uploadITRFiles()">Proceed</a> -->
+          </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-box">
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">{{'BANK_STATEMENT.BANK_STATEMENT' | translate}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_PB_1_5">
+
+        <ng-container *ngFor="let itemOption of opationsForSlider; let i = index;">
+
+          <div class="col-sm-12 float-left p-0" *ngIf="!itemOption.isCompleted">
+            <!-- <div class="single-user-um p-0"> NP_Height_Com -->
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>{{'BANK_STATEMENT.SELECT_BANK' | translate}}</label>
+                  <ng-select placeholder="{{'BANK_STATEMENT.SELECT_ANY_ONE' | translate}}" [items]="states" bindLabel="bankName" bindValue="bankId"
+                    [(ngModel)]="itemOption.bankId" name="itemOption.bankId" [disabled] ="isViewMode">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left ">
+                <div class="form-group">
+                  <label>{{'BANK_STATEMENT.ACCOUNT_SINCE' | translate}}</label>
+                  <ng-select placeholder="{{'BANK_STATEMENT.SELECT_SINCE_YEAR' | translate}}" [items]="years" [(ngModel)]="itemOption.sinceYear"
+                    name="itemOption.sinceYear" [disabled] ="isViewMode">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>{{'BANK_STATEMENT.ACCOUNT_MONTH' | translate}}</label>
+                  <ng-select placeholder="{{'BANK_STATEMENT.SELECT_SINCE_MONTH' | translate}}" [items]="months" name="itemOption.sinceMonth"
+                    bindLabel="value" bindValue="key" [(ngModel)]="itemOption.sinceMonth" [disabled] ="isViewMode">
+                  </ng-select>
+                </div>
+              </div>
+              <!-- <div class="col-lg-3 float-left NP_Height_Com btn_Grp_Height">
+                <div class="Add-new-btn-all">
+                  <a href="javascript:void(0)" class="btn btn-psbpurple" (click)="uploadITRFiles()">Proceed</a>
+                </div>
+              </div> -->
+            <!-- </div> -->
+          </div>
+          <div class="col-sm-12 float-left">
+          <div class="NP_Com_Group MT_1" *ngIf="!itemOption.isCompleted">
+
+            <div class="dragDrop-Common" appDragDrop (fileDropped)="onFileDropped($event)">
+              <div class="files-list" *ngIf="bsFiles.length > 0">
+                <div class="single-file" *ngFor="let file of bsFiles; let i = index">
+                  <div class="File-Progress">
+                    <div class="file-icon">
+                      <em class="fmdi fmdi-file"></em>
+                    </div>
+                    <div class="info">
+                      <h4 class="name">
+                        {{ file?.name }}
+                      </h4>
+                    </div>
+                    <div class="delete" (click)="deleteFile(i)">
+                      <em class="fmdi fmdi-delete mr-1"></em>{{'BANK_STATEMENT.REMOVE' | translate}}
+                    </div>
+                  </div>
+                  <ngb-progressbar class="Progreebar-File" value="{{file.progress}}" [max]="100" height="4px">
+                  </ngb-progressbar>
+                </div>
+              </div>
+              <div class="Input-text-Fill-Cutome bankStatement_Upload" *ngIf="bsFiles.length == 0">
+                  <input type='file' name="bs" #fileDropRef  class="custom-file-input" placeholder="{{'BANK_STATEMENT.FILE_TO_UPLOAD' | translate}}" multiple
+                  (change)="fileBrowseHandler($event.target.files)"
+                  accept="text/xml,application/xml,application/pdf" [disabled] ="isViewMode">
+                  <!-- handlBsUpload($event.target.files,opationsForSlider,itemOption) -->
+                <div class="Input-text-File">
+                  <span class="file-upload-icon"><em class="fmdi fmdi-upload"></em></span>
+                  <p class="Drop-text-common" for="fileDropRef">{{'BANK_STATEMENT.DRAG_AND_DROP_FILE' | translate}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="NP_Com_Group MT_1" >
+            <div class="Np_SubTitle_Grp txt-left NP_p0" *ngIf="itemOption && itemOption.isCompleted">
+              <h4>{{'BANK_STATEMENT.BANK_DETAILS_FOUND' | translate}} {{itemOption.bankAccountNo}}</h4>
+            </div>
+            <div class="NP_Com_Group" *ngIf="itemOption && itemOption.isCompleted">
+              <div class="view-Fill-details-bank">
+                <div class="view-detail-bank">
+                  <img src="assets/images/bankStatement/update-time.svg" alt="update-time" />
+                  <p class="pt-3">{{'BANK_STATEMENT.UPDATED_ON' | translate}} <br /> <span>{{itemOption.lastUpdateOn | date:'mediumDate'}}</span></p>
+
+                </div>
+                <div class="view-detail-bank">
+                  <img src="assets/images/bankStatement/Account-name.svg" alt="Account-name" />
+                  <p class="pt-3">{{'BANK_STATEMENT.ACCOUNT_HOLDER_NAME' | translate}} <br /><span>{{itemOption.accountHolderName}}</span></p>
+                </div>
+                <div class="view-detail-bank">
+                  <img src="assets/images/bankStatement/Transections-found.svg" alt="Transections-found" />
+                  <p class="pt-3">{{'BANK_STATEMENT.VOLUME_OF_TRANSACTIONS_RECORDED' | translate}}
+                    <br /><span>{{ itemOption.totalTransactions}}</span>
+                  </p>
+                </div>
+                <div class="view-detail-bank">
+                  <img src="assets/images/bankStatement/total-time-valid-details.svg" alt="total-time-valid-details" />
+                  <p class="pt-3">{{'BANK_STATEMENT.ACCOUNT_DURATION' | translate}} <br /><span> {{itemOption.accountDuration}}</span></p>
+                </div>
+                <div class="view-detail-bank">
+                  <img src="assets/images/bankStatement/bank-logo.svg" alt="Bank logo" />
+                  <p class="pt-3">{{'BANK_STATEMENT.BANK_NAME' | translate}} <br /><span> {{itemOption.bankName}}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="NP_Com_Group text-right" *ngIf="(itemOption && !itemOption.isCompleted) && !isViewMode ">
+              <div class="Add-new-btn-all">
+                <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="submit()">{{'BANK_STATEMENT.PROCEED' | translate}}</a>
+              </div>
+            </div>
+          </div>
+            <!-- <div class="NP_ITR_UP">
+              <div class="NP_ITR_UP">
+                <div class="NP_file_label" #stepWT>
+                  <div class="file-upload-itr">
+                    <span class="txt-over">
+                      Select a file to upload
+                    </span>
+                <span class="txt-over" *ngIf="item.viewRequest != null && itemOption.viewRequest.fileName != null">
+                  {{(itemOption.viewRequest.fileName| slice: 0:30)}}
+                </span>
+                    <input type='file' name="bs" class="custom-file-input" placeholder="select file to upload"
+                      (change)="handlBsUpload($event.target.files,opationsForSlider,itemOption)"
+                      accept="text/xml,application/xml,application/pdf">
+                  </div>
+
+
+                   <a href="javascript:void(0)">
+                   <em class="fmdi fmdi-delete"></em>
+                  </a>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+
+
+  <div class="card-box Form_GRP_NP_Text" *ngIf="roleId == 6" [hidden]="tab == 2">
+    <form autocomplete="off" #boDetailsForm="ngForm">
+
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h5 class="main-text-heading">{{'OFFICE_DETAILS.OFFICE_DETAILS' | translate}} <em class="fmdi fmdi-info ml-2"
+                ngbTooltip="Add Office Details you want to send the Applicant form to be filled"></em></h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class=" text-heading-cards">
+            <h5 class="m-0">{{'OFFICE_DETAILS.SELECT_AN_EXISTING_OFFICE' | translate}}</h5>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <div class="btn-group btn-group-toggle NP_W195px" ngbRadioGroup name="Doyoucollateral">
+              <label ngbButtonLabel
+                [ngClass]="applicantDetails.isSelectExistingDetails == true ?
+                  'btn tab-product-name active activet-border' : 'btn tab-product-name'">
+                <input ngbButton type="radio" [value]="true" name="applicantDetails.isSelectExistingDetails"
+                  [(ngModel)]="applicantDetails.isSelectExistingDetails" (change)="change()" [disabled]="isViewMode">
+                Yes
+              </label>
+              <label ngbButtonLabel
+                [ngClass]="applicantDetails.isSelectExistingDetails == false ?
+                'btn tab-product-name active activet-border' : 'btn tab-product-name'">
+                <input ngbButton type="radio" [value]="false" name="applicantDetails.isSelectExistingDetails"
+                  [(ngModel)]="applicantDetails.isSelectExistingDetails" (change)="change()" [disabled]="isViewMode"> No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="single-user-um pt-0" *ngIf="applicantDetails.isSelectExistingDetails">
+          <div class="col-lg-3 float-left NP_Height_Com">
+            <div class="form-group m-0">
+              <label>{{'OFFICE_DETAILS.SELECT_BRANCH_OFFICER' | translate}}</label>
+              <ng-select placeholder="{{'OFFICE_DETAILS.SELECT_ANY_ONE' | translate}}" [items]="boDetailsList" bindLabel="officeName" bindValue="userId"
+                name="applicantDetails.boId" [(ngModel)]="applicantDetails.boId"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? (validationObjects &&  validationObjects.boId &&
+              validationObjects.boId.obj && validationObjects.boId.obj.required ? validationObjects.boId.obj.required : false) : false) : false"
+              [validationMessage]="applicantDetails.isSelectExistingDetails ? (validationObjects && validationObjects.boId &&
+              validationObjects.boId.objMsg ? validationObjects.boId.objMsg:'') : false"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-lg-3 float-left NP_Height_Com btn_Grp_Height" *ngIf="!isViewMode">
+            <div class="Add-new-btn-all">
+              <a href="javascript:void(0);" class="btn btn-outline-psbpurple " (click)="addNewBO()"><em
+                  class="fmdi fmdi-plus mr-2"></em>{{'OFFICE_DETAILS.ADD_NEW' | translate}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="NP_Com_Group" *ngIf="!applicantDetails.isSelectExistingDetails">
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.OFFICE_NAME' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_OFFICE_NAME' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.officeName"
+                [(ngModel)]="applicantDetails.boDetailsProxy.officeName"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[0] && validationObjects.boDetailsProxy[0].officeName && validationObjects.boDetailsProxy[0].officeName.obj &&
+              validationObjects.boDetailsProxy[0].officeName.obj.required ? validationObjects.boDetailsProxy[0].officeName.obj.required : false)):false"
+                [validationMessage]="applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[0] && validationObjects.boDetailsProxy[0].officeName ? validationObjects.boDetailsProxy[0].officeName.objMsg:'')"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.FIRST_NAME' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_FIRST_NAME' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.firstName" [(ngModel)]="applicantDetails.boDetailsProxy.firstName"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (
+                validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[1] &&
+                validationObjects.boDetailsProxy[1].firstName && validationObjects.boDetailsProxy[1].firstName.obj &&
+                validationObjects.boDetailsProxy[1].firstName.obj.required ? validationObjects.boDetailsProxy[1].firstName.obj.required : false)) : false"
+                [pattern]="applicantDetails.isSelectExistingDetails ? '' : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[1] && validationObjects.boDetailsProxy[1].firstName && validationObjects.boDetailsProxy[1].firstName.obj && validationObjects.boDetailsProxy[1].firstName.obj.pattern ? validationObjects.boDetailsProxy[1].firstName.obj.pattern : '')"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[1] && validationObjects.boDetailsProxy[1].firstName ? validationObjects.boDetailsProxy[1].firstName.objMsg:''"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.MIDDLE_NAME' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_MIDDLE_NAME' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.middleName"
+                [(ngModel)]="applicantDetails.boDetailsProxy.middleName"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[2] && validationObjects.boDetailsProxy[2].middleName && validationObjects.boDetailsProxy[2].middleName.obj && validationObjects.boDetailsProxy[2].middleName.obj.required || false)) : false"
+                [pattern]="applicantDetails.isSelectExistingDetails ? '' : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[2] && validationObjects.boDetailsProxy[2].middleName && validationObjects.boDetailsProxy[2].middleName.obj && validationObjects.boDetailsProxy[2].middleName.obj.pattern ? validationObjects.boDetailsProxy[2].middleName.obj.pattern : '')"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[2] && validationObjects.boDetailsProxy[2].middleName ? validationObjects.boDetailsProxy[2].middleName.objMsg:''"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.LAST_NAME' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_LAST_NAME' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.lastName" [(ngModel)]="applicantDetails.boDetailsProxy.lastName"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[3] && validationObjects.boDetailsProxy[3].lastName && validationObjects.boDetailsProxy[3].lastName.obj && validationObjects.boDetailsProxy[3].lastName.obj.required || false)) : false"
+                [pattern]="applicantDetails.isSelectExistingDetails ? '' : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[3] && validationObjects.boDetailsProxy[3].lastName && validationObjects.boDetailsProxy[3].lastName.obj && validationObjects.boDetailsProxy[3].lastName.obj.pattern ? validationObjects.boDetailsProxy[3].lastName.obj.pattern : '')"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[3] && validationObjects.boDetailsProxy[3].lastName && validationObjects.boDetailsProxy[3].lastName.objMsg"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.E_MAIL_ID' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_EMAIL_ID' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.emailId" [(ngModel)]="applicantDetails.boDetailsProxy.emailId"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[4] && validationObjects.boDetailsProxy[4].emailId && validationObjects.boDetailsProxy[4].emailId.obj && validationObjects.boDetailsProxy[4].emailId.obj.required || false)) :  false"
+                [pattern]="applicantDetails.isSelectExistingDetails ? '' : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[4] && validationObjects.boDetailsProxy[4].emailId && validationObjects.boDetailsProxy[4].emailId.obj && validationObjects.boDetailsProxy[4].emailId.obj.pattern ? validationObjects.boDetailsProxy[4].emailId.obj.pattern : '')"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[4] && validationObjects.boDetailsProxy[4].emailId && validationObjects.boDetailsProxy[4].emailId.objMsg"
+                [appValidateElement]="submitted" [disabled]="isViewMode">
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 float-left">
+            <div class="form-group">
+              <label>{{'OFFICE_DETAILS.MOBILE_NO' | translate}}</label>
+              <input type="text" placeholder="{{'OFFICE_DETAILS.ENTER_MOBILE_NO' | translate}}" class="form-control"
+                name="applicantDetails.boDetailsProxy.mobileNo" [(ngModel)]="applicantDetails.boDetailsProxy.mobileNo"
+                maxlength="10"
+                [required]="saveButton ? false : sendToBo ? (applicantDetails.isSelectExistingDetails ? false : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[5] && validationObjects.boDetailsProxy[5].mobileNo && validationObjects.boDetailsProxy[5].mobileNo.obj && validationObjects.boDetailsProxy[5].mobileNo.obj.required || false)):false"
+                [pattern]="applicantDetails.isSelectExistingDetails ? '' : (validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[5] && validationObjects.boDetailsProxy[5].mobileNo && validationObjects.boDetailsProxy[5].mobileNo.obj && validationObjects.boDetailsProxy[5].mobileNo.obj.pattern ? validationObjects.boDetailsProxy[5].mobileNo.obj.pattern : '')"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[5] && validationObjects.boDetailsProxy[5].mobileNo && validationObjects.boDetailsProxy[5].mobileNo.objMsg"
+                [appValidateElement]="submitted" (keypress)="numberOnly($event)" [disabled]="isViewMode">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+      <div class="NP_Com_Group NP_BT_PT_1_5">
+        <div class="Main-heading-dual-Cont">
+          <div class=" text-heading-cards">
+            <h5 class="m-0">{{'OTHER_DETAILS.SEND_COPY_OF_MAIL_ANY_OTHER_OFFICER' | translate}}</h5>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <div class="btn-group btn-group-toggle NP_W195px" ngbRadioGroup name="Doyouwantemail">
+              <label ngbButtonLabel class="btn tab-product-name"
+                [ngClass]="applicantDetails?.boDetailsProxy?.isSendCopy == true?'activet-border':''">
+                <input ngbButton type="radio" [value]="true" name="applicantDetails.boDetailsProxy.isSendCopy"
+                  [(ngModel)]="applicantDetails.boDetailsProxy.isSendCopy" [disabled]="isViewMode"> Yes
+              </label>
+              <label ngbButtonLabel class="btn tab-product-name"
+                [ngClass]="applicantDetails?.boDetailsProxy?.isSendCopy == false?'activet-border':''">
+                <input ngbButton type="radio" [value]="false" name="applicantDetails.boDetailsProxy.isSendCopy"
+                  [(ngModel)]="applicantDetails.boDetailsProxy.isSendCopy" [disabled]="isViewMode"> No
+              </label>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="NP_Com_Group NP_BT_PT_1_5" *ngIf="applicantDetails.boDetailsProxy.isSendCopy">
+        <div class="single-user-um pt-0">
+          <div class="col-lg-3 float-left NP_Height_Com">
+            <div class="form-group m-0">
+              <label>{{'OTHER_DETAILS.EMAIL_ID' | translate}} <em class="fmdi fmdi-info ml-2"
+                ngbTooltip="Enter the office email id to send a copy of the mail sent to the assigned zonal / branch office"></em></label>
+              <input type="text" placeholder="{{'OTHER_DETAILS.ENTER_EMAILID' | translate}}" class="form-control fmdi fmdi-info ml-2" name="applicantDetails.boDetailsProxy.zoEmailId" [(ngModel)]="applicantDetails.boDetailsProxy.zoEmailId"
+                [disabled]="isViewMode"  [pattern]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[6] && validationObjects.boDetailsProxy[6].zoEmailId && validationObjects.boDetailsProxy[6].zoEmailId.obj && validationObjects.boDetailsProxy[6].zoEmailId.obj.pattern ? validationObjects.boDetailsProxy[6].zoEmailId.obj.pattern : ''"
+                [validationMessage]="validationObjects && validationObjects.boDetailsProxy && validationObjects.boDetailsProxy[6] && validationObjects.boDetailsProxy[6].zoEmailId && validationObjects.boDetailsProxy[6].zoEmailId.objMsg"
+                [appValidateElement]="submitted">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+    </div>
+  </div>
+  <div class="row">
+  <div class="col-12 parent">
+  <div class="card-box btn-tabs-Fix-NP Mobile_BTN_NP">
+    <div class="nav-bordered">
+      <h4 class="m-0 mb-2 d-print-none">{{'OTHER_DETAILS.ACTIONS' | translate}}</h4>
+      <span>{{'OTHER_DETAILS.SELECT_FROM_FOLLOWING' | translate}}</span>
+    </div>
+    <!-- [hidden]="isViewMode || !workflowData?.step?.stepActions"  -->
+    <div class="text-right d-print-none" *ngIf="workflowData?.step?.stepActions && !isViewMode">
+      <ng-container *ngFor="let stepAction of workflowData.step.stepActions;let i = index">
+
+        <button type="button" *ngIf="stepAction.action.id != 3"
+          [ngClass]="stepAction.action.buttonText == 'Save'?'btn btn-psb btn-psbpurple':'btn btn-psb btn-success'"
+          (click)="performAction(stepAction)">{{stepAction.action.buttonText}}</button>
+        <!-- <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple">Save</a>
+      <a href="javascript: void(0)" class="btn btn-psb btn-success" type="submit">Submit</a> -->
+      </ng-container>
+    </div>
+    <div class="text-right d-print-none" *ngIf="!workflowData?.step?.stepActions || isViewMode">
+      <ng-container>
+
+        <button type="button" class="btn btn-psb btn-psbpurple" (click)="back()">{{'OTHER_DETAILS.BACK' | translate}}</button>
+        <!-- <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple">Save</a>
+        <a href="javascript: void(0)" class="btn btn-psb btn-success" type="submit">Submit</a> -->
+      </ng-container>
+    </div>
+  </div>
+</div>
+  </div>
+</div>

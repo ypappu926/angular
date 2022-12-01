@@ -1,0 +1,213 @@
+<div class="container-fluid">
+  <app-page-title title="Product List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <!-- widget -->
+    <!-- Widget data -->
+    <div class="col-md-6 {{widgetData.length > 4 ? 'col-xl-20' : 'col-xl-3'}}"
+      *ngFor="let widget of widgetData;let i = index" (click)="activeClick(widget.tab,widget)">
+      <div
+        class="widget-rounded-circle card-box NP_Column_Revers {{ (activateTab == widget.tab || widget.completed) ? 'active-Cborder' :''}} ">
+        <div class="row">          
+          <div class="col-8 psb-col-8">
+            <div class="text-left dr-text">
+              <h3 class="text-dark mt-1" [CountTo]="widget.value" [from]="0" [duration]="1">{{ widget.value }}
+              </h3>
+              <!-- {{i+1}}/{{widgetData.length}} -->
+              <p class="mb-1 text-truncate">{{ widget.text }} </p>
+            </div>
+          </div>
+          <div class="col-4 psb-col-4">
+            <div class="avatar-lg rounded-circle bg-soft-{{ widget.color }} border-{{ widget.color }} border">
+              <em class="{{ widget.icon }} icon-avatar-title"></em>
+              <!--  Ibnk-sent-mail-Checker-send font-22-->
+            </div>
+          </div>
+        </div> <!-- end row-->
+      </div> <!-- end widget-rounded-circle-->
+    </div> <!-- end col-->
+  </div>
+
+  <!-- tab 0 -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card-box">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards" *ngIf="activateTab == 1">
+            <h4 class="main-text-heading">Active Product</h4>
+            <span class="text-muted">These product are live and are being calculated against applications
+              received</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="activateTab == 2">
+            <h4 class="main-text-heading">Saved Product</h4>
+            <span class="text-muted">These are the new products you are working on, no one can see these except
+              you</span>
+          </div>
+          <div class="text-heading-cards" *ngIf="activateTab == 3">
+            <h4 class="main-text-heading"*ngIf="roleId === roles.ADMIN_MAKER.id">Sent to Checker</h4>
+            <h4 class="main-text-heading"*ngIf="roleId === roles.ADMIN_CHECKER.id">Received From Maker</h4>
+            <span class="text-muted">These products are sent to checker for approval, these will go live after checker’s
+              approval</span>
+
+          </div>
+          <div class="text-heading-cards" *ngIf="activateTab == 4">
+            <h4 class="main-text-heading"></h4>
+            <h4 class="main-text-heading"*ngIf="roleId === roles.ADMIN_MAKER.id">Sent Back By Checker</h4>
+            <h4 class="main-text-heading"*ngIf="roleId === roles.ADMIN_CHECKER.id">Send Back To Maker</h4>
+            <span class="text-muted">Checker have sent back these products , there may be some correction needed in
+              these</span>
+          </div>
+
+          <div class="text-heading-cards" *ngIf="activateTab == 5">
+            <h4 class="main-text-heading">Inactive Product</h4>
+            <span class="text-muted">These product are inactive and will not be calculated against applications
+              received</span>
+          </div>
+
+          <div class="Btn-Drop_Down-dual-Cont" *ngIf="(allProduct?.length > 0)&&roleId === roles.ADMIN_MAKER.id">
+            <!-- &&checkButtonPermission('ADD_NEW_PRODUCT') -->
+            <div class="Add-new-btn-all">
+              <a (click)="toNewProduct()" class="btn btn-psbpurple"><em class="fmdi fmdi-plus mr-1"></em>
+                Add New Product</a>
+            </div>
+          </div>
+          <!-- end col-->
+        </div>
+        <div class="table-responsive" *ngIf="allProduct?.length > 0">
+          <div id="table_responsive" class="table-responsive">
+           
+            <table #ProductListContent class="Common-ps-SS-NP" summary="">
+             <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product Name</th>
+                  <th></th>
+                  <!-- <th *ngIf="activateTab == 3">Request Type</th> -->
+                  <th *ngIf="activateTab == 1 || activateTab == 5">Version</th>
+                  <th>Last Modified</th>
+                  <th class="NP_Action">Action</th>
+                </tr>
+              </thead>
+              <!-- <tbody> -->
+              <tbody>
+                <tr
+                  *ngFor="let customer of allProduct | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index;">
+
+                  <td>
+                    <label>Id</label>
+                    {{i+1}}
+                  </td>
+                  <td>
+                    <label>Product Name</label>
+                    {{ customer.productName }}
+                  </td>
+                  <td>
+                    <label>Product Category</label>
+                    <ng-container *ngIf="businessTypeId!=1">
+                      {{productCategory}}
+                    </ng-container>
+                    <ng-container *ngIf="businessTypeId==1">
+                      {{customer.productTypeTempResponses.length===0?'':customer.productTypeTempResponses[0].masterValueList}}
+                    </ng-container>
+
+                  </td>
+                  <!-- <td *ngIf="activateTab == 3"> -->
+                    <!-- <label>Request Type</label>
+                    <ng-container *ngFor="let status of productStatus">
+                      <ng-container *ngIf="customer.productStatusId===status.id">
+                        {{roleId === roles.ADMIN_CHECKER.id&&customer.productStatusId===3 &&activateTab == 3?'Recived From Maker':status.name}}
+                      </ng-container>
+
+                    </ng-container> -->
+                  <!-- </td> -->
+                  <td *ngIf="activateTab == 1 || activateTab == 5">
+                    <label>Version</label>
+                    V {{ customer.versionId?customer.versionId:0.1 }}
+                  </td>
+                  <td>
+                    <label>Last Modified</label>
+                    {{customer.createdDate| date:'medium'}}
+                  </td>
+                  <td class="NP_Action">
+                    <label>Action</label>
+                    <div>
+                      <div ngbDropdown container="body" class="dropdown d-inline">
+                        <a href="javascript:void(0);" class="action-icon" ngbDropdownToggle> <em class="mdi mdi-dots-horizontal"
+                            placement="top" ngbTooltip="Menu" tooltipClass="Menutooltip"></em></a>
+                        <div class="dropdown-menu NP_Drop_Hover" ngbDropdownMenu>
+                          <ng-container *ngIf="roleId === roles.ADMIN_MAKER.id">
+                            <button type="button" class="dropdown-item" (click)='goToEdit(customer.id)'
+                            *ngIf="(activateTab == 2 || activateTab == 1 || activateTab == 4)"><em class="fmdi fmdi-edit"></em>Edit Product</button>
+                            <!-- && checkButtonPermission('EDIT_PRODUCT')" -->
+                          </ng-container>                          
+                          <button type="button" class="dropdown-item" (click)='goToView(customer.id,activateTab)'><em class="fmdi fmdi-eye"></em> View Product</button>
+                           <!-- *ngIf="checkButtonPermission('VIEW_PRODUCT')" -->
+                          <!-- <a  class="action-icon"> <em class="mdi mdi-download"  placement="top"
+                          ngbTooltip="Download Product in PDF"></em></a> -->
+                          <ng-container *ngIf="roleId === roles.ADMIN_MAKER.id">
+                            <button type="button" class="dropdown-item" 
+                            (click)="Delete_Product_Permantly(customer.id)" *ngIf="activateTab == 2 "><em class="fmdi fmdi-delete"></em>Delete Product</button>
+                            <!-- && checkButtonPermission('DELETE_PRODUCT')" -->
+                            <button type="button" class="dropdown-item" (click)="Active_Deactive_Popup(customer,1)" 
+                          *ngIf="(activateTab == 1) "><em class="fmdi fmdi-lock"></em>In Active Product</button>
+                          </ng-container>
+                          
+                          <!-- && checkButtonPermission('ACTIVE_PRODUCT') -->
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <a href="javascript:void(0)" (click)="scrollRight()" *ngIf="isLargeScreen()" id="prebtn" class="table_btn_Previus PR"><em
+              class="fmdi fmdi-chevron-right"></em></a>      -->
+          </div>
+          <div class="row pagination-table">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+                {{((pageSize*(page-1))+1)}} to
+                {{(pageSize*page) > (allProduct.length) ? (allProduct.length) : (pageSize*page)}} of
+                {{allProduct.length}}
+                entries
+                entries
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length">
+              <label class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [(ngModel)]="pageSize" [items]="PageSelectNumber">
+                </ng-select> entries
+              </label>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5" >
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="allProduct?.length " [(page)]="page" [maxSize]="3"
+                  [pageSize]="pageSize">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+        <div class="table-No-Data" *ngIf="allProduct == null ">
+          <div class="Com-No-data-Found-NP">
+            <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+            <strong class="No-Data-pad-2"> Product List is Empty</strong>
+            <ng-container *ngIf="roleId === roles.ADMIN_MAKER.id">
+            <div class="btn-no-Data" >
+              <!-- *ngIf="checkButtonPermission('ADD_NEW_PRODUCT')" -->
+              <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="toNewProduct()"><em
+                  class="mdi mdi-plus mr-1"></em>
+                Add New Product</a>
+            </div>
+            </ng-container>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

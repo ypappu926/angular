@@ -1,0 +1,340 @@
+<td scope="row">{{index+1}}</td>
+<td *ngIf="productFields">
+  <div class="sub-man-para-number">
+    <p class="ctsp-Common">{{productFields.fieldParameter}}<em class="mdi mdi-information" placement="top"
+        ngbTooltip="{{productFields.toolTip}}"></em>
+    </p>
+    <div class="main-content SE-check" *ngIf="businessTypeId===9">
+      <div class="psb-parameter-content-c">
+        <div class="checkbox checkbox-psbpurple form-check-inline">
+          <input type="checkbox" id="Applicant_{{productFields.id}}" [value]="productFields.isApplicant"
+            [(ngModel)]="productFields.isApplicant" #isApplicant='ngModel'
+            (ngModelChange)="selectCoApplicant(productFields, 1) " ngModel required>
+          <label for="Applicant_{{productFields.id}}"> Applicant
+          </label>
+        </div>
+        <div class="checkbox checkbox-psbpurple form-check-inline" *ngIf="productFields.key!='ADMISSION_TYPE'">
+          <input type="checkbox" id="Co-Applicant_{{productFields.id}}" [value]="productFields.isCoApplicant"
+            [(ngModel)]="productFields.isCoApplicant " #isCoApplicant='ngModel'
+            (ngModelChange)="selectCoApplicant(productFields, 2) " ngModel required>
+          <label for="Co-Applicant_{{productFields.id}}">Co-Applicant</label>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</td>
+
+
+<td class="jc-FEND {{(productFields.key==='MINIMUM_BUREAU_SCORE' ||productFields.key==='MINIMUM_BUREAU_SCORE_ALL_PARTNER' ||productFields.key==='MINIMUM_BUREAU_SCORE_MAIN_PARTNER' || productFields.key==='MINIMUM_BUREAU_SCORE_HOME' ) ? 'Cibil-Row' : ''}}">
+  <!-- {{(productFields.key==='MINIMUM_BUREAU_SCORE') ? 'Cibil-Row' : ''}} -->
+  <ng-container *ngFor="let sub of productFields.productSubFieldTempResponse;">
+    <!-- _multirangesliderwithtextbox -->
+    <ng-container *ngIf="sub.controlType===4 ">
+      <!-- <span style="padding: 20px; "></span> -->
+      <div class="mandatory-Parameters-number">
+        <div class="rang-parameter">
+          <div class="rang-width">
+            <ng5-slider [(value)]="sub.value.minValue" [(highValue)]="sub.value.maxValue"
+              [options]="(schemeId==9&&sub.isDecimalAllowed)? options3:schemeId==9 ?options1:options2">
+            </ng5-slider>
+          </div>
+        </div>
+        <div class="rang-mandatory-input">
+          <div class="input-50">
+            <div class="input-group">
+              <input type="number" id="textbox_{{index}}" class="form-control" step="{{sub.isDecimalAllowed?'.01':''}}"
+                (keyup)="clearValue($event,sub)" [(ngModel)]="sub.value.minValue" [appValidateElement]="submitted"
+                pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                [validationMessage]="{'required': 'Minimum value is required','pattern': 'Please enter only numeric value '}">
+              <div class="input-group-append">
+                <span class="input-group-text">{{sub.info}}</span>
+              </div>
+            </div>
+          </div>
+          <span class="input-margin ">To</span>
+          <div class="input-50">
+            <div class="input-group">
+              <input type="number" id="textbox2_{{index}}" class="form-control" step="{{sub.isDecimalAllowed?'.01':''}}"
+                [(ngModel)]="sub.value.maxValue" [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                required
+                [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}">
+              <div class="input-group-append">
+                <span class="input-group-text">{{sub.info}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- _textbox -->
+    <ng-container *ngIf=" sub.controlType===5">
+      <div class="mandatory-Parameters-number float-right">
+        <div class="sub-man-para-number">
+          <div class="check-cibil-score">
+            <div class="cibil-score-checkbox cs-w-45">
+              <div class="form-group input-number-cibil">
+                <div class="mandatory-input">
+                  <div class="input-width-45">
+                    <input type="text" value="10" name="simpleinput_sub.id" class="form-control"
+                      [(ngModel)]="sub.value.minValue" [appValidateElement]="submitted" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sub.value.minValue"
+                      pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                      [validationMessage]="{'required': 'Minimum value is required','pattern': 'Please enter only numeric value '}" />
+                    <!-- <span class="mt-1 float-left">Max {{sub.defaultMinValue}}</span> -->
+                  </div>
+                  <!-- (keypress)="numberOnly($event)" -->
+                  <span class="input-margin ">To</span>
+                  <div class="input-width-45">
+                    <input type="text" value="10" name="simpleinput2_sub.id" class="form-control"
+                      [(ngModel)]="sub.value.maxValue" [appValidateElement]="submitted" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sub.value.maxValue"
+                      pattern="^(?:\d*\.\d{1,2}|\d+)$" (focusout)="checkMaxValue(sub.value.minValue,sub.value.maxValue)"
+                      required
+                      [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}" />
+                    <!-- <span class="mt-1 float-left">Max {{sub.defaultMaxValue}}</span> -->
+                  </div>
+                  <!-- (keypress)="numberOnly($event)" -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf=" sub.controlType===8">
+      <div class="mandatory-Parameters-number float-right">
+        <div class="sub-man-para-number">
+          <div class="check-cibil-score">
+            <div class="cibil-score-checkbox cs-w-45">
+              <div class="form-group input-number-cibil">
+                <div class="mandatory-input">
+                  <div class="input-width-45">
+                    <input type="text" value="10" name="simpleinput2_sub.id" class="form-control"
+                      [(ngModel)]="sub.value.maxValue" [appValidateElement]="submitted"  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sub.value.maxValue" 
+                      pattern="^(?:\d*\.\d{1,2}|\d+)$" (focusout)="checkMaxValue(sub.value.minValue,sub.value.maxValue)"
+                      required
+                      [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}" />
+                    <!-- <span class="mt-1 float-left">Max {{sub.defaultMaxValue}}</span> -->
+                  </div>
+                  <!-- (keypress)="numberOnly($event)" -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- _radio -->
+    <ng-container *ngIf=" sub.controlType===3">
+      <div class="input-PS-Valid IN-TB-NP">
+        <div class="btn-group btn-group-toggle btn-NP-flex" ngbRadioGroup name="BillingAproductfieldsress">
+          <label ngbButtonLabel
+            class="btn tab-Radio_NP {{productFields.value === sub.subFieldsId ? 'activet-border' : ''}}">
+            <input ngbButton type="radio" id="radio_sub.id" [value]="sub.subFieldsId" [(ngModel)]="productFields.value">
+            {{sub.subPara}}
+            <em class="mdi mdi-information ml-1" ngbTooltip="{{sub.tooltip}}"></em>
+          </label>
+        </div>
+        <div class="invalid text-danger" *ngIf=" submitted && ab ==0">
+          <small>Please select either value</small>
+        </div>
+      </div>
+    </ng-container>
+
+
+    <!-- _checkbox -->
+    <ng-container *ngIf="sub.controlType===1 ">
+      <div class="input-PS-Valid IN-C-NP">
+        <div class="{{sub.paraClass}}">
+          <input type="checkbox" id="checkbox1_{{sub.subPara}}_{{sub.maxValue}}_{{index+1}}" [ngModel]="sub.value"
+            #checkBox='ngModel' (change)="onCahngeControl($event,sub)" [ngModelOptions]="{standalone: true}" ngModel
+            required>
+          <label for="checkbox1_{{sub.subPara}}_{{sub.maxValue}}_{{index+1}}">{{sub.subPara}} </label>
+        </div>
+        <div class="invalid text-danger" *ngIf=" submitted && ab ==0">
+          <small>Please select either value</small>
+        </div>
+      </div>
+    </ng-container>
+
+  </ng-container>
+</td>
+
+<td class="icon-center"><em class="mdi mdi-close icon-danger" [hidden]="productFields.defaultMandatory==1"
+    (click)="remove(productFields)"></em>
+</td>
+
+<!-- UNUSED CONTROLS -->
+<!-- <ng-container *ngIf="sub.controlType===15 ">
+      <span style="padding: 20px; "></span>
+      <div class="mandatory-Parameters-number">
+        <div class="rang-parameter">
+          <div class="rang-width">
+            <ng5-slider [(value)]="sub.value.minValue" [(highValue)]="sub.value.maxValue" [options]="options">
+            </ng5-slider>
+          </div>
+        </div>
+        <div class="rang-mandatory-input">
+          <div class="input-50">
+            <div class="input-group">
+              <input  type="number" id="textbox_{{index}}" class="form-control"
+                [(ngModel)]="sub.value.minValue" [appValidateElement]="submitted" (keypress)="numberOnly($event)"
+                 pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                [validationMessage]="{'required': 'Minimum value is required','pattern': 'Please enter only numeric value '}">
+              <div class="input-group-append">
+                <span class="input-group-text">{{sub.info}}</span>
+              </div>
+            </div>
+          </div>
+          <span class="input-margin ">To</span>
+          <div class="input-50">
+            <div class="input-group">
+              <input  type="number" id="textbox2_{{index}}" class="form-control"
+                [(ngModel)]="sub.value.maxValue" [appValidateElement]="submitted" (keypress)="numberOnly($event)"
+                pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}">
+              <div class="input-group-append">
+                <span class="input-group-text">{{sub.info}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container> -->
+<!-- _select -->
+<!-- <ng-container *ngIf="sub.controlType===9">
+      <div class="mandatory-Parameters-number float-right">
+        <div class="sub-man-para-number">
+          <div class="row mt-3 float-right">
+            <ng-select placeholder="Select any one" [items]=""></ng-select>
+          </div>
+        </div>
+      </div>
+    </ng-container> -->
+<!-- this change Nikul  Any change Pls Infom  -->
+<!-- _multicheckbox -->
+<!-- <ng-container *ngIf="sub.controlType===12 || sub.controlType===6"> -->
+<!-- <div class="mandatory-Parameters-number"> -->
+<!-- <div class="Cibil-Row"> -->
+<!-- _multicheckbox-->
+<!-- <div class="sub-man-para-number jc-start-LI" *ngIf="sub.controlType===6 ">
+            <div class="check-cibil-score">
+              <div class="cibil-score-checkbox cs-w-55">
+                <label for="Credit6more">{{sub.subPara}} <em
+                    class="mdi mdi-information" placement="top"
+                    ngbTooltip="Small textplayers who are required tp maintain book"></em></label>
+                <div class="form-group input-number-cibil">
+                  <div class="mandatory-input cibil-mr">
+                    <div class="cibil-score-true btn-group btn-group-toggle">
+                      start box-active and number of cibil recored
+                      <div class="cibil-score-number"
+                        *ngFor='let value of getMaxValue(sub.isReverse,sub.defaultMinValue,sub.defaultMaxValue);let myIndex=index'>
+                        <div class="active-img" *ngIf="sub.value.includes(value)">
+                          <img src="assets/images/tick-Profile.svg" alt="Complete Tick Cibil">
+                        </div>
+                        <label class="btn cibil-content-number activate-input" ngbButtonLabel>
+                          <input type="checkbox" id="multicheck_{{sub.id}}_{{sub.subPara}}_{{myIndex+1}}"
+                            (ngModelChange)="forMultiCheckBox(value,sub)" [ngModel]="value" ngbButton>
+                          {{value}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+<!--_labelwithtextbox -->
+<!-- <div class="sub-man-para-number jc-end-LI" *ngIf="sub.controlType===12 ">
+          <div class="Lb-Input-PS">
+            <label>{{sub.subPara}} <em class="mdi mdi-information" placement="top"
+                ngbTooltip="{{sub.toolTip}}"></em></label>
+            <div class="mandatory-input">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="number" name="labeltextbox_{{sub.id}}" class="form-control"
+                    [(ngModel)]="sub.value.minValue" [appValidateElement]="submitted" (keypress)="numberOnly($event)"
+                    pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                    [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}">
+                  <div class="input-group-append">
+                    <span class="input-group-text">{{sub.info}}</span>
+                  </div>
+                </div>
+              </div>
+              <span class="input-margin"> To</span>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="number" name="labeltextbox2_{{sub.id}}" class="form-control"
+                    [(ngModel)]="sub.value.maxValue"  [appValidateElement]="submitted"
+                    (keypress)="numberOnly($event)" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                    (focusout)="checkMaxValue(sub.value.minValue,sub.value.maxValue)" required
+                    [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}">
+                  <div class="input-group-append">
+                    <span class="input-group-text">{{sub.info}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </ng-container> -->
+
+<!-- _textboxinfo -->
+
+<!-- <ng-container *ngIf="sub.controlType===10">
+      <div class="mandatory-Parameters-number float-right">
+        <div class="form-group input-number-s">
+          <div class="mandatory-input">
+            <div class="{{sub.paraClass}}">
+              <div class="input-group">
+                <input type="number" id="infotextbox_sub.id" class="form-control" [(ngModel)]="sub.value.minValue"
+                  [appValidateElement]="submitted" (keypress)="numberOnly($event)" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                  required
+                  [validationMessage]="{'required': 'Minimum value is required','pattern': 'Please enter only numeric value '}">
+                <div class="input-group-append">
+                  <span class="input-group-text">{{sub.info}}</span>
+                </div>
+              </div>
+              <span class="mt-1">Min {{sub.defaultMaxValue}}</span>
+            </div>
+            <span class="input-margin ">To</span>
+            <div class="{{sub.paraClass}}">
+              <div class="input-group">
+                <input type="number" id="infotextbox2_sub.id" class="form-control" [(ngModel)]="sub.value.maxValue"
+                  [appValidateElement]="submitted" (keypress)="numberOnly($event)" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                  required
+                  [validationMessage]="{'required': 'Maximum value is required','pattern': 'Please enter only numeric value '}">
+                <div class="input-group-append">
+                  <span class="input-group-text">{{sub.info}}</span>
+                </div>
+              </div>
+              <span class="mt-1">Max {{sub.defaultMaxValue}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container> -->
+
+<!-- _link -->
+<!-- <ng-container *ngIf=" sub.controlType===8">
+      <div class="mandatory-Parameters-number float-right">
+        <div class="mandatory-Parameters-text">
+          <div class="text-mandatory">
+            <ng-container *ngIf="productFields.fieldId==26">
+              <span class="note-text">{{cityStateCount}}</span>
+              <a href="javascript: void(0)" (click)="Select_Geo_Graphical_Popup(productFields,false)">Change</a>
+            </ng-container>
+            <ng-container *ngIf="productFields.fieldId==42">
+              <span class="note-text">{{industryCount}}</span>
+              <a href="javascript: void(0)" (click)="Select_Industry_Sector_Popup(productFields,false)">Change</a>
+            </ng-container>
+            
+          </div>
+        </div>
+      </div>
+    </ng-container> -->

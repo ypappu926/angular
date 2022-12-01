@@ -1,0 +1,860 @@
+<div class="container-fluid " *ngIf="flag">
+  <div class="icon-title-heading">
+    <i class="fmdi fmdi-arrow-left" (click)="navigate()"></i>
+    <app-page-title [title]="isBMLogin ? 'Branch Manager' : 'Field Inspection'" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  </div>
+  <form autocomplete="off" #applicantDetailForm="ngForm">
+    <div class="row ">
+    <div class="col-12 parent">
+      <div class="card-box btn_tab_text_Cont Mobile_BTN_NP" id="stick-headerN">
+        <div class="NP_Com_Group BTN_text_Cont">
+          <div class="nav-bordered DScrolTopBlock_NP">
+          <div class="Top_Fix_text_Ico_View">
+            <em class="fmdi fmdi-arrow-left" (click)="navigate()"></em>
+            <div class="ml-2">
+              <h4 class="m-0 mb-2 d-print-none">Actions.</h4>
+              <span>Select from following</span>
+            </div>
+          </div>
+          </div>
+          <div class="nav-bordered DScrollnone_NP">
+          <h4 class="m-0 d-print-none">Applicant Information</h4>
+          </div>
+          <div class="text-right d-print-none" >
+            <ng-container *ngIf="workflowData?.step?.stepActions?.length > 0">
+          <!-- <button type="button" (click)="Common_Tranfer_Proposal_Popup()" class="btn btn-Common-teaser info"><em class="fmdi fmdi-arrow-right-top mr-1"></em>Transfer</button>  
+          <button type="button"  class="btn btn-Common-teaser secondery "><em class="fmdi fmdi-mail-reply mr-1"></em>Send Back</button>
+          <button type="button" (click)="Reject_Popup()" class="btn btn-Common-teaser reject"><em class="fmdi fmdi-close mr-1"></em>Reject</button>
+          <button type="button" (click)="Approve_Popup()" class="btn btn-Common-teaser success "><em class="fmdi fmdi-check-all mr-1"></em> Approve</button> -->
+          <!-- <button type="button"  class="btn btn-Common-teaser secondery " (click)="performAction()" [disabled]="isProceed"><em class="fmdi fmdi-mail-reply mr-1"></em>Save</button> -->
+          
+            <ng-container *ngFor="let stepAction of workflowData.step.stepActions;let i = index">
+              <button type="button" 
+                [ngClass]="stepAction.action.buttonText == 'Save' || stepAction.action.buttonText == 'Send Back' 
+                          || stepAction.action.buttonText == 'Back' ? 'btn btn-Common-teaser secondery' : 
+                          stepAction.action.buttonText == 'Positive' || stepAction.action.buttonText == 'Approve' ? 'btn btn-Common-teaser success' : 
+                          stepAction.action.buttonText == 'Negative' || stepAction.action.buttonText == 'Reject' ? 'btn btn-Common-teaser reject' :
+                          'btn btn-Common-teaser info'"
+                (click)="performAction(stepAction)">{{stepAction.action.buttonText}}
+              </button>
+            </ng-container>
+            </ng-container>
+            <ng-container *ngIf="isDisplayDownloadBtn">
+              <button  type="button" class="btn btn-Common-teaser info" (click)="downloadFIOReport()">Download Field Inspection Report</button>
+            </ng-container>
+          </div>
+            <!-- <ng-template #elseBlock>
+              <button type="button" class="btn btn-Common-teaser secondery" (click)="navigate()"><em class="fmdi fmdi-mail-reply mr-1"></em>Back</button>
+            </ng-template> -->
+          
+        </div>
+        <div class="NP_Com_Group mt-3 DScrollnone_NP">
+          <div class="CardSubDetails_Cont_NP">
+            <div class="CardGRP_text_NP" *ngIf="roleId != constant.UserRoleList.FIELD_INSPECTION_OFFICER.id">
+              <span>{{applicantDetals?.businessDetailsProxy?.fioName}}</span>
+              <span class="text-muted">Main FIO Assigned</span>
+            </div>
+            <div class="CardGRP_text_NP">
+              <span>{{applicantDetals?.businessDetailsProxy?.subFioName}}</span>
+              <span class="text-muted">Subsidiary FIO</span>
+            </div>
+            <ng-container *ngIf="roleId != constant.UserRoleList.FIELD_INSPECTION_OFFICER.id">
+              <div class="CardGRP_text_NP" *ngIf="applicantDetals?.businessDetailsProxy?.buttonStatusId == constant.ApplicationStatusMaster.APPROVED_BY_BM 
+                || applicantDetals?.businessDetailsProxy?.buttonStatusId == constant.ApplicationStatusMaster.E_SIGN_COMPLETED">
+                <span>{{applicantDetals?.businessDetailsProxy?.buttonStatusId == constant.ApplicationStatusMaster.APPROVED_BY_BM ? 'E-sign Pending' : 'E-sign Completed'}}</span>
+                <span class="text-muted">Digital Signature Status</span>
+              </div>
+            </ng-container>
+            <div class="CardGRP_text_NP" *ngIf="applicantDetals?.businessDetailsProxy?.statusName">
+              <!-- <span *ngIf="applicantDetals?.businessDetailsProxy?.buttonStatusId == constant.ApplicationStatusMaster.POSITIVE 
+                || applicantDetals?.businessDetailsProxy?.buttonStatusId == constant.ApplicationStatusMaster.NEGATIVE">Received From FIO for Approval
+              </span>
+
+              <span *ngIf="applicantDetals?.businessDetailsProxy?.buttonStatusId && applicantDetals?.businessDetailsProxy?.buttonStatusId != constant.ApplicationStatusMaster.POSITIVE 
+                && applicantDetals?.businessDetailsProxy?.buttonStatusId != constant.ApplicationStatusMaster.NEGATIVE
+                && applicantDetals?.businessDetailsProxy?.buttonStatusId != constant.ApplicationStatusMaster.APPROVED_BY_BM">{{applicantDetals?.businessDetailsProxy?.statusName}}
+              </span> -->
+
+              <span>{{applicantDetals?.businessDetailsProxy?.statusName}}</span>
+              <span class="text-muted">Status</span>
+            </div>
+            <!-- && roleId != constant.UserRoleList.FIELD_INSPECTION_OFFICER.id -->
+            <div class="CardGRP_text_NP" *ngIf="applicantDetals?.businessDetailsProxy?.reason">
+              <span>{{applicantDetals.businessDetailsProxy.reason}}</span>
+              <span class="text-muted">Reason</span>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="col-12">
+      <div class="NP_Com_Group">
+        <div class="card-box Form_GRP_NP_Text" *ngIf="applicantDetals?.applicantDetailsProxy">
+          <!-- Applicant Details Start -->
+          <div class="NP_Com_Group">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h4 class="main-text-heading">Applicant Details</h4>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>Name of the Unit</label>
+                <input type="text" [(ngModel)]="applicantDetals.applicantDetailsProxy.nameOfUnit" name="nameOfUnit"
+                [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.nameOfUnit)"
+                  placeholder="Enter Name of the Unit" class="form-control">
+                  <!-- disabled -->
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>Constitution</label>
+                <ng-select 
+                  placeholder="Select any one" 
+                  bindLabel="value"
+                  bindValue="id"
+                  [clearable]="false"
+                  [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.constitution)"
+                  [(ngModel)]="applicantDetals.applicantDetailsProxy.constitution"
+                  name="constitution"
+                  [items]="constitutionList">
+                  <!-- disabled -->
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left" *ngIf="applicantDetals?.applicantDetailsProxy?.constitution == 5">
+              <div class="form-group">
+                <label>Other Constitution</label>
+                <input type="text" [(ngModel)]="applicantDetals.applicantDetailsProxy.otherConstitution" name="otherConstitution"
+                  [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.otherConstitution)"
+                  placeholder="Other Constitution" class="form-control">
+                  <!-- disabled -->
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 float-left">
+              <div class="form-group">
+                <label>Date of Establishment/Incorporation</label>
+                <div class="psb-input-group clockpicker">
+                  <input placeholder="Select Date" placeholder="Select Date" ngbDatepicker readonly
+                    [minDate]="{day: 1,month: 1,year: 1910}" [maxDate]="max"
+                    [(ngModel)]="applicantDetals.applicantDetailsProxy.dateOfEstablishment" (click)="d.toggle()"
+                    [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.dateOfEstablishment)"
+                    name="dateOfEstablishment" class="form-control right-br-0" #d="ngbDatepicker">
+                    <!-- disabled -->
+                  <div class="psb-input-group-append">
+                    <span class="psb-input-group-text" (click)="d.toggle()">
+                      <i class="fmdi fmdi-calendar"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Applicant Details End -->
+          <!-- Address and Other Details Start -->
+
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h4 class="main-text-heading">Contact Details</h4>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h5 class="main-text-heading">Factory Address</h5>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group" *ngIf="applicantDetals?.applicantDetailsProxy?.factoryAddressList?.length > 0">
+            <ng-container *ngFor="let data of applicantDetals.applicantDetailsProxy.factoryAddressList; let i = index;">
+              <app-address-master
+                [address]="data"
+                [isDisable]="isViewMode || isBMLogin"
+                [data]="applicantDetailsBo.factoryAddressList[i]"
+                [isBmFioValidation]="true"
+                [otherDisableFlag]="disableFlag"
+                [campOrgId]="applicantDetals.applicantDetailsProxy.campOrgId"
+                [formName]="'applicantDetals.applicantDetailsProxy.factoryAddressList[' + i + ']'">
+              </app-address-master>
+            </ng-container>
+            <!-- <div class="NP_Com_Group btn_table_right MB_1_5">
+              <button type="button" class="btn btn-outline-psbpurple"><em class="fmdi fmdi-plus mr-1"></em>
+                Add Factory Address</button>
+            </div> -->
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h5 class="main-text-heading">Registered office Address</h5>
+              </div>
+              <!-- <div class="Btn-Drop_Down-dual-Cont">
+                <ng-select placeholder="Select any one" [items]="selectValue"></ng-select>
+              </div> -->
+              <div class="checkbox checkbox-psbpurple form-check-inline mr-2" *ngIf="applicantDetals?.applicantDetailsProxy?.isSameAsFactoryAddress">
+                <input type="checkbox" name="applicantDetals.applicantDetailsProxy.isSameAsFactoryAddress"
+                  [(ngModel)]="applicantDetals.applicantDetailsProxy.isSameAsFactoryAddress"
+                  [disabled]="applicantDetals.applicantDetailsProxy.isSameAsFactoryAddress">
+                <label for="factoryaddress">Same as factory address</label>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="applicantDetals?.applicantDetailsProxy?.registeredAddress && (!applicantDetals?.applicantDetailsProxy?.isSameAsFactoryAddress)">
+            <app-address-master
+              [address]="applicantDetals.applicantDetailsProxy.registeredAddress"
+              [isDisable]="isViewMode || isBMLogin"
+              [data]="applicantDetailsBo.registeredAddress"
+              [isBmFioValidation]="true"
+              [otherDisableFlag]="disableFlag"
+              [campOrgId]="applicantDetals.applicantDetailsProxy.campOrgId"
+              [formName]="'applicantDetals.applicantDetailsProxy.registeredAddress'">
+            </app-address-master>
+          </ng-container>
+          
+
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h5 class="main-text-heading">Correspondence Address</h5>
+              </div>
+              <!-- <div class="Btn-Drop_Down-dual-Cont">
+                <ng-select placeholder="Select any one" [items]="selectValue"></ng-select>
+              </div> -->
+              <div class="checkbox checkbox-psbpurple form-check-inline mr-2" *ngIf="applicantDetals?.applicantDetailsProxy?.isSameAsRegisterFactoryAddress">
+                <input type="checkbox" name="applicantDetals.applicantDetailsProxy.isSameAsRegisterFactoryAddress"
+                  [(ngModel)]="applicantDetals.applicantDetailsProxy.isSameAsRegisterFactoryAddress"
+                  [disabled]="applicantDetals?.applicantDetailsProxy?.isSameAsRegisterFactoryAddress">
+                <label for="factoryregisteredaddress">Same as factory / registered address</label>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="applicantDetals?.applicantDetailsProxy?.registeredAddress && (!applicantDetals?.applicantDetailsProxy?.isSameAsRegisterFactoryAddress)">
+            <app-address-master
+              [address]="applicantDetals.applicantDetailsProxy.correspondenceAddress"
+              [isDisable]="isViewMode || isBMLogin"
+              [isBmFioValidation]="true"
+              [otherDisableFlag]="disableFlag"
+              [data]="applicantDetailsBo.correspondenceAddress"
+              [campOrgId]="applicantDetals.applicantDetailsProxy.campOrgId"
+              [formName]="'applicantDetals.applicantDetailsProxy.correspondenceAddress'">
+            </app-address-master>
+          </ng-container>
+          <!-- Address and Other Details End -->
+        </div>
+
+        <div class="card-box Form_GRP_NP_Text" *ngIf="applicantDetals?.applicantDetailsProxy">
+          <div class="NP_Com_Group">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h4 class="main-text-heading">Details of Promoters</h4>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5 pt-0" *ngIf="applicantDetals?.applicantDetailsProxy?.promoterDetailsList?.length > 0">
+            <table class="NP_Com_Form_Table_BM_FIO NP_BMFIOS_CH Mobile_table_View_NP">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <!-- <th>Qualification</th> -->
+                  <th>Age</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of applicantDetals.applicantDetailsProxy.promoterDetailsList; let i = index;">
+                  <td data-label="Name">
+                    <input type="text" name="data.name{{i}}" 
+                    [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.promoterDetailsList && applicantDetailsBo.promoterDetailsList[i] && applicantDetailsBo.promoterDetailsList[i].name)"
+                      [(ngModel)]="data.name" placeholder="Enter Name" class="form-control">
+                  </td>
+                  <!-- <td data-label="Qualification">
+                    <input type="text" name="data.qualification{{i}}" disabled
+                    [(ngModel)]="data.qualification" placeholder="Enter Qualification" class="form-control">
+                  </td> -->
+                  <td data-label="Age">
+                    <input type="text" name="data.age{{i}}" 
+                    [disabled]="(isViewMode) || isBMLogin || (disableFlag && applicantDetailsBo.promoterDetailsList && applicantDetailsBo.promoterDetailsList[i] && applicantDetailsBo.promoterDetailsList[i].age)"
+                    [(ngModel)]="data.age" placeholder="Enter Age" class="form-control">
+                  </td>
+                </tr>               
+              </tbody>
+            </table>
+            <!-- <div class="NP_Com_Group btn_table_right">
+              <button type="button" class="btn btn-psb btn-outline-psbpurple"><em
+                  class="fmdi fmdi-plus mr-1"></em>
+                Add More</button>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="card-box Form_GRP_NP_Text" *ngIf="applicantDetals?.businessDetailsProxy">
+          <div class="NP_Com_Group">
+            <!-- Business Details Html Cont Start  -->
+            <div class="NP_Com_Group">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Business Details</h5>
+                </div>
+                <!-- <div class="Btn-Drop_Down-dual-Cont">
+                  <div class="NPBtn-Download">
+                    <a class="btn btn-outline-danger" href="javascript:void(0)"><em class="fmdi fmdi-delete mr-1"></em>
+                      Remove</button>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Type of Industry</label>
+                  <ng-select 
+                    placeholder="Select any one" 
+                    bindLabel="value"
+                    bindValue="id"
+                    [clearable]="false" 
+                    [disabled]="isViewMode || isBMLogin || (disableFlag && applicantDetailsBo.typeOfIndustry)"
+                    [(ngModel)]="applicantDetals.applicantDetailsProxy.typeOfIndustry"
+                    (change)="changeTypeOfIndustry($event)"
+                    name="typeOfIndustry"
+                    [items]="industryList">
+                    <!-- disabled -->
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Product Manufactured</label>
+                  <ng-select 
+                    placeholder="Select any one" 
+                    bindLabel="value"
+                    bindValue="id"
+                    [clearable]="false"
+                    [disabled]="isViewMode || isBMLogin || (disableFlag && applicantDetailsBo.typeOfProduct)"
+                    [(ngModel)]="applicantDetals.applicantDetailsProxy.typeOfProduct"
+                    name="typeOfProduct"
+                    [items]="industryProductList">
+                    <!-- disabled -->
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Whether the unit is running ? *</label>
+                  <ng-select 
+                    name="unitRunning"
+                    bindValue="id"
+                    bindLabel="value"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.unitRunning"
+                    placeholder="Select any one"
+                    [clearable]="false"
+                    [appValidateElement]="isProceed"
+                    [isRemoveRequired]="isSaveButton"
+                    [disabled]="isBMLogin || isViewMode"
+                    validationControlName="unitRunning"
+                    [items]="selectValue"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Whether infrastructural facilities are adequate ? *</label>
+                  <ng-select
+                    name="facilitiesAdequate"
+                    bindValue="id"
+                    bindLabel="value"
+                    [clearable]="false"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.facilitiesAdequate"
+                    placeholder="Select any one"
+                    [appValidateElement]="isProceed"
+                    [isRemoveRequired]="isSaveButton"
+                    [disabled]="isBMLogin || isViewMode"
+                    validationControlName="facilitiesAdequate"
+                    [items]="selectValue"></ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Date of Commencement of Commercial Production *</label>
+                  <div class="psb-input-group clockpicker">
+                    <input placeholder="Select Date" ngbDatepicker placeholder="Select Date"
+                      class="form-control right-br-0" #d1="ngbDatepicker" name="production" (click)="d1.toggle()" readonly [minDate]="{day: 1,month: 1,year: 1910}"
+                      [(ngModel)]="applicantDetals.businessDetailsProxy.production" [appValidateElement]="isProceed" [isRemoveRequired]="isSaveButton"
+                      validationControlName="production" [disabled]="isBMLogin || isViewMode" [maxDate]="max">
+                    <div class="psb-input-group-append">
+                      <span class="psb-input-group-text" (click)="d1.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>No. of Shifts</label>
+                  <input type="text" placeholder="Enter Shifts" class="form-control" name="noOfShifts" 
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.noOfShifts" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.noOfShifts" maxlength="2"
+                    [appValidateElement]="isProceed" validationControlName="noOfShifts" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>No. of Working Days/Year</label>
+                  <input type="text" placeholder="Enter Days/Year" class="form-control" name="noOfWorkingDays" 
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.noOfWorkingDays" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.noOfWorkingDays" maxlength="3"
+                    [appValidateElement]="isProceed" validationControlName="noOfWorkingDays" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+            </div>
+            <!-- Business Details Html Cont End  -->
+            <!-- Details of Assets Html Cont Start  -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont bb-1">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Details of Assets</h5>
+                </div>
+                <div class="Btn_Add_More_Cont" *ngIf="!isBMLogin">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'asset')">
+                    <em class="fmdi fmdi-plus mr-1"></em>Add New</button>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group">
+              <table class="NP_Three_Column_Data Mobile_table_View_NP">
+                <thead>
+                  <tr>
+                    <th>Description *</th>
+                    <th>Amount *</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let datas of applicantDetals.assetDetailsProxies; trackBy:identify; let i = index;">
+                    <td data-label="Description">
+                      <!-- <input type="text" placeholder="Enter Description" class="form-control" name="data.description{{i}}"
+                      (keypress)="keyPressEvent($event,1)"
+                      [(ngModel)]="data.description" [appValidateElement]="isProceed" validationControlName="description"> -->
+                      <ng-select 
+                        name="description{{i}}"
+                        bindValue="id"
+                        bindLabel="value"
+                        [(ngModel)]="datas.description"
+                        placeholder="Select any one"
+                        [clearable]="false"
+                        [items]="descriptionList"
+                        [disabled]="isBMLogin || isViewMode"
+                        [appValidateElement]="isProceed"
+                        [isRemoveRequired]="isSaveButton"
+                        validationControlName="description">
+                      </ng-select>
+                    </td>
+                    <td data-label="Amount">
+                      <input type="text" placeholder="Enter Amount" class="form-control" name="amount{{i}}" 
+                        (keypress)="keyPressEvent($event,1)" [disabled]="isBMLogin || isViewMode"
+                        [(ngModel)]="datas.amount" (keyup)="setTotal('asset')" appCurrencyInputDirective
+                        [appValidateElement]="isProceed" validationControlName="amount" [isRemoveRequired]="isSaveButton">
+                    </td>
+                    <td data-label="Action" *ngIf="!isBmLogin">
+                      <a href="javascript:void(0)" [ngClass]="(isBMLogin || isViewMode) ? 'icon-danger disable-pointer' : 'icon-danger'"
+                      (click)="addRemoveForm('remove', 'assetDetailsProxies', i)">
+                        <em class="fmdi fmdi-close" [disabled]="isBMLogin || isViewMode"></em>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="Total_Table_Button_Cont">
+                <div class="table_total_amount">
+                  <span>Total</span>
+                  <span>{{(applicantDetals.businessDetailsProxy.totalAssets || 0) | indNumFormat}}</span>
+                </div>
+                <!-- <div class="Btn_Add_More_Cont" *ngIf="!isBMLogin">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'asset')">
+                    <em class="fmdi fmdi-plus mr-1"></em>Add New</button>
+                </div> -->
+              </div>
+            </div>
+            <!-- Details of Assets Html Cont End  -->
+            <!-- Power Section Html Cont Start  -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Power (Electricity Details)</h5>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Sanctioned Load<em class="fmdi fmdi-info ml-1" ngbTooltip="Decimal is not allowed, kindly give approximate value"></em></label>
+                  
+                  <div class="input-group">
+                    <input type="text" placeholder="Enter Sanctioned Load" class="form-control" name="sanctionedLoad" 
+                    appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.sanctionedLoad" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.sanctionedLoad" maxlength="4"
+                      [appValidateElement]="isProceed" validationControlName="sanctionedLoad" [isRemoveRequired]="isSaveButton">
+                      <div class="input-group-append">
+                        <span class="input-group-text">KW</span>
+                      </div>
+                      <!-- (keypress)="keyPressEvent($event,1)" -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Connection Load <em class="fmdi fmdi-info ml-1" ngbTooltip="Decimal is not allowed, kindly give approximate value"></em></label>
+                  
+                  <div class="input-group">                  
+                    <input type="text" placeholder="Enter Connection Load" class="form-control" name="connectedLoad" 
+                    appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.connectedLoad" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.connectedLoad" maxlength="4"
+                      [appValidateElement]="isProceed" validationControlName="connectedLoad" [isRemoveRequired]="isSaveButton">
+                      <div class="input-group-append">
+                        <span class="input-group-text">KW</span>
+                      </div>
+                      <!-- (keypress)="keyPressEvent($event,1)" -->
+                </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>SC No.</label>
+                  <input type="text" placeholder="Enter SC No." class="form-control" name="scNo" 
+                  appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.scNo" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.scNo" maxlength="11"
+                    [appValidateElement]="isProceed" validationControlName="scNo" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Date of Connection</label>
+                  <div class="psb-input-group clockpicker">
+                    <input placeholder="Select Date" ngbDatepicker placeholder="Date of Connection" readonly [minDate]="{day: 1,month: 1,year: 1910}"
+                      class="form-control right-br-0" #d2="ngbDatepicker" name="connectionDate" (click)="d2.toggle()"
+                      [(ngModel)]="applicantDetals.businessDetailsProxy.connectionDate" [disabled]="isBMLogin || isViewMode">
+                    <div class="psb-input-group-append">
+                      <span class="psb-input-group-text" (click)="d2.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Power Section Html Cont End  -->
+            <!-- Water Html Cont Start  -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Water Supply Details</h5>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Existing Requirements</label>
+                  <div class="input-group">
+                    <input type="text" placeholder="Enter Existing Requirements" class="form-control" name="existingRequirement" 
+                    appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.existingRequirement"  [disabled]="isBMLogin || isViewMode"
+                      [(ngModel)]="applicantDetals.businessDetailsProxy.existingRequirement" [isRemoveRequired]="isSaveButton"
+                      [appValidateElement]="isProceed" validationControlName="existingRequirement">
+                      <div class="input-group-append">
+                        <span class="input-group-text">L</span>
+                      </div>
+                      <!-- (keypress)="keyPressEvent($event,1)" -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Whether Adequate</label>
+                  <ng-select 
+                    name="waterAdequate"
+                    bindValue="id"
+                    bindLabel="value"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.waterAdequate"
+                    placeholder="Select any one"
+                    [clearable]="false"
+                    [disabled]="isBMLogin || isViewMode"
+                    [items]="selectValue">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Source</label>
+                  <input type="text" placeholder="Enter Source" class="form-control" name="source"
+                  appInputRestriction [regexType]="5" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.source" [disabled]="isBMLogin || isViewMode"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.source" [isRemoveRequired]="isSaveButton"
+                    minlength="2" [appValidateElement]="isProceed" validationControlName="source">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,5)" -->
+              </div>
+            </div>
+            <!-- Water Html Cont End  -->
+            <!-- Labour and Technical Staff Html Cont Start -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Labour and Manpower Details</h5>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Admin</label>
+                  <input type="number" placeholder="Enter Admin." class="form-control" name="admin" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.admin"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.admin" (keyup)="setTotal('labour')" [disabled]="isBMLogin || isViewMode"
+                    [appValidateElement]="isProceed" validationControlName="admin" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Skilled</label>
+                  <input type="number" placeholder="Enter Skilled" class="form-control" name="skilled" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.skilled" 
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.skilled" (keyup)="setTotal('labour')" [disabled]="isBMLogin || isViewMode"
+                    [appValidateElement]="isProceed" validationControlName="skilled" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Unskilled</label>
+                  <input type="number" placeholder="Enter Unskilled" class="form-control" name="unskilled" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.unskilled"  
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.unskilled" (keyup)="setTotal('labour')" [disabled]="isBMLogin || isViewMode"
+                    [appValidateElement]="isProceed" validationControlName="unskilled" [isRemoveRequired]="isSaveButton">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,1)" -->
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Total</label>
+                  <input type="number" placeholder="Enter Total" class="form-control" name="labourTechnicalTotal"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.labourTechnicalTotal" disabled>
+                </div>
+              </div>
+            </div>
+            <!-- Labour and Technical Staff Html Cont End -->
+            <!-- Major Customers Html Cont Start  -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont bb-1">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Major Customers</h5>
+                </div>
+                <div class="Btn_Add_More_Cont" *ngIf="!isBMLogin">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'major')">
+                    <em class="fmdi fmdi-plus mr-1" [disabled]="isBMLogin || isViewMode"></em>Add New</button>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group">
+              <table class="NP_Three_Column_Data Mobile_table_View_NP">
+                <thead>
+                  <tr>
+                    <th>Name *</th>
+                    <th>Yearly Sales (Rs.) *</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of applicantDetals.majorCustomerDetailsProxies; trackBy:identify; let i = index;">
+                    <td data-label="Name">
+                      <input type="text" placeholder="Enter Name" class="form-control" name="data.customerName{{i}}"
+                      appInputRestriction [regexType]="4" [isNgModel]="true" [ngModel]="data.name" [disabled]="isBMLogin || isViewMode" [(ngModel)]="data.name"
+                        [isRemoveRequired]="isSaveButton" [appValidateElement]="isProceed" validationControlName="customerName">
+                    </td>
+                    <!-- (keypress)="keyPressEvent($event,4)" -->
+                    <td data-label="Yearly Sales (Rs.)">
+                      <input type="text" placeholder="Enter Yearly Sales" class="form-control" name="data.yearlySales{{i}}"
+                      appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="data.yearlySales"  appCurrencyInputDirective [disabled]="isBMLogin || isViewMode"
+                        [(ngModel)]="data.yearlySales" [appValidateElement]="isProceed" validationControlName="yearlySales" [isRemoveRequired]="isSaveButton">
+                    </td>
+                    <!-- (keypress)="keyPressEvent($event,1)" -->
+                    <td data-label="Action" *ngIf="!isBMLogin">
+                      <a href="javascript:void(0)" [ngClass]="(isBMLogin || isViewMode) ? 'icon-danger disable-pointer' : 'icon-danger'"
+                      (click)="addRemoveForm('remove', 'majorCustomerDetailsProxies', i)">
+                        <em class="fmdi fmdi-close"></em>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- <div class="Total_Table_Button_Cont"> -->
+                <div class="Total_Table_Button_Cont jc_Fend" *ngIf="!isBMLogin">
+                <!-- <div class="table_total_amount">
+                  <span>Total</span>
+                  <span>160pc</span>
+                </div> -->
+                <!-- <div class="Btn_Add_More_Cont" *ngIf="!isBMLogin">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'major')">
+                    <em class="fmdi fmdi-plus mr-1" [disabled]="isBMLogin || isViewMode"></em>Add New</button>
+                </div> -->
+              </div>
+            </div>
+            <!-- Major Customers Html Cont End  -->
+
+            <!-- Raw Materials Availability Html Cont Start  -->
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+              <div class="Main-heading-dual-Cont bb-1">
+                <div class="text-heading-cards">
+                  <h5 class="main-text-heading">Raw Materials Availability</h5>
+                </div>
+                <div class="Btn_Add_More_Cont">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'raw')">
+                    <em class="fmdi fmdi-plus mr-1" [disabled]="isBMLogin || isViewMode"></em>Add New</button>
+                </div>
+              </div>
+            </div>
+            <div class="NP_Com_Group">
+              <table class="NP_Three_Column_Data NP_Drop_Tab Mobile_table_View_NP">
+                <thead>
+                  <tr>
+                    <th>Description *</th>
+                    <th>Any Difficulty in procurement *</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of applicantDetals.rawMaterialProxies; trackBy:identify; let i = index;">
+                    <td data-label="Description">
+                      <input type="text" placeholder="Enter Description" class="form-control" name="data.description{{i}}"
+                        [disabled]="isBMLogin || isViewMode" [isRemoveRequired]="isSaveButton"
+                        [(ngModel)]="data.description" [appValidateElement]="isProceed" validationControlName="descrip">
+                    </td> 
+                    <td data-label="Any Difficulty in procurement">
+                      <ng-select 
+                        name="difficultyProcurement{{i}}"
+                        bindValue="id"
+                        bindLabel="value"
+                        [clearable]="false"
+                        [(ngModel)]="data.difficultyProcurement"
+                        [appValidateElement]="isProceed" 
+                        [isRemoveRequired]="isSaveButton"
+                        validationControlName="difficultyProcurement"
+                        placeholder="Select any one"
+                        [disabled]="isBMLogin || isViewMode"
+                        [items]="selectValue">
+                      </ng-select>
+                    </td>
+                    <td data-label="Action" *ngIf="!isBMLogin">
+                      <a href="javascript:void(0)" [ngClass]="(isBMLogin || isViewMode) ? 'icon-danger disable-pointer' : 'icon-danger'"
+                      (click)="addRemoveForm('remove', 'rawMaterialProxies', i)">
+                        <em class="fmdi fmdi-close"></em>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="Total_Table_Button_Cont jc_Fend" *ngIf="!isBMLogin">
+                <!-- <div class="Btn_Add_More_Cont">
+                  <button type="button" class="btn btn-outline-psbpurple" [disabled]="isBMLogin || isViewMode"
+                  (click)="addRemoveForm('add', 'raw')">
+                    <em class="fmdi fmdi-plus mr-1" [disabled]="isBMLogin || isViewMode"></em>Add New</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-box Form_GRP_NP_Text" *ngIf="applicantDetals?.businessDetailsProxy">
+          <div class="NP_Com_Group">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h5 class="main-text-heading">Field Inspection Details</h5>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="NP_Com_Group">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Inspected By</label>
+                  <input type="text" placeholder="Enter Inspected By" class="form-control" name="inspectedName"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.fioName" disabled>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Date of Inspection *</label>
+                  <div class="psb-input-group clockpicker">
+                    <input placeholder="Select Date" ngbDatepicker placeholder="Enter Inspection Date" readonly [minDate]="{day: 1,month: 1,year: 1910}"
+                      class="form-control right-br-0" #d3="ngbDatepicker" name="dateOfInspection" (click)="d3.toggle()"
+                      [appValidateElement]="isProceed" validationControlName="dateOfInspection" [maxDate]="max" [isRemoveRequired]="isSaveButton"
+                      [(ngModel)]="applicantDetals.businessDetailsProxy.dateOfInspection" [disabled]="isBMLogin || isViewMode">
+                    <div class="psb-input-group-append">
+                      <span class="psb-input-group-text" (click)="d3.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-6 float-left">
+                <div class="form-group">
+                  <label>Inspection Remarks *</label>
+                  <input type="text" placeholder="Enter Inspection Remarks" class="form-control" name="inspectionRemarks"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.inspectionRemarks" [disabled]="isBMLogin || isViewMode" [isRemoveRequired]="isSaveButton"
+                    appInputRestriction [regexType]="5" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.inspectionRemarks" [appValidateElement]="isProceed" validationControlName="inspectionRemarks">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,5)" -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-box Form_GRP_NP_Text" *ngIf="applicantDetals?.businessDetailsProxy && isBMLogin">
+          <div class="NP_Com_Group">
+            <div class="Main-heading-dual-Cont">
+              <div class="text-heading-cards">
+                <h5 class="main-text-heading">Branch Manager Details</h5>
+              </div>
+            </div>
+          </div>
+          <div class="NP_Com_Group NP_BT_PT_1_5">
+            <div class="NP_Com_Group">
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Baranch Manager Name</label>
+                  <input type="text" placeholder="Baranch Manager Name" class="form-control" name="inspectedNameBm"
+                    [(ngModel)]="inspectedName" disabled>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3 float-left">
+                <div class="form-group">
+                  <label>Date of Remarks*</label>
+                  <div class="psb-input-group clockpicker">
+                    <input placeholder="Select Date" ngbDatepicker placeholder="Enter Inspection Date" readonly [minDate]="{day: 1, month: 1,year: 1910}"
+                      class="form-control right-br-0" #d4="ngbDatepicker" name="dateOfInspectionbm" (click)="d4.toggle()"
+                      [appValidateElement]="isProceed" validationControlName="dateOfInspection" [maxDate]="max"
+                      [(ngModel)]="applicantDetals.businessDetailsProxy.dateOfInspectionBm" [isRemoveRequired]="isSaveButton">
+                    <div class="psb-input-group-append">
+                      <span class="psb-input-group-text" (click)="d4.toggle()"><i class="fmdi fmdi-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-6 float-left">
+                <div class="form-group">
+                  <label>Remarks*
+                  </label>
+                  <input type="text" placeholder="Enter Inspection Remarks" class="form-control" name="inspectionRemarksBm"
+                    [(ngModel)]="applicantDetals.businessDetailsProxy.inspectionRemarksBm" [isRemoveRequired]="isSaveButton"
+                    appInputRestriction [regexType]="5" [isNgModel]="true" [ngModel]="applicantDetals.businessDetailsProxy.inspectionRemarksBm" [appValidateElement]="isProceed" validationControlName="inspectionRemarks">
+                </div>
+                <!-- (keypress)="keyPressEvent($event,5)" -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </form>
+</div>

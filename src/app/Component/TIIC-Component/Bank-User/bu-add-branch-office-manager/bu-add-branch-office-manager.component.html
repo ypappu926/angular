@@ -1,0 +1,366 @@
+<div class="container-fluid ">
+  <div class="icon-title-heading">
+    <!-- <i class="fmdi fmdi-arrow-left"></i> -->
+    <app-page-title title="{{roleNameHeading}} Users" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  </div>
+
+<div class="row">
+  <div class="col-12">
+  <div class="card-box Form_GRP_NP_Text">
+    <div class="NP_Com_Group">
+      <!-- Admin Users Details Html Cont Start  -->
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{roleNameHeading}} Details</h4>
+            <span class="text-muted">Enter {{roleNameHeading}} details that are required</span>
+          </div>
+          <!-- <div class="Btn-Drop_Down-dual-Cont">
+                <div class="NPBtn-Download">
+                  <a class="btn btn-outline-danger" href="javascript:void(0)"><em class="fmdi fmdi-delete mr-1"></em>
+                    Remove</a>
+                </div>
+              </div> -->
+        </div>
+      </div>
+
+      <form autocomplete="off" #addUserForm="ngForm" noValidate>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="isBankTextBoxView">
+            <div class="form-group">
+              <label>Bank Name *</label>
+              <ng-select placeholder="Select Bank" bindValue="userOrgId" bindLabel="displayOrgName" [items]="orgList"
+                name="userOrgId" [appValidateElement]="submitted" [clearable]="false" [clearable]="false"
+                [(ngModel)]="userData.userOrgId" required [validationMessage]="{'required': 'Bank Name is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="isDepartmentTextBoxView">
+            <div class="form-group">
+              <label>Department *</label>
+              <ng-select placeholder="Select Department" bindValue="id" bindLabel="name" [items]="departmentList"
+                name="departmentId" [appValidateElement]="submitted" [clearable]="false"
+                [(ngModel)]="userData.userOrgId" required [validationMessage]="{'required': 'Department is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="isRoleNameTextBoxView">
+            <div class="form-group">
+              <label>Role Name *</label>
+              <ng-select placeholder="Select Role" bindValue="id" bindLabel="name" [items]="roleList" name="userRoleId"
+                [appValidateElement]="submitted" [clearable]="false" [(ngModel)]="userData.userRoleId" required
+                [validationMessage]="{'required': 'Role Name is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" name="firstName" #firstName="ngModel" class="form-control"
+                placeholder="Enter First Name" minlength=3 pattern="^[a-zA-Z ]+$" [(ngModel)]="userData.firstName"
+                [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'First Name is required.','pattern': 'Please, Enter valid Name.','minlength':'Please, Enter valid Name.'}">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Middle Name</label>
+              <input type="text" name="middleName" placeholder="Enter Middle Name" class="form-control"
+                [(ngModel)]="userData.middleName">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" name="lastName" #lastName="ngModel" placeholder="Enter Last Name"
+                pattern="^[a-zA-Z ]+$" minlength=3 class="form-control" [(ngModel)]="userData.lastName"
+                [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Last Name is required.','pattern': 'Please, Enter valid Name.','minlength':'Please, Enter valid Name.'}">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Mobile Number *</label>
+              <input type="number" type="number" placeholder="Enter Mobile No" #mobileNo="ngModel"
+                pattern="^((\\+91-?)|0)?[0-9]{10}$" [maxlength]=10 name="mobile" class="form-control"
+                [(ngModel)]="userData.mobile" [appValidateElement]="submitted" required (keyup)="numberOnly($event)"
+                [validationMessage]="{'required': 'Mobile No is required.','pattern': 'Please, Enter 10 digit Mobile Number.','maxlength':'Please, Enter 10 digit Mobile Number.'}">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 float-left">
+            <div class="form-group">
+              <label>Email ID *</label>
+              <input type="email" placeholder="Enter Email Id" class="form-control"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" name="useremail" [(ngModel)]="userData.email"
+                [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Email No is required.','pattern': 'Please, Enter valid Email.'}">
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="isDistrictTextBoxView">
+            <div class="form-group">
+              <label>District *</label>
+              <ng-select placeholder="Select District" bindValue="id" bindLabel="name" [items]="districtList"
+                name="districtId" [appValidateElement]="submitted" [clearable]="false" [(ngModel)]="userData.districtId"
+                required [validationMessage]="{'required': 'District is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Status *</label>
+              <ng-select class="NP_SWidth_100" bindLabel="name" bindValue="id" [(ngModel)]="userData.isActive"
+                [items]="statusList" [clearable]="false" name="isActive" placeholder="Select sttus"
+                [appValidateElement]="submitted" [validationMessage]="{'required': 'status is required.'}" required>
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                  <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div> -->
+
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Status *</label>
+              <ng-select placeholder="Select Status" bindValue="id" bindLabel="name" [items]="statusList"
+                name="isActive" [appValidateElement]="submitted" [clearable]="false" [(ngModel)]="userData.isActive"
+                required [validationMessage]="{'required': 'status is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 float-left" *ngIf="isBranchNameTextBoxView">
+            <div class="form-group">
+              <label>Branch Name *</label>
+              <ng-select placeholder="Select Branch" bindValue="id" bindLabel="name" [items]="branchList"
+                (ngModelChange)="updateBranchName($event)" name="BranchName" [appValidateElement]="submitted"
+                [clearable]="true" [(ngModel)]="userData.branchId" required
+                [validationMessage]="{'required': 'Branch Name is required.'}">
+              </ng-select>
+            </div>
+          </div>
+
+          <!-- <button href="javascript:void(0)" class="btn btn-psb btn-psbpurple"
+            *ngIf="isBranchNameTextBoxView"
+            [disabled]="addBranchDetailsFlag || userData.branchId" (click)="addBranchDetails()"><em class="fmdi fmdi-plus"></em>Add
+            Branch </button> -->
+
+          <!-- <button href="javascript:void(0)" class="btn btn-psb btn-secondary" *ngIf="isBranchNameTextBoxView"
+            [disabled]="!addBranchDetailsFlag" (click)="addBranchDetailsFlag = !addBranchDetailsFlag "><em
+              class="fmdi fmdi-delete"></em> Delete
+            Branch </button> -->
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="card-box Form_GRP_NP_Text" *ngIf="addBranchDetailsFlag">
+    <div class="NP_Com_Group">
+      <div class="NP_Com_Group">
+        <div class="Main-heading-dual-Cont">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Branch Office Details</h4>
+            <span class="text-muted">Enter branch office details that are required</span>
+          </div>
+        </div>
+      </div>
+      <form autocomplete="off" #addBranchForm="ngForm" noValidate>
+        <div class="NP_Com_Group NP_BT_PT_1_5">
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Branch Name *</label>
+              <input type="text" name="branchName" class="form-control" placeholder="Enter Branch Name" minlength=3
+                pattern="^[a-zA-Z ]+$" [(ngModel)]="branchData.name" [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Branch Name is required.','pattern': 'Please, Enter valid Branch Name.','minlength':'Please, Enter valid Branch Name.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Branch Code *</label>
+              <input type="text" name="branchCode" class="form-control" placeholder="Enter Branch Code" minlength=3
+                [(ngModel)]="branchData.code" [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Branch Code is required.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>IFSC code</label>
+              <input type="text" name="IFSCcode" class="form-control" placeholder="Enter IFSC Code" maxlength="11"
+                oninput="this.value=this.value.toUpperCase()" pattern="^[A-Za-z]{4}0[A-Z0-9a-z]{6}$"
+                [(ngModel)]="branchData.ifscCode" [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'IFSC Code is required.','pattern': 'Please, Enter valid IFSC Code.','minlength':'Please, Enter valid IFSC Code.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>District *</label>
+              <ng-select placeholder="Select District" bindValue="id" bindLabel="name" [items]="districtList"
+                name="districtId" [appValidateElement]="submitted" [clearable]="false"
+                [(ngModel)]="branchData.districtId" required
+                [validationMessage]="{'required': 'District is required.'}">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>City *</label>
+              <ng-select placeholder="Select City" bindValue="id" bindLabel="name" [items]="cityList" name="cityId"
+                [appValidateElement]="submitted" [clearable]="false" [(ngModel)]="branchData.cityId" required
+                [validationMessage]="{'required': 'City is required.'}">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Branch Pincode *</label>
+              <input type="text" name="branchPincode" class="form-control" placeholder="Enter Pincode" minlength="6"
+                maxlength="6" pattern="^[1-9][0-9]{5}$" [(ngModel)]="branchData.pincode"
+                [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Pincode is required.','pattern': 'Please, Enter valid Pincode.','minlength':'Please, Enter valid Pincode.'}">
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 float-left">
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" name="branchAddress" class="form-control" placeholder="Enter Address"
+                [(ngModel)]="branchData.streetName" [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Address is required.'}">
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- <button href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="createBranch()"><em
+          class="fmdi fmdi-plus"></em> create
+        Branch </button> -->
+
+      <!-- Admin Users Details Html Cont End  -->
+    </div>
+  </div>
+
+  <div class="card-box Form_GRP_NP_Text">
+    <div class="NP_Com_Group">
+      <form autocomplete="off" #addBranchForm="ngForm" noValidate>
+        <div class="NP_Com_Group">
+          <div class="col-lg-12 float-left">
+            <div class="form-group">
+              <label>District *</label>
+              <!-- <ng-select placeholder="Select District" bindValue="id" bindLabel="name" [items]="districtList"
+                name="districtId" [appValidateElement]="submitted" [clearable]="false"
+                [(ngModel)]="branchData.districtId" required
+                [validationMessage]="{'required': 'District is required.'}">
+              </ng-select> -->
+              <!-- [ngClass]="selectedPeople.length > 3 ? 'Multi_loan_Select NP_Mobile_Multiselect':''"  -->
+              <ng-select class="Multi_loan_Select NP_Mobile_Multiselect" [items]="people" [multiple]="true"
+                bindLabel="SchemeName" groupBy="LoanType" [selectableGroup]="true" [selectableGroupAsModel]="false"
+                [closeOnSelect]="false" bindValue="id" [(ngModel)]="selectedPeople" placeholder="Select District">
+                <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                  <div class="checkbox checkbox-psbpurple form-check-inline">
+                    <input type="checkbox" id='item-{{index}}' name="{{item.LoanType | uppercase }}"
+                      [ngModel]="item$.selected">
+                    <label for="item-{{index}}"> {{item.LoanType | uppercase }} </label>
+                  </div>
+                </ng-template>
+                <!-- <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <div class="checkbox checkbox-psbpurple form-check-inline">
+                      <input type="checkbox" id='item-{{index}}' name="{{item.SchemeName}}" [ngModel]="item$.selected">
+                      <label for="item-{{index}}"> {{item.SchemeName }} </label>
+                    </div>
+                  </ng-template> -->
+              </ng-select>
+            </div>
+          </div>
+
+        </div>
+        <div class="NP_Com_Group NP_Select_Mobile">
+          <div class="col-lg-12 float-left">
+            <div class="table-responsive">
+              <table class="CommonTable_NP Mobile_table_View_NP">
+                <thead>
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>District</th>
+                    <th>Primary Branch </th>
+                    <th>Make RR Road Branch as Primary Branch?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="District">Chennai</td>
+                    <td data-label="Primary Branch">Chennai Primary</td>
+                    <td data-label="Make RR Road Branch as Primary Branch?">
+                      <div class="checkbox checkbox-psbpurple checkbox-single">
+                        <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                        <label for="singleCheckbox2"></label>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="District">Chennai</td>
+                    <td data-label="Primary Branch">Chennai Primary</td>
+                    <td data-label="Make RR Road Branch as Primary Branch?">
+                      <div class="checkbox checkbox-psbpurple checkbox-single">
+                        <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                        <label for="singleCheckbox2"></label>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="District">Chennai</td>
+                    <td data-label="Primary Branch">Chennai Primary</td>
+                    <td data-label="Make RR Road Branch as Primary Branch?">
+                      <div class="checkbox checkbox-psbpurple checkbox-single">
+                        <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                        <label for="singleCheckbox2"></label>
+                      </div>
+                    </td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- <button href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="createBranch()"><em
+          class="fmdi fmdi-plus"></em> create
+        Branch </button> -->
+
+      <!-- Admin Users Details Html Cont End  -->
+    </div>
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-12 parent">
+
+  <div class="card-box btn-tabs-Fix-NP Mobile_BTN_NP">
+    <div class="nav-bordered">
+      <h4 class="m-0 mb-2 d-print-none">Actions.</h4>
+      <span>Select from following</span>
+    </div>
+    <div class="text-right d-print-none">
+      <a href="javascript:void(0)" class="btn btn-psb btn-secondary">Cancel</a>
+      <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="saveOrUpdateUser()"><em
+          class="fmdi fmdi-plus"></em>Add Branch Manager</a>
+      <!-- <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple"><em class="fmdi fmdi-plus"></em>Add Branch Office</a> -->
+    </div>
+  </div>
+  </div>
+  </div>
+</div>

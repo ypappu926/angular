@@ -1,0 +1,199 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+    <app-page-title title="Applications" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row" >
+      <div class="col-lg-12 parent">
+        <div class="card-box btn-tabs" id="stick-headerN">
+          <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+            <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+              <li class="init TwoDrop hide">Select</li>
+              <li class="nav-item Common-badge-C4 Two_TabAfter" id="tab1" (click)="changeTab(1,1)">
+                <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                  <h3 class="notification-list loan-tsv-badge">50</h3>
+                  <span class="text-muted">Pending Applications</span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab2" (click)="changeTab(2,2)">
+                <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                  <h3 class="notification-list loan-tsv-badge">30</h3>
+                  <span class="text-muted">Completed Applications</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div> 
+  
+        <div class="card-box">
+            <div class="btn-tabs MB_1_5_NP Tab_Card_P0"
+          *ngIf="tab == 1 || tab == 2 || SubTab == 4 || SubTab == 5 ||SubTab == 6 || SubTab == 7">
+          <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex">
+            <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo" *ngIf="tab == 1 || SubTab == 4 || SubTab == 5 ">
+              <li class="initTwo TwoDrop hide">Select</li>
+              <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1,4)">
+                <a class="nav-link" [ngClass]="{ active : SubTab == 4 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Received From FIO<span
+                      class="badge badge-danger rounded-circle noti-icon-badge">20</span></span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1,5)">
+                <a class="nav-link" [ngClass]="{ active : SubTab == 5 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Pending With BM<span
+                      class="badge badge-danger rounded-circle noti-icon-badge">20</span></span>
+                </a>
+              </li>
+            </ul>
+  
+            <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo" *ngIf="tab == 2 || SubTab == 6 || SubTab == 7">
+              <li class="initTwo TwoDrop hide">Select</li>
+              <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(2,6)">
+                <a class="nav-link" [ngClass]="{ active : SubTab == 6 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Approved Positive<span
+                      class="badge badge-danger rounded-circle noti-icon-badge">20</span></span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(2,7)">
+                <a class="nav-link" [ngClass]="{ active : SubTab == 7 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Negative<span
+                      class="badge badge-danger rounded-circle noti-icon-badge">10</span></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+          <div class="Main-heading-dual-Cont">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">Borrower Details</h4>
+              <span class="text-muted">List of borrower for Whom banker has provided details</span>
+            </div>
+            <div class="Btn-Drop_Down-dual-Cont">
+              <button type="button" ngbTooltip="Enable transfer to TAICO/DIC FIO" class="btn btn-psbpurple mr-3" (click)="Common_Tranfer_Proposal_Popup()"  *ngIf="tab != 2"><i
+                class="fmdi fmdi-link mr-2"></i>Enable Transfer</button>
+              <button type="button" ngbTooltip="Download all applications in excel format." class="btn btn-outline-psbpurple"><i
+                  class="fmdi fmdi-download mr-2"></i>Download User</button>
+  
+             
+            </div>
+          </div>
+  
+          <!-- table Report and Filter data -->
+          <div class="table-responsive">
+            <table class="CommonTable_NP BM_FIO_Table Mobile_table_View_NP">
+              <!--Common-ps-Subsidy-NP  Comon-nine-dataTSV BM_FIO_Table  [ngClass]="tab == 2 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+              <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name of Unit</th>
+                    <th>Contact Details</th>
+                    <th>District</th>  
+                    <th *ngIf="tab != 2">Status</th>                             
+                    <th *ngIf="tab != 2">Main FIO</th>
+                    <th *ngIf="tab == 2">Subsidiary FIO</th>
+                    <th *ngIf="SubTab == 3">Digital Signature Status</th>
+                    <th class="NP_Action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <!-- Filter TR Cont Start -->
+                  <tr>
+                      <td>                        
+                          <input type="text" class="form-control">
+                      </td>
+                      <td><input type="text" class="form-control"></td>
+                      <td><input type="text" class="form-control"></td>                    
+                      <td>
+                          <input type="text" class="form-control">
+                      </td>
+                      <td *ngIf="tab != 2" [ngClass]="tab != 2 ? 'NP_Select':''">
+                        <ng-select placeholder="Select" [items]="selectValue">
+                        </ng-select>
+                    </td>
+                      <td *ngIf="tab != 2">
+                        <input type="text" class="form-control">
+                      </td>
+                      <td *ngIf="tab == 2">
+                           <input type="text" class="form-control">
+                      </td>
+                      <td *ngIf="SubTab == 3">
+                          <input type="text" class="form-control">
+                      </td>
+                      <td class="NP_Action">
+                        &nbsp;
+                      </td>
+      
+                    </tr>
+                       <!-- Filter TR Cont End -->
+                <tr>
+                  <td>1</td>
+                  <td>Simonsh Private Limited</td>
+                  <td>nikul123@gmail.com <br/>7069418009</td>                
+                  <td>Ahmedabad</td>
+                  <td *ngIf="tab != 2">Received from FIO for Approval</td>                
+                  <td *ngIf="tab != 2">Krunal Goswami</td>
+                  <td *ngIf="tab == 2">Krunal Goswami</td>       
+                  <td *ngIf="SubTab == 3">E-sign Pending</td>
+                  <td class="NP_Action">
+                    <div>
+                      <a href="javascript:void(0);" routerLink="/TIIC/BMFIO-Form" class="action-icon"><em
+                          class="fmdi fmdi-eye" placement="top" ngbTooltip="View Form"></em></a>
+                      <!-- <a href="javascript:void(0);" (click)="Reason_View_Popup()" *ngIf="tab != 2" class="action-icon"><em class="fmdi fmdi-info" placement="top"
+                          ngbTooltip="Reason"></em></a> -->
+                          
+                    </div>
+                  </td>
+  
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Simonsh Private Limited</td>
+                    <td>nikul123@gmail.com <br/>7069418009</td>                
+                    <td>Ahmedabad</td>
+                    <td *ngIf="tab != 2">Received from FIO for Approval</td>                
+                    <td *ngIf="tab != 2">Krunal Goswami</td>
+                    <td *ngIf="tab == 2">Krunal Goswami</td>       
+                    <td *ngIf="SubTab == 3">E-sign Pending</td>
+                    <td class="NP_Action">
+                      <div>
+                        <a href="javascript:void(0);" routerLink="/TIIC/BMFIO-Form" class="action-icon"><em
+                            class="fmdi fmdi-eye" placement="top" ngbTooltip="View Form"></em></a>
+                        <!-- <a href="javascript:void(0);" (click)="Reason_View_Popup()" *ngIf="tab != 2" class="action-icon"><em class="fmdi fmdi-info" placement="top"
+                            ngbTooltip="Reason"></em></a> -->
+                            
+                      </div>
+                    </td>
+  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row pagination-table">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+                {{((pageSize*(page-1))+1)}} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+                entries
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber">
+                </ng-select> entries</label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true"  [pageSize]="pageSize"
+                  (pageChange)="onPageChange($event)">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  

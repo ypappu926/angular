@@ -1,0 +1,104 @@
+<div class="container-fluid">
+  <app-page-title title="Add New Scoring Model" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card-box">
+        <form autocomplete="off" #scoringForm="ngForm">
+      
+        <div class="Main-heading-dual-Cont bb-1">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">New Scoring Model Configuration</h4>
+            <p class="text-muted">Please choose what type of scoring model you want to create, you will
+              be able to change it later once Scoring model is created</p>
+          </div>
+        </div>
+
+        <div class="NP_Com_Group MT_1" *ngIf="isConfig && resEnum.length > 0">         
+            <div class="Com-pe-main-content bb-0" *ngFor="let config of resEnum ">
+              <div class="check-pe-text">
+                <h5 class="m-0 mb-3">{{config.title}}</h5>
+                <div class="psb-tab-content NP-TAB-Cont" *ngIf="config.type === 1">
+                  <div name="TYPE_OF_PRODUCT" class="btn-group btn-group-toggle NP_TAB_PS">
+                    <ng-container *ngFor="let field of config.list">
+                      <label
+                        class="btn tab-product-name {{field.checked==field.id? ' activet-border' : ''}}">
+                        <input type="radio" id="{{field.id}}" [(ngModel)]="field.checked" [value]="field.id"
+                          [ngModelOptions]="{standalone: true}" [disabled]="field.disabled"
+                          name="{{config.enumName}}"
+                          (ngModelChange)="selectForRadio($event,field.id,config.enumName,config)" />{{field.value}}
+                      </label>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="Com-pe-check" *ngIf="config.type === 2">
+                  <ng-container *ngFor="let field of config.list">
+                    <div class="checkbox checkbox-psbpurple form-check-inline">
+                      <input type="checkbox" id="{{field.id}}_{{field.value}}_{{config.enumName}}_checkbox" [disabled]="field.disabled"
+                        [(ngModel)]="field.isChecked " name="{{config.enumName}}" [ngModelOptions]="{standalone: true}" />
+                      <label for="{{field.id}}_{{field.value}}_{{config.enumName}}_checkbox"> {{field.value}}
+                      </label>
+                    </div>
+                  </ng-container>
+                
+                </div> 
+                <div [attr.id]="config.enumName"  style="display: none;" >
+                  <p class="small text-danger">
+                    Kindly Select One of <b>{{config.title}}</b> Checkbox !!
+                  </p>
+                </div>                
+              </div>
+              <div class="checkbox-text" *ngIf="salariedBussinessType.includes(businessTypeId)">
+                <span class="note-text" *ngIf="config.enumName === 'BORROWER_TYPE'">{{existingScoringCount}} existing scoring model are compatible</span>
+              </div>
+            </div>
+        </div>        
+        <div class="NP_Com_Group MT_1">
+           <div class="col-lg-4 float-left pl-0">
+            <div class="form-group mb-0">
+              <label class="S-label mb-2">Scoring Model Name</label>
+              <input type="text" class="form-control" name="scoreModelName" [(ngModel)]="scoringObj.scoreModelName"
+                [appValidateElement]="submitted" required pattern="^[A-Za-z0-9-_@$* ]+$"
+                [validationMessage]="{'required': 'Please enter Scoring name','pattern':'Please enter valid scoring name'}"
+                placeholder="Enter Your Scoring Name" />
+              <p class="mt-1">This will be used as a reference while creating products and for
+                internal bank
+                reference.</p>
+            </div>
+            </div>
+            <div class="col-lg-4 float-left">
+            <div class="form-group mb-0" *ngIf="scoringId == null || scoringId == undefined">
+              <label class="S-label mb-2">Copy from Scoring Model</label>
+              <!-- <ng-select placeholder="Don’t copy from any product" [items]="selectValue"></ng-select> -->
+              
+              <ng-select placeholder="Select any one" [items]="copyDataList" bindLabel="name" bindValue="id" [(ngModel)]="scoringObj.copyScoreModelMstrId" [ngModelOptions]="{standalone: true}">
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index" name="copyScoreModelMstrId">
+                  <p class="ng-Select-Three"><span>{{item.name}}</span> <span><p> v{{item.version}}.0 </p> <p> {{item.statusIdString}}</p></span></p>
+                      <!-- <span >{{item.name}} &#160;&#160;&#160;&#160;&#160;&#160; [Version - {{item.version}}]  &#160;&#160;&#160;&#160;&#160;&#160; [ Status - {{item.statusIdString}}]</span> -->
+                </ng-template>
+              </ng-select>
+              <p class="mt-1">If you want to copy parameters from any existing scoring model.</p>
+            </div>
+           </div>
+        </div>
+
+        <div class="NP_Com_Group NP_BT_PT_1_5 MT_1 text-right">
+          <div class="text-right d-print-none">
+            <button type="button" class="btn btn-psb btn-secondary" routerLink="/TIIC/Scoring-List">Cancel</button>
+            <button type="button" *ngIf="!editMode " class="btn btn-psb btn-psbpurple"
+              (click)="saveScoringModel()">
+              <!-- && checkButtonPermission('SCORING_ADD') -->
+              <em class="mdi mdi-plus mr-1"></em> Create Scoring Model
+            </button>
+            <button type="button" *ngIf="editMode" class="btn btn-psb btn-psbpurple"
+              (click)="saveScoringModel()">
+              <!--  && checkButtonPermission('SCORING_ADD') -->
+              <em class="mdi mdi-plus mr-1"></em> Update Scoring Model
+            </button>
+          </div>
+        </div>
+      </form>
+      </div> <!-- end card-box -->
+    </div> <!-- end col -->
+  </div><!-- end row -->
+</div>

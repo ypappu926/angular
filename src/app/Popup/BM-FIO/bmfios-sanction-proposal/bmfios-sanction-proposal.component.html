@@ -1,0 +1,99 @@
+<div class="modal-header d-block">
+  <h4 class="modal-title">Sanction Proposal</h4>
+  <span class="text-muted">
+    Enter the required data to sanction the proposal
+  </span>
+</div>
+<div class="modal-body">
+  <form autocomplete="off" #sanctionDetailForm="ngForm">
+    <div class="row">
+      <div class="col-12">
+        <div class="col-lg-6 float-left">
+          <div class="form-group">
+            <label>Loan Amount *</label>
+            <input type="text" class="form-control" placeholder="Enter Amount" appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="sanctionProposalDetails.sanctionAmount"
+              [(ngModel)]="sanctionProposalDetails.sanctionAmount" name="sanctionAmount" [appValidateElement]="isProceed" validationControlName="sanctionAmount" appCurrencyInputDirective >
+          </div>
+          <!-- (keypress)="keyPressEvent($event,1) -->
+          <!-- appCurrencyInputDirective -->
+
+
+        </div>
+        <!-- [(ngModel)]="sanctionProposalDetails.sanctionAmount" name="sanctionAmount" appCurrencyInputDirective -->
+        <div class="col-lg-6 float-left">
+          <div class="form-group">
+            <label>Tenure *</label>
+            <div class="input-group Common-form-icon">
+              <input type="text" class="form-control" placeholder="Enter Value" 
+                [(ngModel)]="sanctionProposalDetails.tenure" name="tenure" [appValidateElement]="isProceed"
+                validationControlName="tenure">
+              <div class="input-group-append">
+                <span class="input-group-text">Month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 float-left">
+          <div class="form-group">
+            <label>Interest Type *</label>
+            <ng-select class="NP_Drop_txt_Warp" placeholder="Select any one" bindValue="id" bindLabel="value" 
+              [(ngModel)]="sanctionProposalDetails.interestType" name="interestType" [appValidateElement]="isProceed"
+              validationControlName="interestType" [items]="interestTypeList" name="data" [clearable]="false"  (ngModelChange)="onChangeofOptions($event)">              
+            </ng-select>
+
+          </div>
+        </div>
+        
+        <div class="col-lg-6 float-left">
+          <div class="form-group">
+            <label>{{selectedFormName == '2'?'Fixed':'Base'}} Rate(%) * </label>
+            <input type="text" class="form-control" placeholder="Enter Value"
+              [(ngModel)]="sanctionProposalDetails.roi" name="roi" [appValidateElement]="isProceed"
+              validationControlName="roi">
+          </div>
+        </div>
+        <div class="col-lg-6 float-left" *ngIf="selectedFormName != '2'">
+          <div class="form-group">
+            <label>Risk Premium *</label>
+            <input type="text" class="form-control" placeholder="Enter Value" 
+              [(ngModel)]="sanctionProposalDetails.riskPremium" name="riskPremium" [appValidateElement]="isProceed"
+              validationControlName="riskPremium">
+          </div>
+        </div>
+        
+        <div class="col-lg-12 float-left">
+          <div class="form-group">
+            <label>Penal Interest Payable *</label>
+            <input type="text" class="form-control" placeholder="Enter Value"
+              [(ngModel)]="sanctionProposalDetails.panelInteresrPayable" name="panelInteresrPayable"
+              [appValidateElement]="isProceed" validationControlName="panelInteresrPayable">
+          </div>
+        </div>
+        <div class="col-lg-12 float-left">
+          <div class="form-group">
+            <label>Type Of Collateral *</label>
+            <ng-select class="NP_Drop_txt_Warp" bindValue="id" bindLabel="value" placeholder="Select any one"
+              [(ngModel)]="sanctionProposalDetails.typeOfCollateral" name="typeOfCollateral"
+              [appValidateElement]="isProceed" validationControlName="typeOfCollateral"
+              [items]="typeOfCollateralList"
+              [clearable]="false">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-lg-12 float-left">
+          <div class="form-group">
+            <label>Details Of Collateral *</label>
+            <input type="text" class="form-control" placeholder="Emter Value"
+              [(ngModel)]="sanctionProposalDetails.detailsOfCollateral" name="detailsOfCollateral"
+              [appValidateElement]="isProceed" validationControlName="detailsOfCollateral">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-psb btn-secondary waves-effect" (click)="close(false)">Cancel</button>
+  <button type="button" class="btn btn-psb btn-success waves-effect" (click)="submitSanctionDetails()">Sanction
+  </button>
+</div>

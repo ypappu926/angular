@@ -1,0 +1,136 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+    <app-page-title title="Branch List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+    <div class="row">
+        <div class="col-lg-12 parent">
+            <div class="card-box" id="stick-headerN">
+                <div class="Main-heading-dual-Cont Mobile_heading_btn_NP p-0">
+                    <div class="text-heading-cards">
+                        <h4 class="main-text-heading">Add Branch</h4>
+                        <span class="text-muted">Here you can Add Branch</span>
+                    </div>
+
+                    <div class="Btn-Drop_Down-dual-Cont">
+                        <div ngbDropdown class="mobile-dropdown NP_DRP">
+                            <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" ngbDropdownToggle><i
+                                class="fmdi fmdi-accounts-add mr-2"></i>Add Branch</a>
+                            <div class="dropdown-menu btn-drop" ngbDropdownMenu>
+                              <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)"
+                                (click)="reDirectToBranchCreate(null, 1)">
+                                <i class="fmdi fmdi-accounts-add mr-2"></i>Add Single Branch</a>
+                              <a class="dropdown-item-NP btn-psb btn-outline-psbpurple" href="javascript: void(0)"
+                              routerLink="/TIIC/BulkUpload-Office"><i
+                                  class="fmdi fmdi-accounts-add mr-2"></i>Bulk Upload</a>
+                            </div>
+                          </div>
+
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="card-box">
+                <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+                    <div class="text-heading-cards">
+                        <h4 class="main-text-heading">Branch Office ( {{totalCount || 0}} Offices )</h4>
+                        <span class="text-muted">Branch office receives proposal created by branch users or partner
+                            user.</span>
+                    </div>
+                    <div class="Btn-Drop_Down-dual-Cont" *ngIf="totalCount > 0">
+                        <a href="javascript:void(0);" class="btn btn-psb btn-outline-psbpurple"
+                            (click)="downloadAllBranch()"><i class="fmdi fmdi-download mr-2"></i>Download Offices</a>
+                    </div>
+                </div>
+
+                <!-- table Report and Filter data -->
+                <div class="table-responsive">
+                    <table class="CommonTable_NP NP_SA_Column table_height Mobile_table_View_NP">
+                        <!--Common-ps-Subsidy-NP  Comon-nine-dataTSV BM_FIO_Table  [ngClass]="tab == 2 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+                        <thead>
+                            <tr>
+                                <th>Sr. No.</th>
+                                <th>Branch Name</th>
+                                <th>Branch Code</th>
+                                <th>No. Of Users</th>
+                                <!-- <th>City</th> -->
+                                <th>District</th>
+                                <th>Status</th>
+                                <th class="NP_Action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filter TR Cont Start -->
+                            <tr class="Mobile_View_Filter_Hide_NP">
+                                <td>&nbsp;</td>
+                                <td><input type="text" class="form-control" [(ngModel)]="searchBranchName"
+                                        (ngModelChange)="debounceEventForFilter()"></td>
+                                <td><input type="text" class="form-control" [(ngModel)]="searchBranchCode"
+                                        (ngModelChange)="debounceEventForFilter()"></td>
+                                        <td>&nbsp;</td>
+                                <!-- <td><input type="text" class="form-control" [(ngModel)]="searchCityName"
+                                        (ngModelChange)="debounceEventForFilter()"></td> -->
+                                <td><input type="text" class="form-control" [(ngModel)]="searchDistrictName"
+                                        (ngModelChange)="debounceEventForFilter()"></td>
+                                <td>&nbsp;</td>
+                                <td class="NP_Action">&nbsp;</td>
+                            </tr>
+                            <!-- Filter TR Cont End -->
+                            <tr *ngFor="let obj of bankBranchList;let i= index">
+                                <td data-label="Sr. No.">{{startIndex + i + 1}}</td>
+                                <td data-label="User Name">{{obj.branchName || ''}}</td>
+                                <td data-label="Branch Code">{{obj.branchCode || ''}}</td>
+                                <td data-label="No. Of Users">{{obj.noOfUsers || 0}}</td>
+                                <!-- <td data-label="Branch Code">{{obj.cityName || ''}}</td> -->
+                                <td data-label="District"><span class="districtWidth">{{obj.districtName || ''}}</span></td>
+                                <td data-label="Status">
+                                    <div class="Comon-Dot-text"><span
+                                            class="{{obj.isActive? 'Success-Dot':'Danger-Dot'}}"></span>Active</div>
+                                </td>
+                                <td data-label="Action" class="NP_Action">
+                                    <div class="Mobile_Action">
+                                        <a href="javascript:void(0);" class="action-icon" (click)="reDirectToBranchCreate(obj.branchId, 2)" ><em class="fmdi fmdi-eye"
+                                                placement="top" ngbTooltip="View Details"></em></a>
+                                        <a href="javascript:void(0);" class="action-icon"
+                                            (click)="reDirectToBranchCreate(obj.branchId, 3)"><em
+                                                class="fmdi fmdi-edit" placement="top"
+                                                ngbTooltip="Edit Details"></em></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row pagination-table Mobile_Pagination">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                            Showing
+                            {{((pageSize*(page-1))+1)}} to
+                            {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                            {{totalCount}}
+                            entries
+                        </div>
+                    </div>
+                    <div class="dataTables_length" id="tickets-table_length"><label
+                            class="d-inline-flex align-items-center">Show
+                            <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table"
+                                name="pageSize" [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber"
+                                (ngModelChange)="getBranchList()">
+                            </ng-select> entries
+                        </label></div>
+                    <!-- Pagination -->
+                    <div class="col-sm-12 col-md-5">
+                        <div class="text-md-right float-md-right pagination-rounded">
+                            <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true"  [rotate]="true" [boundaryLinks]="true"
+                                [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+                            </ngb-pagination>
+                        </div>
+                    </div>
+                    <!-- End Pagination -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,18 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">{{popUpObj.title}}</h4>
+</div>
+<div class="modal-body">
+
+    <span class="text-muted">
+        {{popUpObj.body}}
+    </span>
+</div>
+<div class="modal-footer" *ngIf="popUpObj.popupType == 1">
+    <button type="button"  class="btn btn-psb btn-secondary waves-effect" (click)="close(2)">Cancel</button>
+    <button type="button"  class="btn btn-psb btn-psbpurple waves-effect" (click)="close(1)">Proceed </button>
+</div>
+
+<div class="modal-footer" *ngIf="popUpObj.popupType == 2">
+    <button type="button"  class="btn btn-psb btn-secondary waves-effect" (click)="close(2)">Cancel</button>
+    <button type="button"  class="btn btn-psb btn-success waves-effect"   (click)="close(1)">Proceed </button>
+</div>

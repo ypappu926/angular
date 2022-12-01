@@ -1,0 +1,49 @@
+<div class="NP_Com_Group NP_Card_BrGrp Form_GRP_NP_Text">
+    <!-- {{!isCollapsed ? '':'p-0'}} -->
+    <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+        <div class="text-heading-cards">
+            <h4 class="main-text-heading">Branch Manager Remarks</h4>
+            <span class="text-muted">Branch Manager Remarks are listed below</span>
+        </div>
+        <div class="Btn-Drop_Down-dual-Cont">
+            <button type="button" class="btn btn-psb btn-psbpurple" *ngIf="statusId == 3" (click)="save()">Save</button>
+        </div>
+    </div>
+    <form #branchManagerForm="ngForm" autocomplete="off">
+        <div>
+            <div class="NP_Com_Group NP_BT_PT_1_5">
+                <div class="Main-heading-dual-Cont">
+                    <div class="text-heading-cards">
+                        <h4 class="main-text-heading">Basic Details</h4>
+                    </div>
+                </div>
+                <div class="NP_Com_Group ">
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Compliance of KYC Norms</label>
+                            <input type="text" name="branchManagerdata.kycNorms"
+                                [(ngModel)]="branchManagerdata.kycNorms" placeholder="Enter value" validationControlName="kycNorms" [appValidateElement]="isSaved"
+                                class="form-control" [disabled]="disable || roleId != constants.UserRoleList.BRANCH_MANAGER.id"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Details of CIBIL Report</label>
+                            <input type="text" name="branchManagerdata.cibilReportDetails" 
+                            [(ngModel)]="branchManagerdata.cibilReportDetails" placeholder="Enter value" validationControlName="kycNorms" [appValidateElement]="isSaved"
+                            class="form-control" [disabled]="disable || roleId != constants.UserRoleList.BRANCH_MANAGER.id"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Remarks for Pre Sanction Report</label>
+                            <input type="text" name="branchManagerdata.preSanctionRemarks"  validationControlName="preSanctionRemarks" [appValidateElement]="isSaved"
+                                [(ngModel)]="branchManagerdata.preSanctionRemarks" placeholder="Enter value"
+                                class="form-control" [disabled]="disable || roleId != constants.UserRoleList.BRANCH_MANAGER.id"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

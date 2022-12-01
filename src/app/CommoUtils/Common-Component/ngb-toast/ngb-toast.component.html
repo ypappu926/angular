@@ -1,0 +1,36 @@
+<!-- <ngb-toast *ngFor="let toast of snackbarService.toasts" [class]="toast.classname" [autohide]="true"
+    [delay]="toast.delay || 5000" (hidden)="snackbarService.removeNGBToast(toast)">
+    <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+        <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+    </ng-template>
+
+    <ng-template #text>{{ toast.textOrTpl }}</ng-template>
+</ngb-toast> -->
+<ng-container *ngIf="snackbarService.toasts.length > 0">
+<ng-container  *ngFor="let toast of snackbarService.toasts">
+    <ngb-toast class="NP_NGB_Toast" [class]="toast.classname" [autohide]="true"
+    [delay]="toast.delay || 3000" (hide)="snackbarService && snackbarService.remove(toast)">
+    <div class="text-icon-s">
+        <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+            <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+        </ng-template>    
+    </div>
+   
+    <ng-template #text>
+        <div class="Img_Text_GRp">
+           <!-- <em class="fmdi fmdi-check"></em> -->
+        {{ toast.textOrTpl }}
+            </div>
+        <a class="close" (click)="snackbarService.remove(toast)">
+            <em class="fmdi fmdi-close"></em>
+          </a>
+    </ng-template>
+</ngb-toast>
+</ng-container>
+</ng-container>
+<!--   iconClasses: {
+        error: 'block-helper',
+        info: 'alert-circle',
+        success: 'check-circle',
+        warning: 'alert-outline',
+    }, -->

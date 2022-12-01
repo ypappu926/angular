@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title">You have unsaved changes</h4>
+  <button type="button" class="close" aria-hidden="true" (click)="activeModal.dismiss('cancel')">×</button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <span>You have not saved the new changes, what do you want to do ?</span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="activeModal.dismiss('cancel')">Cancel</a>
+  <a href="javascript: void(0)" class="btn btn-psb btn-danger" (click)="activeModal.dismiss('exitWithoutSave')"><em class="mdi mdi-delete mr-1"></em> Exit without
+    saving</a>
+  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.dismiss('saveExit')"><em class="mdi mdi-folder mr-1" ></em>
+    Save & Exit</a>
+</div>

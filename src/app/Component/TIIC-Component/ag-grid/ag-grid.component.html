@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 parent">
+            <div class="card-box">
+                <div class="col-lg-3 float-left">
+                    <div class="form-group">
+                        <div class="input-group Common-form-icon">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><em class="fmdi fmdi-search"></em></span>
+                            </div>
+                            <input type="text" placeholder="Search..." class="form-control"
+                                (keyup)="onFilterTextBoxChanged()" [(ngModel)]="searchValue" style="color:black">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<ag-grid-angular #agGrid id="myGrid" style="height: 800px;" class="ag-theme-alpine" [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef" [enableRangeSelection]="true" [rowSelection]="rowSelection" [rowDragManaged]="true"
+    [statusBar]="statusBar" [sideBar]="sideBar" [pivotPanelShow]="pivotPanelShow" [debug]="true"
+    [autoGroupColumnDef]="autoGroupColumnDef" [rowGroupPanelShow]="rowGroupPanelShow"
+    [serverSideStoreType]="serverSideStoreType" [getServerSideStoreParams]="getServerSideStoreParams"
+    [rowData]="rowData" [suppressAggFuncInHeader]="true" [pagination]="pagination"
+    [paginationPageSize]="paginationPageSize" [animateRows]="true" (gridReady)="onGridReady($event)">
+</ag-grid-angular>

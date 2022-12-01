@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4 class="modal-title">Want to Edit Scoring configuration </h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>Changing the scoring model configuration can affect the product using this scoring model.</span>
+      </div>
+      <div class="col-md-12 mt-2">
+        <span>Also some parameters which doesn’t fit with the new configurations will be removed.</span>
+      </div>
+      <div class="col-md-12 mt-2">
+        <span>Are you sure you want to do this ?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" (click)="closeModal()" class="btn btn-psb btn-secondary waves-effect">Cancel</a>
+    <a href="javascript: void(0)" (click)="editScoring()" class="btn btn-psb btn-psbpurple">
+      Change Configuration</a>
+  </div>
+  

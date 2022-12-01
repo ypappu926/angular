@@ -1,0 +1,220 @@
+<div class="container-fluid">
+  <app-page-title title="Setup Interest Rates" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card-box btn-tabs">
+            <div class="nav-bordered">
+              <ul class="nav nav-tabs justify-content-start">
+                <li class="nav-item" id="tab1" (click)="changeTab(1)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                    <span class="number-text">{{ checkScheme(schemeId)?'Repo Rate Setup': 'EBLR Setup'}}</span>
+                  </a>
+                </li>
+                <li class="nav-item" id="tab2" (click)="changeTab(2)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                    <span class="number-text">MCLR Setup</span>
+                  </a>
+                </li>
+                <li class="nav-item" id="tab2" (click)="changeTab(3)">
+                  <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                    <span class="number-text">Base Rate Setup</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div><!-- End Bordered Tabs -->
+      </div>
+      <!-- div tab part -->
+
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card-box">
+            <div class="row">
+              <div class="col-12">
+                <div class="Main-heading-dual-Cont pb-0">
+                  <div class="text-heading-cards">
+                    <h4 class="main-text-heading">{{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}}</h4>
+                    <p class="text-muted">You can view your {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} history & change as per your requirements</p>
+                  </div>
+                  <div class="Btn-Drop_Down-dual-Cont" *ngIf=" isPendingAtMaker&& isAdminMaker">
+                    <div class="text-right d-print-none">
+                      <!-- checkButtonPermission('EBLR_MCLR_COMMON') && -->
+                      <a  href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                          (click)="REPO_MCLR_Change_Value_Popup()"> {{tab==1?checkScheme(schemeId)?'Change Repo Rate Value':'Change EBLR Value':tab==2?'Change MCLR Value':'Change Base Rate Value'}}</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- end row -->
+
+                <div class="Com-count-link-Rate PT_BT_MT_1_5" *ngIf="currentBaseRate != null && currentBaseRate !=undefined">
+                  <div class="float-left">
+                    <div class="dual-content-psb br-1">
+                      <h2>{{currentBaseRate}} %</h2>
+                      <span>Current {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value</span>
+                    </div>
+                    <div class="dual-content-psb" *ngIf="false">
+                      <h2>12% - 19.5%</h2>
+                      <span>Effective ROI Range</span>
+                    </div>
+                  </div>
+                  <div class="Common-link" *ngIf="false">
+                    <span>20 product are using {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} method</span>
+                    <a href="javascript:void(0)" (click)="REPO_MCLR_View_Product_Popup()">View product list</a>
+                  </div>
+                </div>
+                <div class="Common-Requested mt-1-5 active-Requested" *ngIf="isSendBackByChecker==false &&isPendingAtMaker==false&& isAdminMaker && baseRateDetails != null && baseRateDetails != undefined">
+                  <span class="txt-icon-info"><em class="mdi mdi-arrow-top-right"></em> Request Sent to checker</span>
+                  <div class="Common-req-txt">
+                    <span>Requested on<p>{{baseRateDetails.modifiedDate | date: 'dd MMM yyyy HH:mm:ss'}}</p></span>
+                    <span>Scheduled to go live<p>{{baseRateDetails.dispEffectiveFromDate}}</p></span>
+                    <span>Requested {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value<p>{{baseRateDetails.baseRate}}%</p></span>
+                    <span *ngIf="false">New Effective ROI Range<p>12.23% - 19.73%</p></span>
+                  </div>
+                </div>
+                <div class="Common-Requested mt-1-5 active-Requested" *ngIf="isSendBackByChecker==true && isAdminMaker && baseRateDetails != null && baseRateDetails != undefined">
+                  <span class="txt-icon-info"><em class="mdi mdi-arrow-bottom-left"></em> Send back by checker</span>
+                  <div class="Common-req-txt">
+                    <span>Requested on<p>{{baseRateDetails.modifiedDate | date: 'dd MMM yyyy HH:mm:ss'}}</p></span>
+                    <span>Scheduled to go live<p>{{baseRateDetails.dispEffectiveFromDate}}</p></span>
+                    <span>Requested {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value<p>{{baseRateDetails.baseRate}}%</p></span>
+                    <span *ngIf="false">New Effective ROI Range<p>12.23% - 19.73%</p></span>
+                  </div>
+                </div>
+
+                <div class="Common-Requested mt-1-5 active-Requested" *ngIf="isPendingAtChecker && isAdminChecker && baseRateDetails != null && baseRateDetails != undefined">
+                  <div class="checekr-approve-reject">
+                    <span class="txt-icon-info"><em class="mdi mdi-arrow-top-right"></em> Request Sent By Maker</span>
+                    <div class="Common-Requested-txt">
+                      <div class="Checker-text-App-Rj">
+                        <span>Requested on<p>{{baseRateDetails.modifiedDate | date: 'dd MMM yyyy HH:mm:ss'}}</p></span>
+                        <span class="m-0">After approval current interest rate will change to following.</span>
+                      </div>
+                      <div class="Checker-text-App-Rj">
+                        <h2 class="m-0">{{baseRateDetails.baseRate}}%</h2>
+                        <span>Requested {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value</span>
+                      </div>
+                      <div class="Checker-text-App-Rj" *ngIf="false">
+                        <h2 class="m-0">12% - 19.5%</h2>
+                        <span>New Effective ROI Range</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="Checker-Approve-Reject" >
+                    <!-- *ngIf="checkButtonPermission('EBLR_MCLR_COMMON') " -->
+                    <ng-container class="btn-checker-aprove" *ngFor="let activeButton of actionButtons">
+                     
+                      <div *ngIf="activeButton.action.id == 21" [ngbTooltip]="isApproveDisable?messege:''" tooltipClass="Common350">
+                        <!-- [disabled]="disableApproveButton(baseRateDetails)"  -->
+                        <button type="button" class="btn btn btn-success"  [disabled]="isApproveDisable" (click)="disableApproveButton(baseRateDetails,1,activeButton)" >
+                          <em class="fmdi fmdi-check-all mr-1"></em> {{activeButton.action.buttonText}}
+                          
+                        </button>
+                      </div>
+                      <ng-container  *ngIf="activeButton.action.id !== 21">
+                        <button type="button" [ngClass]="(activeButton.action.id == 22)?'btn btn-danger ml-3':(activeButton.action.id == 23)?'btn btn-warning ml-3':'btn btn-success'" (click)="updateJob(activeButton)">
+                          <em [ngClass]="(activeButton.action.id == 22)?'fmdi fmdi-close mr-1':(activeButton.action.id == 23)?'fmdi fmdi-arrow-right-top mr-1':'fmdi fmdi-check-all mr-1'"></em> {{activeButton.action.buttonText}}
+                        </button>
+                      </ng-container>
+                     
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="Common-Requested mt-1-5 active-Approved" *ngIf="false">
+                  <span class="txt-icon-info"><em class="mdi mdi-arrow-top-right"></em> Approved by checker</span>
+                  <div class="Common-req-txt">
+                    <span>Requested on<p>10 July 2020 06:30 PM</p></span>
+                    <span>Approved on<p>10 July 2020 06:30 PM</p></span>
+                    <div class="Common-link">
+                      <a href="javascript:void(0)">Update</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- end card-box -->
+
+           <!-- Tab Content -->
+
+              <div class="card-box">
+                <div class="Main-heading-dual-Cont {{!showHistory ? 'pb-0':''}}">
+                  <div class="text-heading-cards">
+                    <h4 class="main-text-heading"> {{tab==1?checkScheme(schemeId)?'Repo Rate':'External Benchmark based Lending Rate (EBLR)':tab==2?'MCLR':'Base Rate'}}</h4>
+                  </div>
+                  <div class="Btn-Drop_Down-dual-Cont">
+                    <div class="text-right d-print-none">
+                      <div class="checkbox checkbox-psbpurple form-check-inline">
+                        <input type="checkbox" id="ShowDetailedhistory" value="option1" checked [(ngModel)]="showHistory" >
+                        <label for="ShowDetailedhistory"> Show Detailed history </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-responsive" *ngIf="showHistory && allBaseRateDetails.length > 0">
+                  <table class="table-EBLR-MCLR" summary="All Details View">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value</th>
+                        <th>
+                          <div class="EBLR-MCLR-TABLE-div">
+                            <span>Start Date</span>
+                            <span>End Date</span>
+                            <span>Lifetime</span>
+                          </div>
+                        </th>
+                        <th>&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let baseRateDetails of allBaseRateDetails;let i = index">
+                      <tr>
+                        <td><label>Id</label> {{i+1}}</td>
+                        <td>
+                          <label>{{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} Value</label>
+                          {{baseRateDetails.baseRate}}% {{(baseRateDetails.isCurrentActive)?'( Current value )':''}}
+                          <span class="icon-danger" *ngIf="baseRateDetails.status==4">
+                            <em class="mdi mdi-close">Rejected By Checker</em>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="EBLR-MCLR-TABLE-div" *ngIf="baseRateDetails.status!=4">
+                            <span> <label>Start Date</label> {{baseRateDetails.dispEffectiveFromDate}}</span>
+                            <span> <label>Start End</label> {{baseRateDetails.effectiveTillDate | date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                            <span *ngIf="baseRateDetails.effectiveTillDate != null || baseRateDetails.effectiveTillDate != undefined"> <label>Lifetime</label> {{baseRateDetails.diffDays || '-'}}</span>
+                          </div>
+                          <div class="EBLR-MCLR-TABLE-div" *ngIf="baseRateDetails.status==4">
+                           <span> <label>Rejected on</label> {{baseRateDetails.modifiedDate | date: 'dd MMM yyyy HH:mm:ss'}}</span>
+                         </div>
+                        </td>
+                        <td><label>Action</label><em class="mdi mdi-account-circle" tooltipClass="Common350" [ngbTooltip]="baseRateDetails.isCurrentActive?tipContentSIR:''"></em></td>
+                          <ng-template #tipContentSIR>
+                            <!--  -->
+                            <span>{{baseRateDetails.makerEmailId}}</span>
+                            <span>{{baseRateDetails.checkerEmailId}}</span>
+                          </ng-template>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div class="table-No-Data" *ngIf=" showHistory && allBaseRateDetails == 0 ">
+                  <div class="Com-No-data-Found-NP">
+                    <img src="assets/images/Dashabord/Empty-Data.svg" alt="No Data Found">
+                    <strong class="No-Data-pad-2"> {{tab==1?checkScheme(schemeId)?'Repo Rate':'EBLR':tab==2?'MCLR':'Base Rate'}} List is Empty</strong>
+                  </div>
+        
+                </div>
+              </div> <!-- end col -->
+
+        </div>
+      </div><!-- end col -->
+      <!-- end row -->
+    </div>

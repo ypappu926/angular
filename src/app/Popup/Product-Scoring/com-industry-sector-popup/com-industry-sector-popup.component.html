@@ -1,0 +1,100 @@
+<div class="modal-header title-subtitle NPB-1_5">
+  <h4 class="modal-title">Select Industry and Sector</h4>
+  <span>Checking an industry will check all it’s sectors, you can also check/uncheck some sectors if you want</span>
+</div>
+<div class="modal-body Modal-scroll m-body-border p-0">
+  <div class="row m-0">
+    <div class="col-md-4 br-1 p-0">
+      <div class="check-industry">
+        <div class="check-serch-industry">
+          <div class="checkbox checkbox-psbpurple form-check-inline">
+            <input type="checkbox" [disabled]='viewTab' [(ngModel)]="isSelectAllIndustry" id="SelectAllIndustry"
+              (ngModelChange)="selectAll($event, 'industry')">
+            <label for="SelectAllIndustry"> Select All </label>
+          </div>
+          <div class="symbole-input w-50">
+            <em class="mdi mdi-magnify"></em>
+            <input type="text" class="form-control"  [disabled]='viewTab' placeholder="Search Parameter" [(ngModel)]="industryFilter"
+              (ngModelChange)="onFilter($event, 'industry')" />
+          </div>
+        </div>
+        <div class="slimScroll-psb-cotent" appSlimScroll>
+          <ng-container *ngFor="let industry of industryList; let i=index">
+            <div class="check-drop-arrow">
+              <div class="checkbox checkbox-psbpurple form-check-inline">
+                <input type="checkbox" name="industry{{i}}" [disabled]='viewTab' id="industry{{i}}"
+                  [(ngModel)]="industry.isChecked" (change)="getSectorList()">
+                <label for="industry{{i}}"> {{industry.value}}</label>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 br-1 p-0">
+      <div class="check-industry">
+        <div class="check-serch-industry">
+          <div class="checkbox checkbox-psbpurple form-check-inline">
+            <input type="checkbox"  [disabled]='viewTab' [(ngModel)]="isSelectAllSector" id="SelectAllSector"
+              (ngModelChange)="selectAll($event, 'sector')">
+            <label for="SelectAllSector"> Select All </label>
+          </div>
+          <div class="symbole-input w-50">
+            <em class="mdi mdi-magnify"></em>
+            <input type="text" class="form-control"  [disabled]='viewTab' placeholder="Search Parameter" [(ngModel)]="sectorFilter"
+              (ngModelChange)="onFilter($event, 'sector')" />
+          </div>
+        </div>
+        <div class="slimScroll-psb-cotent" appSlimScroll>
+          <ng-container *ngFor="let sector of sectorList; let i=index">
+            <div class="check-drop-arrow">
+              <div class="checkbox checkbox-psbpurple form-check-inline">
+                <input type="checkbox" name="sector{{i}}" [disabled]='viewTab' id="sector{{i}}"
+                  [(ngModel)]="sector.isChecked" (change)="getSubSectorList()">
+                <label for="sector{{i}}">{{sector.value}}</label>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4 p-0">
+      <div class="check-industry">
+        <div class="check-serch-industry">
+          <div class="checkbox checkbox-psbpurple form-check-inline">
+            <input type="checkbox"  [disabled]='viewTab' [(ngModel)]="isSelectAllSubSector" id="SelectAllSubSector"
+              (ngModelChange)="selectAll($event, 'subSector')">
+            <label for="SelectAllSubSector"> Select All </label>
+          </div>
+          <div class="symbole-input w-50">
+            <em class="mdi mdi-magnify"></em>
+            <input type="text" class="form-control"  [disabled]='viewTab' placeholder="Search Parameter" [(ngModel)]="subSectorFilter"
+              (ngModelChange)="onFilter($event, 'subSector')" />
+          </div>
+        </div>
+        <div class="slimScroll-psb-cotent" appSlimScroll>
+          <ng-container *ngFor="let subSector of subSectorList; let i=index">
+            <div class="check-drop-arrow">
+              <div class="checkbox checkbox-psbpurple form-check-inline">
+                <input type="checkbox" name="subSector{{i}}" [disabled]='viewTab' id="subSector{{i}}"
+                  [(ngModel)]="subSector.isChecked" (change)="setSubsectorCount()">
+                <label for="subSector{{i}}">{{subSector.value}}</label>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer footer-text-m">
+  <span><strong>{{industryCount}} Industries and {{sectorCount}} sectors and {{subSectorCount}} sub-sectors selected</strong></span>
+  <div class="btn-footer-g jc-FEnd">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="closeModal()">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" [hidden]='viewTab' (click)="save()">Save changes</a>
+  </div>
+</div>

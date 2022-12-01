@@ -1,0 +1,99 @@
+<div class="account-pages mt-5 mb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-5">
+        <div class="card-box">
+          <div class="Login_Page_Cont">
+            <!-- Logo -->
+            <div class="Login_Page_Img_text_GRP">
+              <a routerLink=".">
+                <img src="https://prod-sidbi-public-image.s3.ap-south-1.amazonaws.com/tn/bank_logos/TN_New_Borrower_logo.svg" alt="Tamlindau Logo">
+                <!-- assets/images/Dashabord/TN-Logos/Logo_Banker.svg -->
+              </a>
+              <div class="Login_Page_text">
+                <h2>Login</h2>
+              </div>
+            </div>
+            
+
+            <form class="NP_Form needs-validation" name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate
+              autocomplete="off">
+              <!-- <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert> -->
+
+
+
+              <!-- <div class="form-group">
+                <label for="userType">Role</label>
+                <ng-select formControlName="userRole" [ngClass]="{ 'is-invalid': submitted && f.userRole.errors }" (change)="setEmailAndPwd($event)"
+                  id="userType" placeholder="Select Any Role">
+                  <ng-option *ngFor="let loginuser of UserRoleList" [value]="loginuser.id">
+                    {{loginuser.name}}
+                  </ng-option>
+                </ng-select>
+              </div> -->
+
+
+              <div class="form-group">
+                <label for="userType">Login As</label>
+                <ng-select formControlName="userType" [ngClass]="{ 'is-invalid': submitted && f.userType.errors }"
+                  id="userType" placeholder="Select Any One">
+                  <ng-option *ngFor="let loginuser of UserTypeList" [value]="loginuser.id">
+                    <!-- {{commonService.getStorage('locale', true) == 'en' ? loginuser.name : loginuser.hindiName}} -->
+                    {{loginuser.name}}
+                  </ng-option>
+                </ng-select>
+
+                <div *ngIf="submitted && f.userType.errors" class="invalid-feedback">
+                  <div *ngIf="f.userType.errors.required">User type is required</div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+
+                <input type="email" formControlName="email" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f.email.errors }" id="email" placeholder="Enter Email" />
+
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.errors.required">Email is required</div>
+                  <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <div class="psb-input-group Common-form-icon">
+                <input [type]="hide1 ? 'password' : 'text'" formControlName="password" class="form-control br-0"
+                  [ngClass]="{ 'is-invalid': submitted && f.password.errors }" id="password" placeholder="Enter Password" />
+                  <div class="psb-input-group-append">
+                    <span class="psb-input-group-text CSP" id="basic-addon2" (click)="hide1 = !hide1"><em
+                        class="fmdi fmdi-eye"></em></span>
+                  </div>
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>
+                </div>                  
+              </div>
+
+              <!-- Common-form-icon_NP -->
+
+              <div class="form-group text-center">
+                <button class="btn btn_Comon_log btn-psbpurple" type="submit">Log In</button>
+              </div>
+
+              <!-- <div class="Register_Text_Cont">
+                <p>Don't have an acount?<a href="javascript:void(0);">Register</a></p> 
+              </div> -->
+            </form>
+
+          </div> <!-- end card-body -->
+        </div>
+        <!-- end card -->
+
+      </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container -->
+</div>
+<!-- end page -->

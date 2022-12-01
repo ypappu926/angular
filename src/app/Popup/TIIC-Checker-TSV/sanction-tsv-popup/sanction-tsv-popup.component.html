@@ -1,0 +1,96 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">Sanction Scoring Model
+    </h4>
+    <span class="text-muted">
+    Do you want to Sanction the application of "V M Shah & Co"for Working Capital ?
+  </span>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="col-lg-6 float-left">
+                <div class="form-group">
+                    <label>Application Date</label>
+                    <input type="text" class="form-control" placeholder="25 Jun 2020" disabled>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div class="form-group">
+                    <label>Select Reason *</label>
+                    <div class="input-group clockpicker">
+                        <input ngbDatepicker class="form-control" #d="ngbDatepicker">
+                        <div class="input-group-append" style="height: 37.39px;">
+                            <span class="input-group-text" (click)="d.toggle()"><i class="mdi mdi-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div class="form-group">
+                    <label>Select Reason *</label>
+                    <div class="input-group clockpicker">
+                        <input type="text" class="form-control" placeholder="Emter Amount">
+                        <div class="input-group-append">
+                            <span class="input-group-text">₹</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div class="form-group float-left">
+                    <label>Tenure *</label>
+                    <div class="col-lg-12 float-left p-0">
+                        <div class="col-lg-6 float-left pl-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Emter">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Years</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 float-left pr-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Emter">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div class="form-group">
+                    <label>Rate of Interest *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Emter Amount">
+                        <div class="input-group-append">
+                            <span class="input-group-text">₹</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div class="form-group">
+                    <label>Processing Fee *</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Emter Amount">
+                        <div class="input-group-append">
+                            <span class="input-group-text">₹</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 float-left">
+                <div class="form-group">
+                    <label>Processing Fee *</label>
+                    <textarea #textarea class="form-control" maxlength="1000" rows="5" placeholder="Write Resoan for Rejection"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-success "> Sanction </a>
+</div>

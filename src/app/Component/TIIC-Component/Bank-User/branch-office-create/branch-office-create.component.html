@@ -1,0 +1,296 @@
+<div class="container-fluid">
+    <div class="icon-title-heading">
+        <!-- <i class="fmdi fmdi-arrow-left"></i> -->
+        <app-page-title title="{{isEditMode? 'Edit':'Add'}} Branch" [breadcrumbItems]="breadCrumbItems">
+        </app-page-title>
+    </div>
+<div class="row">
+    <div class="col-12">
+    <form autocomplete="off" #addBranchForm="ngForm" noValidate>
+        <div class="card-box Form_GRP_NP_Text">
+            <div class="NP_Com_Group">
+                <div class="NP_Com_Group">
+                    <div class="Main-heading-dual-Cont">
+                        <div class="text-heading-cards">
+                            <h4 class="main-text-heading">Branch Office Details</h4>
+                            <span class="text-muted">Enter branch office details that are required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="NP_Com_Group NP_BT_PT_1_5">
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Branch Name *</label>
+                            <input type="text" name="branchName" class="form-control" placeholder="Enter Branch Name"
+                                minlength=3 pattern="^[a-zA-Z ]+$" [(ngModel)]="branchData.name" [disabled]="isViewMode"
+                                [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'Branch Name is required.','pattern': 'Please, Enter valid Branch Name.','minlength':'Please, Enter valid Branch Name.'}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Branch Code *</label>
+                            <input type="text" name="branchCode" class="form-control" placeholder="Enter Branch Code" [disabled]="isViewMode"
+                                minlength=3 [(ngModel)]="branchData.code" [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'Branch Code is required.'}">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>IFSC code</label>
+                            <input type="text" name="IFSCcode" class="form-control" placeholder="Enter IFSC Code" [disabled]="isViewMode"
+                                maxlength="11" oninput="this.value=this.value.toUpperCase()"
+                                pattern="^[A-Za-z]{4}0[A-Z0-9a-z]{6}$" [(ngModel)]="branchData.ifscCode"
+                                [appValidateElement]="submitted"
+                                [validationMessage]="{'pattern': 'Please, Enter valid IFSC Code.','minlength':'Please, Enter valid IFSC Code.'}">
+                                <!-- required 'required': 'IFSC Code is required.', -->
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>City</label>
+                            <ng-select placeholder="Select City" bindValue="id" bindLabel="name" [items]="cityList" [disabled]="isViewMode"
+                                name="cityId" [clearable]="true" [(ngModel)]="branchData.cityId">
+                                <!-- [appValidateElement]="submitted" -->
+                                <!-- required -->
+                                <!-- [validationMessage]="{'required': 'City is required.'}" -->
+                            </ng-select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>District *</label>
+              <ng-select placeholder="Select District" bindValue="id" bindLabel="districtName" [items]="districtList"
+                name="districtId" [appValidateElement]="submitted" [clearable]="false" (change)="getPincodeMasterList($event)"
+                [(ngModel)]="branchData.districtId" required
+                [validationMessage]="{'required': 'District is required.'}">
+              </ng-select>
+            </div>
+          </div> -->
+                    <!-- <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Branch Pincode *</label>
+              <ng-select placeholder="Select District" bindValue="id" bindLabel="pincode" [items]="pincodeList"
+                name="branchPincode" [appValidateElement]="submitted" [clearable]="false"
+                [(ngModel)]="branchData.pincodeId" required [validationMessage]="{'required': 'Pincode is required.'}">
+              </ng-select>
+            </div>
+          </div> -->
+
+                    <!-- <div class="col-md-6 col-lg-3 float-left">
+            <div class="form-group">
+              <label>Branch Pincode *</label>
+              <input type="text" name="branchPincode" class="form-control" placeholder="Enter Pincode" minlength="6"
+                maxlength="6" pattern="^[1-9][0-9]{5}$" [(ngModel)]="branchData.pincode"
+                [appValidateElement]="submitted" required
+                [validationMessage]="{'required': 'Pincode is required.','pattern': 'Please, Enter valid Pincode.','minlength':'Please, Enter valid Pincode.'}">
+            </div>
+          </div> -->
+                    <div class="col-md-6 col-lg-6 float-left">
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <input type="text" name="branchAddress" class="form-control" placeholder="Enter Address" [disabled]="isViewMode"
+                                [(ngModel)]="branchData.address" [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'Address is required.'}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Branch Pincode *</label>
+                            <ng-select placeholder="Select Pincode" bindValue="id" bindLabel="pincode" [disabled]="isViewMode"
+                                [items]="pincodeList" name="branchPincode" [appValidateElement]="submitted"
+                                [clearable]="false" [(ngModel)]="branchData.pincodeId" required
+                                [validationMessage]="{'required': 'Pincode is required.'}">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-box Form_GRP_NP_Text">
+            <div class="NP_Com_Group">
+                <!-- <form autocomplete="off" #addBranchForm="ngForm" noValidate> -->
+                <div class="NP_Com_Group">
+                    <div class="col-lg-12 float-left">
+                        <div class="form-group">
+                            <label>District *</label>
+                            <ng-select class="Multi_loan_Select NP_Mobile_Multiselect" [items]="districtList"
+                                [multiple]="true" bindValue="id" [ngModelOptions]="{standalone: true}" [disabled]="isViewMode"
+                                bindLabel="districtName" [selectableGroup]="true" [selectableGroupAsModel]="false"
+                                (change)="onChangeDistrict()" [closeOnSelect]="false"
+                                [(ngModel)]="branchData.selectedDistrictId" placeholder="Select Value"
+                                [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'district is required.'}">
+                                <!-- close -->
+                                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                    <div class="checkbox checkbox-psbpurple form-check-inline">
+                                        <input id='item-{{index}}' type="checkbox" [ngModel]="item$.selected"
+                                            [ngModelOptions]="{standalone: true}">
+                                        <!-- name="checkbox-{{item.id}}-{{index}}" -->
+                                        <label for="item-{{index}}"></label>{{item.districtName }}
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6 col-lg-4 float-left">
+                        <div class="form-group">
+                            <label>Branch Pincode *</label>
+                            <ng-select placeholder="Select District" bindValue="id" bindLabel="pincode" [disabled]="isViewMode"
+                                [items]="pincodeList" name="branchPincode" [appValidateElement]="submitted"
+                                [clearable]="false" [(ngModel)]="branchData.pincodeId" required
+                                [validationMessage]="{'required': 'Pincode is required.'}">
+                            </ng-select>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- *ngIf="branchData?.branchDistrictMapping?.length > 0" -->
+                <div class="NP_Com_Group NP_Select_Mobile">
+                    <div class="col-lg-12 float-left">
+                        <div class="table-responsive">
+                            <table class="CommonTable_NP districtPrimary_List Mobile_table_View_NP">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>District</th>
+                                        <th>Primary Branch </th>
+                                        <th>Make {{branchData.name}} Branch as Primary Branch?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let obj of branchData?.branchDistrictMapping;let i= index">
+                                        <td data-label="Sr. No.">{{i+1}}</td>
+                                        <td data-label="District">{{obj.districtName}}</td>
+                                        <td data-label="Primary Branch">{{obj.branchName || '-'}}</td>
+                                        <td data-label="Make RR Road Branch as Primary Branch?">
+                                            <div class="checkbox checkbox-psbpurple checkbox-single">
+                                                <input type="checkbox" id="singleCheckbox{{i}}" name="option{{i}}" [disabled]="obj.isDisabled"
+                                                    [(ngModel)]="obj.primaryBranch" aria-label="checkbox">
+                                                <label for="singleCheckbox{{i}}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- </form> -->
+            </div>
+        </div>
+
+        <div class="card-box Form_GRP_NP_Text" *ngIf="!isEditMode">
+            <div class="NP_Com_Group">
+                <!-- Admin Users Details Html Cont Start  -->
+                <div class="NP_Com_Group">
+                    <div class="Main-heading-dual-Cont">
+                        <div class="text-heading-cards">
+                            <h4 class="main-text-heading">{{roleNameHeading}} Details</h4>
+                            <span class="text-muted">Enter {{roleNameHeading}} details that are required</span>
+                        </div>
+                        <!-- <div class="Btn-Drop_Down-dual-Cont">
+                          <div class="NPBtn-Download">
+                            <a class="btn btn-outline-danger" href="javascript:void(0)"><em class="fmdi fmdi-delete mr-1"></em>
+                              Remove</a>
+                          </div>
+                        </div> -->
+                    </div>
+                </div>
+
+
+                <div class="NP_Com_Group NP_BT_PT_1_5">
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>First Name *</label>
+                            <input type="text" name="firstName" #firstName="ngModel" class="form-control"
+                                placeholder="Enter First Name" minlength=3 pattern="^[a-zA-Z ]+$"
+                                [(ngModel)]="branchData.userData.firstName" [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'First Name is required.','pattern': 'Please, Enter valid Name.','minlength':'Please, Enter valid Name.'}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Middle Name</label>
+                            <input type="text" name="middleName" placeholder="Enter Middle Name" class="form-control"
+                                [(ngModel)]="branchData.userData.middleName">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Last Name *</label>
+                            <input type="text" name="lastName" #lastName="ngModel" placeholder="Enter Last Name"
+                                pattern="^[a-zA-Z ]+$" minlength=3 class="form-control"
+                                [(ngModel)]="branchData.userData.lastName" [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'Last Name is required.','pattern': 'Please, Enter valid Name.','minlength':'Please, Enter valid Name.'}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Mobile Number *</label>
+                            <input type="text" placeholder="Enter Mobile No" #mobileNo="ngModel" pattern="^[6789]\d{9}"
+                            [maxlength]="10" name="mobile" class="form-control" [(ngModel)]="branchData.userData.mobile" 
+                            [appValidateElement]="submitted" required   appInputRestriction [regexType]="1" [isNgModel]="true" [ngModel]="branchData.userData.mobile"
+                                [validationMessage]="{'required': 'Mobile No is required.','pattern': 'Please, Enter valid Mobile Number.'}">
+                            <!-- ^((\\+91-?)|0)?[0-9]{10}$ -->
+                        </div>
+                        <!-- (keypress)="numberOnly($event)" -->
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 float-left">
+                        <div class="form-group">
+                            <label>Email ID *</label>
+                            <input type="email" placeholder="Enter Email Id" class="form-control"
+                                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" name="useremail"
+                                [(ngModel)]="branchData.userData.email" [appValidateElement]="submitted" required
+                                [validationMessage]="{'required': 'Email No is required.','pattern': 'Please, Enter valid Email.'}">
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6 col-lg-3 float-left">
+                        <div class="form-group">
+                            <label>Status *</label>
+                            <ng-select placeholder="Select Status" bindValue="id" bindLabel="name" [items]="statusList"
+                                name="isActiveForUser" [appValidateElement]="submitted" [clearable]="false"
+                                [(ngModel)]="branchData.userData.isActive" required
+                                [validationMessage]="{'required': 'status is required.'}">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+<div class="row ">
+    <div class="col-12 parent">
+    <div class="card-box btn-tabs-Fix-NP Mobile_BTN_NP">
+        <div class="nav-bordered">
+            <h4 class="m-0 mb-2 d-print-none">Actions.</h4>
+            <span>Select from following</span>
+        </div>
+        <div class="text-right d-print-none">
+            <a href="javascript:void(0)" class="btn btn-psb btn-secondary"
+                routerLink="/TIIC/AllOffice-List">Cancel</a>
+                <!-- <button href="javascript:void(0)" class="btn btn-psb btn-psbpurple mr-3" [disabled]="isViewMode" ngbTooltip="Create New Branch Manager Details"
+                (click)="addUserDetailsForm = !addUserDetailsForm"><em class="fmdi fmdi-plus"></em> Create User</button> -->
+            <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple" (click)="saveOrUpdateBranch()" *ngIf="!isViewMode"><em
+                    class="fmdi fmdi-plus"></em> {{isEditMode ? 'Update' : 'Add'}} Branch</a>
+            <!-- <a href="javascript:void(0)" class="btn btn-psb btn-psbpurple"><em class="fmdi fmdi-plus"></em>Add Branch Office</a> -->
+        </div>
+    </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">Assign application to other branch</h4>
+    <span class="text-muted">
+    Select new branch by branch name or branch code
+  </span>
+</div>
+<div class="modal-body pt-0">
+    <div class="row">
+        <div class="col-12">
+            <span class="tranfter-popup-text">Current Branch<span>Shahalam Gate (Ahmedabad), 3046</span></span>
+            <div class="form-group w-100-fl">
+                <label>Select Branch Code</label>
+                <ng-select placeholder="Enter or select 4 digit branch code" [items]="selectValue"></ng-select>
+            </div>
+            <div class="form-group w-100-fl">
+                <label>Select Branch Name</label>
+                <ng-select placeholder="Enter or select branch name" [items]="selectValue"></ng-select>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple">Assign </a>
+</div>

@@ -1,0 +1,314 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+  <app-page-title title="Applications" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row" >
+    <div class="col-lg-12 parent">
+      <div class="card-box btn-tabs" id="stick-headerN">
+        <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+          <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+            <li class="initTwo TwoDrop hide">Select</li>
+            <li class="nav-item Common-badge-C4 Two_TabAfter" id="tab1" (click)="changeTab(1,4)">
+              <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                <h3 class="notification-list loan-tsv-badge">{{totalCountObj.totalPendingApplications || 0}}</h3>
+                <span class="text-muted">Pending Applications</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4" id="tab2" (click)="changeTab(2,6)">
+              <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                <h3 class="notification-list loan-tsv-badge">{{totalCountObj.totalCompletedApplications || 0}}</h3>
+                <span class="text-muted">Completed Applications</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <!-- *ngIf="tab == 1 || tab == 2 || SubTab == 4 || SubTab == 5 ||SubTab == 6 || SubTab == 7" -->
+        <div class="btn-tabs MB_1_5_NP Tab_Card_P0">
+        <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex">
+          <!-- || SubTab == 4 || SubTab == 5  -->
+          <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo" *ngIf="tab == 1">
+            <li class="initTwo TwoDrop hide">Select</li>
+            <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1,isBMLogin ? 5 : 4)">
+              <a class="nav-link" [ngClass]="{ active : ((isBMLogin && SubTab == 5) || (!isBMLogin && SubTab == 4)) }">
+                <span class="text-muted notification-list loan-tsv-badge">{{isBMLogin ? 'Pending With BM' : 'Pending With FIO'}}<span
+                    class="badge badge-danger rounded-circle noti-icon-badge">{{(isBMLogin ? totalCountObj.detailsPendingBM : totalCountObj.detailsPendingFIO) || 0}}</span></span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(1,isBMLogin ? 4 : 5)">
+              <a class="nav-link" [ngClass]="{ active : ((isBMLogin && SubTab == 4) || (!isBMLogin && SubTab == 5)) }">
+                <span class="text-muted notification-list loan-tsv-badge">{{isBMLogin ? 'Pending With FIO' : 'Pending With BM'}}<span
+                    class="badge badge-danger rounded-circle noti-icon-badge">{{(isBMLogin ? totalCountObj.detailsPendingFIO : totalCountObj.detailsPendingBM) || 0}}</span></span>
+              </a>
+            </li>
+          </ul>
+          <!-- || SubTab == 6 || SubTab == 7 -->
+          <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo" *ngIf="tab == 2">
+            <li class="initTwo TwoDrop hide">Select</li>
+            <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(2,6)">
+              <a class="nav-link" [ngClass]="{ active : SubTab == 6 }">
+                <span class="text-muted notification-list loan-tsv-badge">Positive<span
+                    class="badge badge-danger rounded-circle noti-icon-badge">{{totalCountObj.totalPositive || 0}}</span></span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4" id="tab1" (click)="changeTab(2,7)">
+              <a class="nav-link" [ngClass]="{ active : SubTab == 7 }">
+                <span class="text-muted notification-list loan-tsv-badge">Negative<span
+                    class="badge badge-danger rounded-circle noti-icon-badge">{{totalCountObj.totalNegative || 0}}</span></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">Borrower Details</h4>
+            <span class="text-muted">List of borrower for Whom banker has provided details</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <!-- <button type="button" ngbTooltip="Enable transfer to TAICO/DIC FIO" class="btn btn-psbpurple mr-3" (click)="Common_Tranfer_Proposal_Popup()"  *ngIf="tab != 2"><i
+              class="fmdi fmdi-link mr-2"></i>Enable Transfer</button> -->
+            <button type="button" ngbTooltip="Download all applications in excel format." class="btn btn-outline-psbpurple" (click)="getStatusList(false, true)">
+              <i class="fmdi fmdi-download mr-2"></i>Download User</button>           
+          </div>
+        </div>
+
+        <!-- table Report and Filter data -->
+        <div class="table-responsive">
+          <table class="CommonTable_NP BM_FIO_Table Mobile_table_View_NP">
+            <!--Common-ps-Subsidy-NP  Comon-nine-dataTSV BM_FIO_Table  [ngClass]="tab == 2 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+            <thead>
+              <tr>
+                <th>Sr. No.</th>
+                <th>Name of Unit</th>
+                <th>Contact Details</th>
+                <th>District</th>
+                <th *ngIf="SubTab == 4 || SubTab == 5">Status</th>
+                <th *ngIf="isBMLogin">Main FIO Assigned</th>
+                <th *ngIf="isBMLogin && SubTab == 5">Response</th> 
+                <th>Subsidiary FIO <em class="fmdi fmdi-info" *ngIf="isBMLogin && (SubTab == 4 || SubTab == 5)" ngbTooltip="Tick the Applications for which Subsidiary FIO can view the applications on their dashboard"></em></th>
+                <th *ngIf="tab == 2">{{isBMLogin ? 'Status By FIO' : 'Status By BM'}}</th>
+                <th *ngIf="SubTab == 6">Digital Signature Status</th>
+                <th class="NP_Action">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+                <!-- Filter TR Cont Start -->
+                <tr class="Mobile_View_Filter_Hide_NP">
+                    <td>&nbsp;</td>
+                    <td> 
+                      <input type="text" class="form-control"  name="searchEntityName" autocomplete="off"
+                      [(ngModel)]="searchFilterJson.searchEntityName" (ngModelChange)="debounceEventForFilter()">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" name="searchEmail" autocomplete="off"
+                      [(ngModel)]="searchFilterJson.searchEmailOrMobile" (ngModelChange)="debounceEventForFilter()">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" name="searchMobile" autocomplete="off"
+                      [(ngModel)]="searchFilterJson.searchDistrict" (ngModelChange)="debounceEventForFilter()">
+                    </td>
+                    <td *ngIf="tab == 1">
+                      <!-- <ng-select placeholder="Select Status" 
+                        bindValue="id"
+                        [bindLabel]="SubTab === 5 ? 'bmDisplayName' : 'fioDisplayName'"
+                        [clearable]="true"
+                        [(ngModel)]="searchFilterJson.statusId"
+                        [items]="searchFilterJson.statusList"
+                        (ngModelChange)="getStatusList()"
+                        name="statusId">
+                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index" *ngIf="item?.isDisplay">
+                          <p class="ng-Select-Three"><span>{{SubTab == 5 ? item.bmDisplayName : item.fioDisplayName}}</span></p>
+                        </ng-template>
+                      </ng-select> -->
+                      <ng-select [(ngModel)]="searchFilterJson.statusId" (ngModelChange)="getStatusList()" name="statusId">
+                        <ng-option *ngFor="let data of searchFilterJson.statusList;" [value]="data.id">
+                          <span *ngIf="data.isDisplay">{{this.isBMLogin ? data.bmDisplayName : data.fioDisplayName}}</span>
+                        </ng-option>
+                      </ng-select>
+                    </td>
+                    <td *ngIf="isBMLogin">
+                      <input type="text" class="form-control" name="searchMobile" autocomplete="off"
+                      [(ngModel)]="searchFilterJson.searchMainFio" (ngModelChange)="debounceEventForFilter()">
+                    </td>
+                    <td *ngIf="isBMLogin && SubTab == 5">
+                      <ng-select placeholder="Select Response" 
+                        bindValue="id"
+                        bindLabel="name"
+                        [clearable]="true"
+                        [(ngModel)]="searchFilterJson.responseId"
+                        [items]="searchFilterJson.responseList"
+                        (ngModelChange)="getStatusList()"
+                        name="responseId">
+                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                          <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                        </ng-template>
+                      </ng-select>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" name="searchMobile" autocomplete="off"
+                      [(ngModel)]="searchFilterJson.searchSubFio" (ngModelChange)="debounceEventForFilter()">
+                    </td>
+                    <td *ngIf="tab == 2">
+                      <ng-container *ngIf="!isBMLogin">
+                        <ng-select placeholder="Select Status" 
+                        bindValue="id"
+                        bindLabel="name"
+                        [clearable]="true"
+                        [(ngModel)]="searchFilterJson.bmStatusId"
+                        [items]="searchFilterJson.bmStautList"
+                        (ngModelChange)="getStatusList()"
+                        name="bmStatusId">
+                          <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                            <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                          </ng-template>
+                        </ng-select>
+                      </ng-container>
+                      <ng-container *ngIf="isBMLogin">
+                        <!-- <ng-select placeholder="Select Status" 
+                        bindValue="id"
+                        bindLabel="name"
+                        [clearable]="true"
+                        [(ngModel)]="searchFilterJson.statusId"
+                        [items]="searchFilterJson.responseList"
+                        (ngModelChange)="getStatusList()"
+                        name="statusId">
+                          <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                            <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                          </ng-template>
+                        </ng-select> -->
+                        <ng-select [(ngModel)]="searchFilterJson.statusId" (ngModelChange)="getStatusList()" name="statusId">
+                          <ng-option *ngFor="let data of searchFilterJson.statusList;" [value]="data.id">
+                            <span>{{this.isBMLogin ? data.bmDisplayName : data.fioDisplayName}}</span>
+                          </ng-option>
+                        </ng-select>
+                      </ng-container>
+                    </td>
+                    <td *ngIf="SubTab == 6">
+                      <ng-select placeholder="Select"
+                        bindValue="id"
+                        bindLabel="name" 
+                        [clearable]="true"
+                        [(ngModel)]="searchFilterJson.signatureStautsId"
+                        [items]="searchFilterJson.signatureStautList"
+                        (ngModelChange)="getStatusList()"
+                        name="signatureStautsId">
+                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                          <p class="ng-Select-Three"><span>{{item.name}}</span></p>
+                        </ng-template>
+                      </ng-select>
+                    </td>
+                    <td class="NP_Action">&nbsp;</td>
+                </tr>
+                     <!-- Filter TR Cont End -->
+              <tr *ngFor="let data of masterList; let i=index;">
+                <td>{{i+1}}</td>
+                <td>{{data.nameOfUnit || '-'}}</td>
+                <td>{{data.email || 'NA'}} <br/>{{data.mobile || '-'}}</td>                
+                <td>{{data.district || '-'}}</td>
+                <td *ngIf="tab == 1">{{data.statusName || '-'}}</td>                
+                <td *ngIf="isBMLogin">{{data.fioName || '-'}}</td>
+                <td *ngIf="isBMLogin && SubTab == 5"> 
+                  <div class="Comon-Dot-text">
+                    <div [ngClass]="data.response == 15 ? 'red-dot' : data.response == 14 ? 'green-dot' : ''"></div>
+                      &nbsp; {{data.response == 15 ? 'Negative' : data.response == 14 ? 'Positive' : '-' }}
+                    <!-- <div class="Red-dot">Completed</div> -->
+                    <!-- <div class="warning-dot"></div> -->
+                  </div> 
+                </td>
+                <td class="NP_Switch">
+                  <div class="NP_EM_ICon_Cont">
+                    <span>{{isEnabledTransfer ? '-' : (data.subFioName || '-')}}</span>
+                      <!-- <ui-switch class="switch_NP" size="small" [disabled]="data.isSubFioActive == true"
+                        [checked]="data.isSubFioActive != true" (click)="updateSubFioRights(data, $event)">
+                      </ui-switch> -->
+                    <div class="Text_with_switch_NP" *ngIf="data.subFioName != '-' && isBMLogin && (SubTab == 4 || SubTab == 5)">
+                      <div class="checkbox checkbox-psbpurple checkbox-single" [ngbTooltip]="data.isSubFioActive != true ? 'Check to show to Subsidiary FIO.' : ''">
+                        <input type="checkbox" [(ngModel)]="data.isSubFioActive"
+                          (click)="updateSubFioRights(data, $event)" [disabled]="data.isSubFioActive == true || isEnabledTransfer">
+                        <label></label>
+                      </div>  
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="tab == 2">{{isBMLogin ? data.statusNameFIO : data.bmStatusName}}</td>
+                <td  *ngIf="SubTab == 6">
+                  {{data.digitalSignatureStatus == 17 ? 'E-sign Pending' : data.digitalSignatureStatus == 18 ? 'E-sign Completed' : '-'}}
+                </td>
+                <td class="NP_Action">
+                  <div>                    
+                    <a href="javascript:void(0);" class="action-icon" (click)="navigate(data)">
+                      <em [ngClass]="isBMLogin ? 'fmdi fmdi-eye' : SubTab != 4 ? 'fmdi fmdi-eye' : 'fmdi fmdi-file'" 
+                      placement="top" [ngbTooltip]="isBMLogin || (data.isSubFioActive == true) ? 'View Form' : SubTab != 4 ? 'View Form' : 'Fill Form'"></em>
+                    </a>
+                    <!-- <a href="javascript:void(0);" (click)="Reason_View_Popup()" *ngIf="tab != 2" class="action-icon"><em class="fmdi fmdi-info" placement="top"
+                        ngbTooltip="Reason"></em></a> -->
+                        
+                  </div>
+                </td>
+              </tr>
+              <!-- <tr>
+                <td>2</td>
+                <td>Simonsh Private Limited</td>
+                <td>nikul123@gmail.com <br/>7069418009</td>                
+                <td>Ahmedabad</td>
+                <td *ngIf="tab != 2">Received from FIO for Approval</td>                
+                <td>Krunal Goswami</td>
+                <td  *ngIf="SubTab == 4"> 
+                  <div class="Comon-Dot-text">
+                  <div class="green-dot"></div>&nbsp; Positive
+                </div> 
+              </td> 
+              <td class="NP_Switch">
+                <div class="NP_EM_ICon_Cont">
+                <span>Krunal Goswami</span>                  
+                <div class="Text_with_switch_NP">
+                  <ui-switch class="switch_NP" size="small" [checked]="false"></ui-switch>
+                </div>
+                </div>
+              </td>      
+                <td *ngIf="SubTab == 6">E-sign Pending</td>
+                <td class="NP_Action">
+                  <div>                    
+                    <a href="javascript:void(0);" routerLink="/TIIC/BMFIO-Form" class="action-icon"><em
+                        class="fmdi fmdi-eye" placement="top" ngbTooltip="View Form"></em></a>
+                        
+                  </div>
+                </td>
+
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+        <div class="row pagination-table Mobile_Pagination">
+          <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+              Showing
+              {{ (pageSize*(page-1)) == 0 && totalCount == 0 ? totalCount : ((pageSize*(page-1)) + 1) }} to
+              {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+              {{totalCount}}
+              entries
+            </div>
+          </div>
+          <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+              <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getStatusList()">
+              </ng-select> entries</label></div>
+          <!-- Pagination -->
+          <div class="col-sm-12 col-md-5">
+            <div class="text-md-right float-md-right pagination-rounded">
+              <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true"  [pageSize]="pageSize"
+                (pageChange)="onPageChange($event)">
+              </ngb-pagination>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

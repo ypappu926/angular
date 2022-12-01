@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{productList.length}} product are using Scoring Model</h4>
+    <div class="modal-heading-g jc-FEnd">
+      <div class="form-group-input ">
+        <div class="symbole-input">
+          <i class="mdi mdi-magnify"></i>
+          <input type="text" class="form-control" placeholder="Search Parameter" [(ngModel)]="searchText"
+            (keyup)="filterText(searchText)" />
+  
+        </div>
+      </div>
+    </div>
+    <!-- <button type="button" class="close" (click)="closeModal()" aria-hidden="true">×</button> -->
+  </div>
+  <div class="modal-body Modal-scroll">
+    <div class="row m-0">
+      <div class="col-md-12 p-0">
+        <div class="popup-sub-parameter">
+          <span>Product Name</span>
+          <span>Version</span>
+        </div>
+        <div class="checkbox-parameters-m" *ngFor="let item of productList;let i = index">
+            <span><a href="javaScript:void(0)" (click)="openProduct(item.id)">{{item.productName}}</a></span>
+            <span>Version {{item.versionId}}</span>
+            <!-- <span><a (click)="openProduct()">View Product</a></span> -->
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer footer-text-m">
+    <span></span>
+    <div class="btn-footer-g jc-FEnd">
+      <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="closeModal()">Cancel</a>
+    </div>
+  </div>
+  
+ 
+  

@@ -1,0 +1,217 @@
+<ng-container *ngIf="popUpObj.type == 1">
+<div class="modal-header" >
+    <h4 class="modal-title">Delete Product parameter ?</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>will be deleted permanently you will not be able retrieve it
+          back once deleted. Are you sure you want to delete this permanently?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-danger" (click)="activeModal.close('Ok')"><em
+        class="mdi mdi-delete"></em> Delete
+      Permanently</a>
+  </div>
+</ng-container>
+  
+<ng-container *ngIf="popUpObj.type == 2">
+  <div class="modal-header" >
+    <h4 class="modal-title">Delete Product ?</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>will be deleted permanently you will not be able retrieve it
+          back once deleted. Are you sure you want to delete this permanently?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-danger" (click)="delete()"><em
+        class="mdi mdi-delete"></em> Delete
+      Permanently</a>
+  </div>
+</ng-container>
+<ng-container *ngIf="popUpObj.type == 3">
+  <div class="modal-header" >
+    <h4 class="modal-title">You have unsaved changes</h4>
+    <button type="button" class="close" aria-hidden="true" (click)="activeModal.close('Cancel')">×</button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>You have not saved the new changes, what do you want to do ?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-danger" (click)="activeModal.close('Exit')"><em
+        class="mdi mdi-delete"></em> Exit without
+      saving</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.close('Ok')"><em
+        class="mdi mdi-folder mr-1"></em>
+      Save & Exit</a>
+  </div>
+</ng-container>
+<ng-container *ngIf="popUpObj.type == 4" >
+  <div class="modal-header" >
+    <h4 class="modal-title">Send to Checker for approval</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>Do you want to send <strong>{{popUpObj.name}}</strong> to checker for approval.You will not be able to edit
+          this
+          Product  until checker takes any action.</span>
+      </div>
+      <div class="col-md-12">
+        <span> After approval this product will directly go live and applicants can start matching with this
+          product .</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.close('Ok')"><em
+        class="mdi mdi-arrow-top-right mr-1"></em>
+      Send to Checker for Approval</a>
+  </div>
+</ng-container>
+<ng-container *ngIf="popUpObj.type == 5">
+  <div class="modal-header" >
+    <h4 class="modal-title">Approve Product</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>Do you want to approve <strong>{{popUpObj.name}}</strong>. After your approval this product  will
+          directly go
+          live and borrowers will start matching with this product .</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-success" (click)="activeModal.close('Ok')"><em
+        class="fmdi fmdi-check-all mr-1"></em> Approval
+    </a>
+  </div>
+</ng-container>
+<ng-container  *ngIf="popUpObj.type == 6">
+  <div class="modal-header">
+    <h4 class="modal-title">Send Back to maker</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-12">
+        <span>Do you want to send <strong>{{popUpObj.name}}</strong>. to maker for changes.You will not be able to take
+          action on this Product  until maker edits and sends you for approval.</span>
+      </div>
+      <div class="col-12 mt-3 ">
+        <textarea #textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="remarks"
+          placeholder="Write suggestions for maker for example - set maximum loan amount to 30,00,000 INR"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-warning" (click)="
+    activeModal.close(remarks)"><em
+        class="fmdi fmdi-arrow-left-bottom mr-1"></em>
+      Send Back maker
+    </a>
+  </div>
+</ng-container>
+<ng-container *ngIf="popUpObj.type == 7">  
+  <div class="modal-header" >
+    <h4 class="modal-title">Edit Product  </h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span>Are you sure you want to edit product?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">No</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="goToEditParameter()"><em
+        class="fmdi fmdi-check-all mr-1"></em> Yes</a>
+  </div>
+</ng-container>
+  
+<ng-container *ngIf="popUpObj.type == 8">
+  <div class="modal-header" >
+    <h4 class="modal-title">{{popUpObj.title}} Product  ?</h4>
+  </div>
+  <div class="modal-body" *ngIf="popUpObj.title=='Activation'">
+    <div class="row">
+      <div class="col-md-12">
+        <span>“<strong>{{popUpObj.name}}</strong>” will be activated. 
+          After activation this product  will start matching with new proposals coming through platform. 
+          However there will be no effect on past applications.</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" *ngIf="popUpObj.title=='Activation'">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.close('Ok')"><em
+        class="fmdi fmdi-lock"></em> Request {{popUpObj.title}}</a>
+  </div>
+
+  
+  <div class="modal-body" *ngIf="popUpObj.title=='Deactivation'">
+    <div class="row">
+      <div class="col-md-12">
+        <span>“<strong>{{popUpObj.name}}</strong>” will be deactivated. 
+          After deactivation this product  will stop matching with new proposals coming through platform. 
+          However there will be no effect on applications already matched with the product.?</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" *ngIf="popUpObj.title=='Deactivation'">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+      (click)="activeModal.close('Cancel')">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-warning" (click)="activeModal.close('Ok')"><em
+        class="mdi mdi-lock-open"></em> Request {{popUpObj.title}}</a>
+  </div>
+</ng-container>
+
+
+<ng-container  *ngIf="popUpObj.type == 9"> 
+<div class="modal-header">
+  <h4 class="modal-title">Edit Product </h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <span>You have changed the product configuration saving this can affect the product.</span>
+    </div>
+    <div class="col-md-12 mt-2">
+      <span> Also some
+        parameters which doesn’t fit with the new configurations will be removed are you sure you want to do this
+        ?</span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect"
+    (click)="activeModal.close('Cancel')">Cancel</a>
+  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="goToEdit()"><em
+      class="fmdi fmdi-check-all mr-1"></em> Change Product Configuration</a>
+</div>
+</ng-container>

@@ -1,0 +1,339 @@
+<div class="container-fluid" (scroll)="onWindowScroll($event)">
+  <app-page-title title="Loan Applications" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12 parent">
+      <div class="card-box btn-tabs" id="stick-headerN">
+        <div class="nav-bordered tab-badge NP_tab_Flex_Auto_Multi">
+          <ul class="nav nav-tabs Common-tab-Badge Two_Tab_Full Two_TabAfter customdropdown_mobile">
+            <li class="init hide">Select</li>
+            <li class="nav-item Common-badge-C4 Six_TabAfter" id="tab1" (click)="changeTab(1, 7)">
+              <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.pendingCount || 0}}</h3>
+                <span class="text-muted">Pending Proposals</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4 Six_TabAfter" id="tab2" (click)="changeTab(2)">
+              <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.preSanctionedCount || 0}}</h3>
+                <span class="text-muted">Pre Sanction</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4 Six_TabAfter" id="tab3" (click)="changeTab(3)">
+              <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.sanctionedCount || 0}}</h3>
+                <span class="text-muted">Sanctioned</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4 Six_TabAfter" id="tab4" (click)="changeTab(4)">
+              <a class="nav-link" [ngClass]="{ active : tab == 4}">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.disbursedCount || 0}}</h3>
+                <span class="text-muted">Disbursed</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4 Six_TabAfter" id="tab5" (click)="changeTab(5)">
+              <a class="nav-link" [ngClass]="{ active : tab == 5 }">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.onHoldCount || 0}}</h3>
+                <span class="text-muted">On-Hold</span>
+              </a>
+            </li>
+            <li class="nav-item Common-badge-C4" id="tab6" (click)="changeTab(6)">
+              <a class="nav-link" [ngClass]="{ active : tab == 6 }">
+                <h3 class="notification-list loan-tsv-badge">{{countsData.rejectedCount || 0}}</h3>
+                <span class="text-muted">Rejected</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="btn-tabs MB_1_5_NP Tab_Card_P0 " id="stick-headerN" *ngIf="tab == 1 || SubTab == 7 || SubTab == 8">
+          <div class="nav-bordered dash-tab-Np tab-badge NP_tab_Flex">
+            <ul class="nav nav-tabs Common-tab-Badge SubTab_Multi_Full SubCustomMobileTwo">
+              <li class="initTwo hide">Select</li>
+              <li class="nav-item Common-badge-C4" id="tab3" (click)="changeTab(1, 7)">
+                <a class="nav-link NP_BB_2" [ngClass]="{ active : SubTab == 7 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Pre Sanction <span
+                      class="badge badge-danger rounded-circle noti-icon-badge">{{countsData.pendingPreSanctionCount ||
+                      0}}</span></span>
+                </a>
+              </li>
+              <li class="nav-item Common-badge-C4" id="tab4" (click)="changeTab(1, 8)">
+                <a class="nav-link NP_BB_2 " [ngClass]="{ active : SubTab == 8 }">
+                  <span class="text-muted notification-list loan-tsv-badge">Sanctioned <span
+                      class="badge badge-danger rounded-circle noti-icon-badge">{{countsData.pendingSanctionCount ||
+                      0}}</span></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+          <div class="text-heading-cards">
+            <h4 class="main-text-heading">{{tabTitle?.title}}</h4>
+            <span class="text-muted">{{tabTitle?.subTitle}} list below details</span>
+          </div>
+          <div class="Btn-Drop_Down-dual-Cont">
+            <button type="button" class="btn btn-psb btn-outline-psbpurple" (click)="getStatusList(false, true)"><i class="fmdi fmdi-download mr-2"></i>
+              Download All</button>
+          </div>
+        </div>
+        <!-- table Report and Filter data -->
+        <div class="table-responsive">
+          <table class="CommonTable_NP NP_BG_Action Mobile_table_View_NP">
+            <!--Common-ps-Subsidy-NP  [ngClass]="tab == 4 ? 'Common-ps-Subsidy-NP':'Common-ps-SS-NP'"-->
+            <thead>
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>Applicant Name</th>
+                <th>Contact Details</th>
+                <th *ngIf="tab == 2 || tab == 3">Pending With</th>
+                <th *ngIf="tab != 4 && tab != 5 && tab != 6">Status</th>
+                <th *ngIf="tab == 4">Disbursed Date</th>
+                <th *ngIf="tab == 4">Disbursed Amount</th>
+                <th *ngIf="tab == 3 || ((tab == 1 || tab == 2 || tab == 4 || tab == 5 || tab == 6) && isBMLogin)">FIO Assigned</th>
+                <th *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">LBM Assigned</th>
+                <th *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">GM Assigned</th>
+                <th *ngIf="tab != 5 && tab != 6">Date Of Proposal</th>
+                <th *ngIf="tab == 5">Reason</th>
+                <th *ngIf="tab == 5">On-Hold Date</th>
+                <th *ngIf="tab == 6">Reason</th>
+                <th *ngIf="tab == 6">Reject Date</th>
+                <th class="NP_Action">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="Mobile_View_Filter_Hide_NP">
+                <td>&nbsp;</td>
+                <td>
+                  <input type="text" class="form-control" name="searchApplicantName" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchApplicantName" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="searchEmailOrMobile" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchEmailOrMobile" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="tab == 2 || tab == 3">
+                  <ng-select [(ngModel)]="searchFilterJson.pendingWithId" (ngModelChange)="getStatusList()"
+                    name="pendingWithId">
+                    <ng-option *ngFor="let data of searchFilterJson.pendingWithList;" [value]="data.id">
+                      <!-- *ngIf="data.isDisplay" -->
+                      <span>{{data.pendingWith}}</span>
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td *ngIf="tab != 4 && tab != 5 && tab != 6">
+                  <!-- <input type="text" class="form-control" > -->
+                  <ng-select [(ngModel)]="searchFilterJson.statusId" (ngModelChange)="getStatusList()" name="statusId">
+                    <ng-option *ngFor="let data of searchFilterJson.statusList;" [value]="data.id">
+                      <span>{{data.displayName}}</span>
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td *ngIf="tab == 4">
+                  <div class="psb-input-group">
+                    <input type="text" name="disbursedDate" [(ngModel)]="searchFilterJson.disbursedDate" ngbDatepicker 
+                    class="form-control" #date="ngbDatepicker" [readonly]="true" (ngModelChange)="getStatusList()">
+                    <div class="psb-input-group-append" (click)="date.toggle()">
+                      <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="tab == 4">
+                  <input type="text" class="form-control" name="disbursedAmount" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.disbursedAmount" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="tab == 3 || ((tab == 1 || tab == 2 || tab == 4 || tab == 5 || tab == 6) && isBMLogin)">
+                  <input type="text" class="form-control" name="searchFio" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchFio" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">
+                  <input type="text" class="form-control" name="searchLbm" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchLbm" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">
+                  <input type="text" class="form-control" name="searchGm" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchGm" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="tab != 5 && tab != 6">
+                  <div class="psb-input-group">
+                    <input type="text" name="proposalDate" [(ngModel)]="searchFilterJson.proposalDate" ngbDatepicker
+                      class="form-control" #date1="ngbDatepicker" [readonly]="true" (ngModelChange)="getStatusList()">
+                    <div class="psb-input-group-append" (click)="date1.toggle()">
+                      <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                    </div>
+                  </div>
+                </td>
+                <td *ngIf="tab == 5 || tab == 6">
+                  <input type="text" class="form-control" name="reason" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.reason" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="tab == 5 || tab == 6">
+                  <div class="psb-input-group">
+                    <input type="text" name="rejectHoldDate" [(ngModel)]="searchFilterJson.rejectHoldDate" ngbDatepicker 
+                      class="form-control" (ngModelChange)="getStatusList()"
+                     #date2="ngbDatepicker" [readonly]="true">
+                    <div class="psb-input-group-append" (click)="date2.toggle()" >
+                      <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                    </div>
+                  </div>
+                </td>
+                <!-- <td *ngIf="tab == 6">
+                  <input type="text" class="form-control" name="reason" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.reason" (ngModelChange)="debounceEventForFilter()">
+                </td>
+                <td *ngIf="tab == 6">
+                  <div class="psb-input-group">
+                    <input type="text" ngbDatepicker class="form-control" #date3="ngbDatepicker" [readonly]="true">
+                    <div class="psb-input-group-append" (click)="date3.toggle()">
+                      <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                    </div>
+                  </div>
+                </td> -->
+                <td class="NP_Action">
+                  &nbsp;
+                </td>
+              </tr>
+              <ng-container *ngFor="let proposalDetails of proposalDetailsList;let i = index;">
+                <tr [ngClass]="proposalDetails.statusId == 1 ? 'Active_TR' : ''" >
+                  <td data-label="Sr. No.">{{i + 1}}</td>
+                  <td data-label="Applicant Name">{{proposalDetails.applicantName}}</td>
+                  <td data-label="Contact Details">
+                  {{proposalDetails.email || ''}}
+                  <br />{{proposalDetails.mobile}}
+                  </td>
+                  <td data-label="Pending With" *ngIf="tab == 2 || tab == 3">{{proposalDetails.pendingWith}}</td>
+                  <td data-label="Status" *ngIf="tab != 4 && tab != 5 && tab != 6">{{proposalDetails.status}}</td>
+                  <td data-label="Disbursed Date" *ngIf="tab == 4">{{proposalDetails.disbursedDate | date: 'dd MMM yyyy'}}
+                  </td>
+                  <td data-label="Disbursed Amount" *ngIf="tab == 4">{{proposalDetails.disbursedAmount}}</td>
+                  <td data-label="FIO Assigned" *ngIf="tab == 3 || ((tab == 1 || tab == 2 || tab == 4 || tab == 5 || tab == 6) && isBMLogin)">{{proposalDetails.fioName || '-'}}</td>
+                  <td data-label="LBM Assigned" *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">{{proposalDetails.lbmName || '-'}}</td>
+                  <td data-label="GM Assigned" *ngIf="((tab == 1 && SubTab == 8) || tab == 2 || tab == 5 || tab == 6)  && isBMLogin">{{proposalDetails.gmName || '-'}}</td>
+                  <td data-label="Date Of Proposal" *ngIf="tab != 5 && tab != 6">{{proposalDetails.proposalDate | date: 'dd MMM yyyy'}}</td>
+                  <td data-label="Reason" *ngIf="tab == 5 || tab == 6">{{proposalDetails.reason}}</td>
+                  <td data-label="On-Hold / Reject Date" *ngIf="tab == 5 || tab == 6">{{proposalDetails.rejectHoldDate | date: 'dd MMM yyyy'}}</td>
+                  <td data-label="Action" class="NP_Action">
+                    <div class="NP_Action_table">
+                    <!-- <a href="javascript:void(0);" class="action-icon" *ngIf="tab == 3"><em class="fmdi fmdi-file-text"
+                          placement="top" ngbTooltip="View Details"></em></a> -->
+                    <button type="button" class="btn action-icon"><em class="fmdi fmdi-eye"
+                        ngbTooltip="View Details" (click)="navigateToDetailedView(proposalDetails)"></em></button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+              <!-- <tr>
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="Applicant Name">Nikul Patel</td>
+                    <td data-label="Contact Details">
+                      Nikul@gmail.com
+                      <br/>7069418800
+                    </td>
+                    <td data-label="Pending With" *ngIf="tab == 2">Branch Manager</td>
+                    <td data-label="Status" *ngIf="tab != 4 && tab != 5 && tab != 6">New <br/> Sent for Approval</td>
+                    <td data-label="Disbursed Date" *ngIf="tab == 4">21 Nov 2021</td>
+                    <td data-label="Disbursed Amount" *ngIf="tab == 4">₹ 50,000</td>
+                    <td data-label="FIO Assigned" *ngIf="tab == 3 || tab == 1">Nikul Patel</td>
+                    <td data-label="LBM Assigned" *ngIf="tab == 2">Nikul Patel</td>
+                    <td data-label="GM Assigned" *ngIf="tab == 2">Nikul Patel</td>
+                    <td data-label="Date Of Proposal" *ngIf="tab != 5 && tab != 6">21 Nov 2021</td>
+                    <td data-label="Reason" *ngIf="tab == 5">Additional information is required</td>
+                    <td data-label="On-Hold Date" *ngIf="tab == 5">21 Nov 2021</td>
+                    <td data-label="Reason" *ngIf="tab == 6">Additional information is required</td>
+                    <td data-label="Reject Date" *ngIf="tab == 6">21 Nov 2021</td>
+                    <td data-label="Action" class="NP_Action">
+                      <div class="NP_Action_table">
+                        <button type="button" class="btn action-icon" routerLink="/TIIC/BMFIOS-LoanApplicationView"><em class="fmdi fmdi-eye"
+                          ngbTooltip="View Details"></em></button>
+                      </div>
+                    </td>
+                </tr>
+
+                <tr class="Active_TR">
+                    <td data-label="Sr. No.">1</td>
+                    <td data-label="Applicant Name">Nikul Patel</td>
+                    <td data-label="Contact Details">
+                      Nikul@gmail.com
+                      <br/>7069418800
+                    </td>
+                    <td data-label="Pending With" *ngIf="tab == 2">Branch Manager</td>
+                    <td data-label="Status" *ngIf="tab != 4 && tab != 5 && tab != 6">New <br/> Sent for Approval</td>
+                    <td data-label="Disbursed Date" *ngIf="tab == 4">21 Nov 2021</td>
+                    <td data-label="Disbursed Amount" *ngIf="tab == 4">₹ 50,000</td>
+                    <td data-label="FIO Assigned" *ngIf="tab == 3 || tab == 1">Nikul Patel</td>
+                    <td data-label="LBM Assigned" *ngIf="tab == 2">Nikul Patel</td>
+                    <td data-label="GM Assigned" *ngIf="tab == 2">Nikul Patel</td>
+                    <td data-label="Date Of Proposal" *ngIf="tab != 5 && tab != 6">21 Nov 2021</td>
+                    <td data-label="Reason" *ngIf="tab == 5">Additional information is required</td>
+                    <td data-label="On-Hold Date" *ngIf="tab == 5">21 Nov 2021</td>
+                    <td data-label="Reason" *ngIf="tab == 6">Additional information is required</td>
+                    <td data-label="Reject Date" *ngIf="tab == 6">21 Nov 2021</td>
+                    <td data-label="Action" class="NP_Action">
+                      <div class="NP_Action_table">
+                        <button type="button" class="btn action-icon" routerLink="/TIIC/BMFIOS-LoanApplicationView"><em class="fmdi fmdi-eye"
+                          ngbTooltip="View Details"></em></button>
+                      </div>
+                    </td>
+                </tr> -->
+
+            </tbody>
+          </table>
+          <!-- <div class="row pagination-table">
+                <div class="col-sm-12 col-md-5">
+                  <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                    Showing
+                    {{ (pageSize*(page-1)) == 0 && totalCount == 0 ? totalCount : ((pageSize*(page-1)) + 1) }} to
+                    {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                    {{totalCount}}
+                    entries
+                  </div>
+                </div>
+                <div class="dataTables_length" id="tickets-table_length"><label class="d-inline-flex align-items-center">Show
+                    <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                      [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber" (ngModelChange)="getStatusList()" >
+                    </ng-select> entries</label></div>
+                
+                <div class="col-sm-12 col-md-5">
+                  <div class="text-md-right float-md-right pagination-rounded">
+                    <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true" [boundaryLinks]="true"  [pageSize]="pageSize"
+                      (pageChange)="onPageChange($event)">
+                    </ngb-pagination>
+                  </div>
+                </div>
+                
+              </div> -->
+          <div class="row pagination-table Mobile_Pagination">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                Showing
+                {{ (pageSize*(page-1)) == 0 && totalCount == 0 ? totalCount : ((pageSize*(page-1)) + 1) }} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+                entries
+              </div>
+            </div>
+            <div class="dataTables_length" id="tickets-table_length"><label
+                class="d-inline-flex align-items-center">Show
+                <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                  [clearable]="false" [(ngModel)]="pageSize" [items]="PageSelectNumber"
+                  (ngModelChange)="getStatusList()">
+                </ng-select> entries
+              </label></div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-right pagination-rounded">
+                <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true"
+                  [boundaryLinks]="true" [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+                </ngb-pagination>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

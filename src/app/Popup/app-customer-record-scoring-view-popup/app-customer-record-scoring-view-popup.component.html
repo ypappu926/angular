@@ -1,0 +1,97 @@
+<!-- <p>app-customer-record-scoring-view-popup works!</p> -->
+<div class="modal-header d-block">
+    <h4 class="modal-title">Scoring Calculation Details</h4>
+  </div>
+  <div class="modal-body Modal-scroll">
+    <div class="row m-0">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="Common-CustomerScoring-FF-NP " summary="">
+            <thead>
+              <tr>
+                <!-- <th>Product Name</th> -->
+                <th>Scoring Name</th>
+                <!-- <th>Application Id</th> -->
+                <th>Borrower Score</th>
+                <!-- <th>Prop Score</th> -->
+                <th>Borrower Prop Score</th>
+                <th>Risk Consider</th>
+                <th>prop Score Consider</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- <td>{{scoringDetails.productName}}</td> -->
+                <td>{{scoringDetails.scoring_name}}</td>
+                <!-- <td>{{scoringDetails.applicationId}}</td> -->
+                <td>{{scoringDetails.borrowerScore}}</td>
+                <!-- <td>{{scoringDetails.propScore}}</td> -->
+                <td>{{scoringDetails.borrowerPropScore}}</td>
+                <td>{{scoringDetails.riskConsider}}</td>
+                <td>{{scoringDetails.propSocreConsider}}</td>
+              </tr>
+              <ng-container *ngFor="let riskScoreData of scoringDetails && scoringDetails.riskScoreList; let i = index">
+                <tr>
+                <table class="Common-soring-FS-NP " summary="">
+                  <thead>
+                    <tr>
+                      <th>Risk Name</th>
+                      <th>Risk Score</th>
+                      <th>Risk Weight</th>
+                      <th>Total Score</th>
+                      <th>Risk Max Score</th>
+                      <th>Risk Weight Scoring</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{riskScoreData.riskName}}</td>
+                      <td>{{riskScoreData.riskScore}}</td>
+                      <td>{{riskScoreData.riskWeight}}</td>
+                      <td>{{riskScoreData.totalScore}}</td>
+                      <td>{{riskScoreData.riskMaxScore}}</td>
+                      <td>{{riskScoreData.riskWeightScoring}}</td>
+                    </tr>
+                    <tr>
+                      <table class="Common-ps-CustomerScorgin-NP" summary="">
+                       <thead>
+                        <tr > 
+                          <th>#</th>
+                          <th>Parameter Name</th>
+                          <th>Parameter Option</th>
+                          <th>Answer</th>
+                          <th>Max Socre</th>
+                          <th>Add Values</th>
+                          <th>Obtained Score</th>
+                      
+                      </tr>                      
+                       </thead>
+                       <tbody>
+                        <tr  *ngFor="let parameter of riskScoreData.parameterScoreData |keyvalue; let i = index"> 
+                          <td>{{1+i}}</td>
+                          <td>{{ parameter.value.parameterName}}</td>
+                          <td>{{ parameter.value.parameterOption }}</td>
+                          <td>{{ parameter.value.answer }}</td>
+                          <td>{{ parameter.value.maxSocre }}</td>
+                          <td>{{ parameter.value.addValues }}</td>
+                          <td>{{ parameter.value.obtainedScore }}</td>
+                      </tr>
+                       </tbody>
+                    </table>
+                    </tr>
+                  </tbody>
+                </table>
+              </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer jc-center">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="activeModal.close('cancel')">Cancel</a>
+    <!-- <a href="javascript: void(0)" class="btn btn-psb width-md btn-psbpurple"> <em class="fmdi fmdi-floppy mr-1"></em>
+      Save </a> -->
+  </div>
+  

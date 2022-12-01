@@ -1,0 +1,33 @@
+<div class="modal-header d-block">
+    <h4 class="modal-title">Hold Scoring Model
+    </h4>
+    <span class="text-muted">
+    <!-- Do you want to Hold the application of "V M Shah & Co"for Working Capital ? -->
+  </span>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label>Select Reason *</label>
+                <ng-select class="NP_Drop_txt_Warp" placeholder="Select any one"
+                [(ngModel)]="reason" name="reason"            
+                [items]="selectValue"
+                [clearable]="false">
+              </ng-select>              
+            </div>
+        </div>
+        <div class="col-12" *ngIf="reason == 'Other'">
+            <div class="form-group">
+              <label>Enter Reason *</label>
+              <input type="text" placeholder="Enter Reason" [(ngModel)]="otherReason" class="form-control" name="reason"
+                 autocomplete="off">
+            </div>
+          </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="close(false)">Cancel</a>
+    <a href="javascript: void(0)" class="btn btn-psb btn-warning" (click)="submitSanctionHoldDetails()">
+    Hold </a>
+</div>

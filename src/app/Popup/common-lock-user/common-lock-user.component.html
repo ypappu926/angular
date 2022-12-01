@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{isLocked?'Unlock':'Lock'}} User
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <span>Are you sure you want to {{isLocked?'Unlock':'Lock'}} the User?</span>   
+        </div>
+        <div class="col-12" *ngIf="!isLocked">
+            <span>After Locking {{emailId}} they can not be able to login.</span>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-psb btn-secondary waves-effect" (click) = "cancelPopup()">Cancel</button>
+    <button type="button"class="btn btn-psb btn-psbpurple waves-effect" (click) = "isUserLocked()"><em class="fmdi fmdi-lock mr-1"></em>{{isLocked?'Unlock':'Lock'}} User</button>
+</div>

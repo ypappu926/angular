@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <!-- SCHEMES - You are looking for Sec Start -->
+            <section class="lendingPage_schemes_sec">
+                <div class="container Dashabord-np">
+                    <h2 class="section_title text-center"> {{headerName || ''}}</h2>
+
+                    <!-- Schemes List start -->
+                    <div class="lp_schemes_list">
+                        <div
+                            class="lp_schemes_list_wrapper {{dashboardBoxList.length > 4 ? 'jc-flexStart' : 'jc-Center'}}">
+                            <!-- {{businessTypeList.length > 4 ? 'jc-flexStart' : 'jc-Center'}} -->
+                            <!-- *ngFor="let loan of businessTypeList" -->
+                            <div class="loan_schemes_box" placement="bottom" tooltipClass="Dashboard_Tolltip"
+                                ngbTooltip="{{dashboard.tooltip}}" *ngFor="let dashboard of dashboardBoxList"
+                                (click)="navigateOnSubmit(dashboard, showSchemeList)">
+                                <!-- <a class="loan_schemes_url"></a> -->
+                                <div class="loan_schemes_icn">
+                                    <img [src]="'assets/images/Dashabord/ATM-Dash/'+ dashboard.imgPath"
+                                        alt="{{dashboard.displayName}}">
+                                </div>
+
+                                <h3 class="Scheme_text_Cont_H3">{{dashboard.displayName}}</h3>
+
+
+                                <!-- <div class="Other_Text_Cont_Scheme">
+                                    <p><strong>10</strong> <span> Total </span> </p>
+                                    <p><strong class="New_Appplication_All">20</strong> <span> New </span> </p>
+                                </div> -->
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Schemes List End -->
+                </div>
+            </section>
+            <!-- SCHEMES - You are looking for Sec End -->
+        </div>
+    </div>
+
+</div>

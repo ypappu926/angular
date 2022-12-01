@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.33 144.4">
+    <defs>
+        <style>
+            .cls-1 {
+                letter-spacing: 0em;
+            }
+
+            .cls-2 {
+                font-family: Bahnschrift-Bold, Bahnschrift;
+                font-size: 25.34px;
+                font-variation-settings: 'wght'700, 'wdth'100;
+                stroke:  #FFFFFF;
+                stroke-miterlimit: 10;
+                stroke-width: .25px;
+            }
+
+            .cls-2,
+            .cls-3 {
+                /* fill: #16417f; */
+                fill: #FFFFFF;
+            }
+
+            .cls-4 {
+                letter-spacing: 0em;
+            }
+
+            .cls-5 {
+                fill: #efb118;
+            }
+
+            .cls-6 {
+                letter-spacing: -.04em;
+            }
+        </style>
+    </defs>
+    <g id="Layer_1-2">
+        <g>
+            <g>
+                <rect class="cls-5" x="94.21" width="10.47" height="6.33" />
+                <rect class="cls-5" x="62.81" y="10.74" width="41.87" height="6.33" />
+                <rect class="cls-5" x="62.81" y="22.44" width="41.87" height="6.33" />
+                <rect class="cls-5" x="10.47" y="33.64" width="83.74" height="6.33" />
+                <g>
+                    <rect class="cls-5" y="45.24" width="22.58" height="6.33" />
+                    <rect class="cls-5" x="74.53" y="45.24" width="9.22" height="6.33" />
+                </g>
+                <g>
+                    <rect class="cls-5" x="10.47" y="56.84" width="12.11" height="6.33" />
+                    <rect class="cls-5" x="74.53" y="56.84" width="9.22" height="6.33" />
+                </g>
+                <g>
+                    <path class="cls-5"
+                        d="M30.24,74.58c.02,.06,.03,.14,.05,.2H10.47v-6.33H29.38l.35,3.17,.08,.81c.08,.73,.24,1.45,.42,2.15Z" />
+                    <path class="cls-5"
+                        d="M83.74,68.45v6.33h-24.4c.1-.07,.18-.17,.27-.25,.87-.86,1.62-1.83,2.24-2.91,.56-.96,1.02-2.02,1.39-3.17h20.49Z" />
+                </g>
+                <g>
+                    <path class="cls-5"
+                        d="M35.02,84.58c.42,.61,.88,1.22,1.33,1.81h-15.41v-6.33h11.39c.53,1.09,1.13,2.14,1.78,3.17,.3,.46,.59,.92,.91,1.36Z" />
+                    <path class="cls-5"
+                        d="M83.74,80.05v6.33h-27c-1.51-.97-2.98-2.01-4.37-3.17-.32-.24-.61-.51-.92-.77-.73-.64-1.44-1.31-2.1-2-.13-.14-.25-.26-.38-.4h34.77Z" />
+                </g>
+                <g>
+                    <path class="cls-5"
+                        d="M44.89,94.82c1.43,1.12,2.9,2.17,4.42,3.17H10.47v-6.33h30.72c1.18,1.12,2.42,2.16,3.7,3.17Z" />
+                    <path class="cls-5"
+                        d="M73.28,91.65v6.33h-13.11c.5-.92,.98-1.83,1.47-2.74,.11-.11,.2-.25,.27-.42,.12-.22,.21-.48,.31-.65,.2-.38,.4-.76,.61-1.14l.6-1.14c.03-.05,.08-.14,.15-.23h9.7Z" />
+                </g>
+                <rect class="cls-5" x="21.07" y="103.26" width="41.87" height="6.33" />
+                <rect class="cls-5" x="20.94" y="114.86" width="42" height="6.33" />
+                <rect class="cls-5" x="10.47" y="126.46" width="31.53" height="6.33" />
+                <rect class="cls-5" x="10.47" y="138.06" width="10.6" height="6.33" />
+            </g>
+            <path class="cls-3"
+                d="M70.84,51.58v-6.33h-22.57c-.28,0-.54,0-.75,0H26.24v6.33h21.27s.06,0,.16,0h.45c.92,.03,2.68,.26,4.04,1.49,.95,.86,1.6,2.13,1.95,3.78H26.24v6.33h27.96c-.27,1.97-.82,3.42-1.64,4.23-1.07,1.06-2.68,1.14-4.86,1.11h-14.59l.38,3.51c.06,.58,1.79,14.33,22.56,25.69l3.04-5.56c-11.69-6.39-16.34-13.27-18.16-17.3h6.71c2.38,.02,6.35,.05,9.38-2.95,1.99-1.98,3.16-4.86,3.56-8.73h10.26v-6.33h-10.32c-.27-1.99-.82-3.75-1.63-5.27h11.95Z" />
+            <text class="cls-2" transform="translate(99.44 68.45)">
+                <tspan class="cls-6" x="0" y="0">T</tspan>
+                <tspan x="11.21" y="0">amil Nadu </tspan>
+                <tspan x="0" y="30.41">C</tspan>
+                <tspan class="cls-1" x="15.68" y="30.41">r</tspan>
+                <tspan class="cls-4" x="26.24" y="30.41">edit Guarantee</tspan>
+                <tspan x="0" y="60.81">Scheme</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,21 @@
+<div id="wrapper">
+
+    <app-topbar (settingsButtonClicked)="onSettingsButtonClicked()" (mobileMenuButtonClicked)="onToggleMobileMenu()" class="{{(isHeaderWithoutRouterURL) ? 'd-none' : ''}}">
+        <!--  -->
+    </app-topbar>
+
+    <app-sidebar [isCondensed]="isCondensed" class="{{(isLoginRouterURL || isChangePasswordRouterUrl || isDashboardRouterUrl || isDisbursmentCertificateRouterUrl) ? 'd-none' : ''}}">
+    </app-sidebar>
+
+    <div class="{{((isLoginRouterURL || isChangePasswordRouterUrl || isDashboardRouterUrl )? 'content-page contentleft-Dash' : 'content-page') && (isHeaderWithoutRouterURL || isDashboardRouterUrl ||isDisbursmentCertificateRouterUrl) ? 'content-page contentleft-Dash NP_MT_0' : 'content-page'}}">
+        <div class="content">
+            <!-- content -->
+            <router-outlet></router-outlet>
+        </div>
+
+        <!-- footer -->
+        <app-footer class="{{(isDisbursmentCertificateRouterUrl) ? 'd-none' : ''}}"></app-footer>
+    </div>
+</div>
+
+<!-- <app-rightsidebar></app-rightsidebar> -->

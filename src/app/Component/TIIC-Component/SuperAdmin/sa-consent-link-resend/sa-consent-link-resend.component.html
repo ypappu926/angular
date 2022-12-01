@@ -1,0 +1,176 @@
+<div class="container-fluid">
+    <app-page-title title="Consent Applications List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  
+    <div class="row">
+      <div class="col-lg-12">
+  
+        <div class="card-box">
+          <div class="Main-heading-dual-Cont Mobile_heading_btn_NP">
+            <div class="text-heading-cards">
+              <h4 class="main-text-heading">Consent In-Active</h4>
+              <!-- <span class="text-muted">List of borrower for which consent is not received yet</span> -->
+            </div>
+            <div class="Btn-Drop_Down-dual-Cont">
+              <a href="javascript:void(0);" class="btn btn-outline-psbpurple mr-3" (click)="reSendAll()">Resend link</a>
+              <a href="javascript:void(0);" class="btn btn-outline-psbpurple" (click)="getStatusForSA(false, true)"><i
+                class="fmdi fmdi-download mr-2"></i>Download All</a>
+            </div>
+          </div>
+          <!-- table Report and Filter data -->
+          <div class="table-responsive">
+            <table class="Common-ps-Subsidy-NP Mobile_table_View_NP">
+              <thead>
+                <tr>
+                  <th>
+                    <!-- <div class="checkbox checkbox-psbpurple checkbox-single" placement="top" ngbTooltip="Select All">
+                      <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                      <label></label>
+                    </div> -->
+                  </th>
+                  <th>
+                    #
+                  </th>
+                  <th>Name Of Unit</th>
+                  <th>Email Id</th>
+                  <th>Mobile No</th>
+                  <th>Status</th>
+                  <th>Name of Bank</th>
+                  <th>Consent initiated Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      &nbsp;
+                    </td>
+                  <td>
+                    &nbsp;
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="searchName" autocomplete="off"
+                  [(ngModel)]="searchFilterJson.searchName" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="searchEmail" autocomplete="off"
+                  [(ngModel)]="searchFilterJson.searchEmail" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="searchMobile" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchMobile" (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                      <!-- <ng-select placeholder="Select" [items]="selectValue"></ng-select> -->
+                      <ng-select class="NP_SWidth_100" bindLabel="value" bindValue="id" [(ngModel)]="searchFilterJson.searchStatus"
+                      [items]="selectValue" placeholder="Select any one" (ngModelChange)="debounceEventForFilter()">
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        {{item.value}}
+                      </ng-template>
+                 </ng-select>
+                 </td>
+                  <td>
+                    <input type="text" class="form-control" name="searchBankName" autocomplete="off"
+                    [(ngModel)]="searchFilterJson.searchBankName " (ngModelChange)="debounceEventForFilter()">
+                  </td>
+                  <td>
+                    <div class="psb-input-group">
+                      <input type="text" ngbDatepicker class="form-control" #date1="ngbDatepicker" 
+                        [(ngModel)]="searchFilterJson.consentInitiatedFromDate" [readonly]="true" (ngModelChange)="getStatusForSA()">
+                      <div class="psb-input-group-append" (click)="date1.toggle()">
+                        <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                      </div>
+                    </div>
+                  </td>
+                 
+                  <td>&nbsp;</td>
+                </tr>
+                <!-- <tr>
+                  <td data-label="Select">
+                    <div class="checkbox checkbox-psbpurple checkbox-single">
+                      <input type="checkbox" id="singleCheckbox2" value="option2" aria-label="checkbox">
+                      <label></label>
+                    </div>
+                  </td>
+                  <td data-label="Sr. No.">1</td>
+                  <td data-label="Name Of Unit">Nikul Patel</td>
+                  <td data-label="Email Id">Nikul@gmail.com</td>
+                  <td data-label="Mobile No"> 7069418800</td>
+                  <td data-label="Status">
+                    <div class="Comon-Dot-text jc-fend">
+                      <div class="red-dot"></div>&nbsp; Consent Received - No
+                    </div>
+                  </td>
+                  <td data-label="Name of Bank">Nikul Patel</td>
+                  <td data-label="Consent initiated Date">24 Nov 2021</td>
+                  <td data-label="Action">
+                    <div class="NP_Action_table">
+                      <a href="javascript:void(0);" (click)="SendSuccessfullyLink_Popup();" class="action-icon"><em class="fmdi fmdi-mail-send"
+                          ngbTooltip="Resend Link"></em></a>
+                    </div>
+                  </td>
+                </tr> -->
+
+                <tr *ngFor="let list of applicationList;let i = index;">
+                  <td data-label="Select">
+                    <div class="checkbox checkbox-psbpurple checkbox-single" ngbTooltip="{{(list.status == 3 || list.status == 4) ? 'Consent Received':'Select'}}">
+                      <input type="checkbox" aria-label="checkbox"  [disabled]="list.status == 3 || list.status == 4" [checked]="checked.includes(list.id)" (change)="checkboxClicked(list.id)" value="{{list.id}}">
+                      <label></label>
+                    </div>
+                  </td>
+                  <td data-label="Sr. No.">{{startIndex + i + 1}}</td>
+                  <td data-label="Name Of Unit">{{list.entityName}}</td>
+                  <td data-label="Email Id">{{list.email}}</td>
+                  <td data-label="Mobile No"> {{list.mobile}}</td>
+                  <td data-label="Status">
+                    <div class="Comon-Dot-text jc-sp">
+                      <div class="{{list.className}}"></div><span>{{list.statusName}}</span>
+                    </div>
+                  </td>
+                  <td data-label="Name of Bank">&nbsp;{{list.bankName}}</td>
+                  <td data-label="Consent initiated Date">{{list.consentInitiatedDate | date: 'dd MMM y'}}</td>
+                  <td data-label="Action" class="NP_Action">
+                    <div class="NP_Action_table">
+                      <a href="javascript:void(0);" *ngIf="list.status == 1 || list.status == 6" (click)="sendSingle(list.id)" class="action-icon"><em class="fmdi fmdi-mail-send"
+                          ngbTooltip="Resend Link"></em></a>
+                      <a href="javascript:void(0);" class="action-icon" *ngIf="list.status == 3"
+                          class="{{list.isLocked == true ? 'fmdi fmdi-lock' : 'fmdi fmdi-lock-open'}}" ngbTooltip="{{list.isLocked?'Unlock':'Lock'}}"
+                          (click)="lockUnlockUser(list.userId,list.isLocked)"></a>
+                      <a *ngIf="list.status == 3" href="javascript:void(0);" class="action-icon" (click)="userResetPassword(list.userId)" ><em
+                            class="fmdi fmdi-refresh" placement="top"
+                            ngbTooltip="Reset Password"></em></a>   
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row pagination-table Mobile_Pagination">
+              <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
+                  Showing
+                {{ (pageSize*(page-1)) == 0 && totalCount == 0 ? totalCount : ((pageSize*(page-1)) + 1) }} to
+                {{(pageSize*page) > (totalCount) ? (totalCount) : (pageSize*page)}} of
+                {{totalCount}}
+                entries
+                </div>
+              </div>
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Show
+                  <ng-select name="tickets-table_length" class="hide-clear" aria-controls="tickets-table" name="pageSize"
+                    [clearable]="false" [(ngModel)]="pageSize" [items]="pageSelectNumber" (ngModelChange)="getStatusForSA()">
+                  </ng-select> entries</label></div>
+              
+              <div class="col-sm-12 col-md-5">
+                <div class="text-md-right float-md-right pagination-rounded">
+                  <ngb-pagination [collectionSize]="totalCount" [maxSize]="3" [(page)]="page" [rotate]="true"
+                  [boundaryLinks]="true" [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+                </ngb-pagination>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

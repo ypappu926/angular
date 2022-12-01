@@ -1,0 +1,1144 @@
+<div class="container-fluid">
+  <app-page-title title="View Product" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row" *ngIf="byIdData">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <div class="card-box">
+            <!-- Logo & title -->
+            <div class="clearfix">
+              <div class="float-left">
+                <h4 class="m-0 d-print-none">Product Info</h4>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <p>Product Name</p>
+                </div>
+              </div><!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <h2 class="m-0">{{productFields.productName}}</h2>
+                  <a href="javascript:Void(0)" class="link-btn" (click)="NP_View_Product_Confirmation_Popup()"><em
+                      class="fmdi fmdi-eye mr-1"></em>
+                    View product configuration</a>
+                </div>
+              </div><!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text">
+                  <p>This will be seen by borrower who will match with this product.</p>
+                </div>
+              </div><!-- end col -->
+            </div>
+            <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="product-text al-center">
+                  <span class="Modification-text m0">
+                    <span>Last modified :{{productFields.createdDate| date:'medium'}}</span>
+                    <span class="Scoring-product-code">
+                      <p class="m-0">Product Code : {{byIdData.productCode}}</p>
+                      <p class="m-0">Version : {{byIdData.versionId?byIdData.versionId:0.1}}</p>
+                    </span>
+
+                    <!-- <ng-select placeholder="select any one"></ng-select> -->
+                  </span>
+
+                </div>
+              </div><!-- end col -->
+            </div>
+            <!-- end row -->
+          </div> <!-- end card-box -->
+        </div><!-- end col -->
+        <!-- end row -->
+      </div>
+    </div>
+  </div>
+  <div class="row" (scroll)="onWindowScroll($event)">
+    <div class="col-lg-12 parent">
+      <div class="card-box btn-tabs" id="stick-headerN">
+        <div class="tab-text-hading Np_tab-heading">
+          <span class="text-muted mb-02 btn-Other-tab">{{productFields.productName}}</span>
+          <div class="nav-bordered">
+            <!-- [ngClass]="isLargeScreen() ? 'tab-Scroll_Np' : ''"
+                <a href="javascript:void(0)" id="prebtn" class="Btnnext-NP" (click)="TabscrollLeft()"
+                  *ngIf="isLargeScreen()"><em class="fmdi fmdi-chevron-left"></em></a> -->
+            <ul #tabScrollNP class="nav nav-tabs justify-content-start">
+              <li class="nav-item" id="tab1" (click)="changeTab(1)">
+                <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                  <span class="number-text">Mandatory Parameters</span>
+                </a>
+              </li>
+              <li class="nav-item" id="tab2" (click)="changeTab(2)">
+                <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                  <span class="number-text">Optional Parameters</span>
+                </a>
+              </li>
+              <li class="nav-item" id="tab3" (click)="changeTab(3)">
+                <a class="nav-link" [ngClass]="{ active : tab == 3 }">
+                  <span class="number-text">Eligibility Model</span>
+                </a>
+              </li>
+              <li class="nav-item" id="tab4" (click)="changeTab(4)">
+                <a class="nav-link" [ngClass]="{ active : tab == 4 }">
+                  <span class="number-text">Scoring & ROI</span>
+                </a>
+              </li>
+
+            </ul>
+           
+          </div>
+        </div>
+        <div class="tab-btn-media">
+          <!--  *ngIf="checkButtonPermission('EDIT_PRODUCT')" -->
+          <div class="text-right d-print-none">
+
+
+            <a href="javascript:void(0)" class="btn btn-psb btn-psblightgray"
+             (click)="exit()">Exit</a>
+
+            <a href="javascript:void(0)" class="btn btn-psb btn-outline-psbpurple"
+              *ngIf="(tabPara!=3&&tabPara!=5)&&productFields.producStatusId != 3 &&roleId === roles.ADMIN_MAKER.id"
+              (click)="Edit_Product_Parameter_Popup()"><em class="fmdi fmdi-edit mr-1"></em> Edit</a>
+
+            <ng-container 
+              *ngIf="roleId === roles.ADMIN_MAKER.id && productFields.producStatusId != 3 ">
+              <ng-container *ngFor="let activeButton of actionButtons">
+                <ng-container *ngIf="activeButton.action.id!=18">
+                  <ng-container *ngIf="activeButton.action.id==58&&tabPara==1">
+                    <a href="javascript: void(0)" class="btn btn-psb btn-outline-psbpurple"
+                      (click)=" Active_Deactive_Popup(activeButton,productFields,  1)"><em
+                        class="fmdi fmdi-lock mr-1"></em>
+                      {{activeButton.action.buttonText}}</a>
+                    <!--  *ngIf="checkButtonPermission('ACTIVE_PRODUCT')" -->
+                  </ng-container>
+                  <ng-container *ngIf="activeButton.action.id==59&&tabPara==5">
+                    <a href="javascript: void(0)" class="btn btn-psb btn-outline-psbpurple"
+                      (click)=" Active_Deactive_Popup(activeButton,productFields, 2)"><em
+                        class="fmdi fmdi-lock-open mr-1"></em>
+                      {{activeButton.action.buttonText}}</a>
+                    <!--  *ngIf="checkButtonPermission('ACTIVE_PRODUCT')" -->
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          <ng-container *ngIf="roleId === roles.ADMIN_CHECKER.id && tabPara==3  ">
+            <ng-container *ngFor="let activeButton of actionButtons">
+            <ng-container *ngIf="activeButton.action.id!=13">
+              <a href="javascript: void(0)" (click)=" commonPopUP(activeButton)"
+                class="btn btn-psb {{activeButton.action.id===11  ? 'btn-success':' btn-warning'}}"><em
+                  class="fmdi fmdi-{{activeButton.action.id===11  ? 'check-all mr-1':' arrow-right-top mr-1'}}"></em>
+                {{activeButton.action.buttonText}}</a>
+            </ng-container>
+            </ng-container>
+            <!-- checkButtonPermission('PRODUCT_APPROVE') && -->
+          </ng-container>
+
+        </div>
+      </div>
+    </div><!-- End Bordered Tabs -->
+  </div>
+  <!-- div tab part -->
+  </div>
+  <div class="row">
+    <div class="col-12">
+
+      <!-- Tab Content -->
+      <ng-container *ngIf="tab == 1">
+        <div class="card-box">
+          <div class="row">
+            <div class="col-12">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h4 class="main-text-heading">Set Product Matching Parameters</h4>
+                  <p class="text-muted">All parameters in this list are mandatory, if any
+                    parameter doesn’t match applicant will be rejected</p>
+                </div>
+
+                <!-- <div class="Btn-Drop_Down-dual-Cont">
+                      <div class="form-group-select jc-end-mr-0">
+                        <label for="status-select" class="S-lable">Sort By</label>
+                        <ng-select placeholder="Chronologically(need to change)" [items]="selectValue">
+                        </ng-select>
+                      </div>
+                    </div> -->
+
+              </div>
+              <!-- end row -->
+
+              <div class="table-responsive">
+                <table class="view-table-product" summary="">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Parameter</th>
+                      <th>Set Value</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="productFields">
+                    <ng-container *ngFor="let dd of productFields.productFieldTempMappings;let i = index">
+                      <tr *ngIf="dd.isMandatory">
+                        <ng-container *ngIf="dd.isMandatory">
+                          <td scope="row">{{i+1}}</td>
+                          <td>{{dd.fieldParameter}}
+                            <div class="main-content SE-check" *ngIf="businessTypeId===9">
+                              <ng-container>
+                                <!-- *ngIf="dd.controlType==1" -->
+                                <div class="psb-parameter-content-c">
+                                  <div class="checkbox checkbox-psbpurple form-check-inline">
+                                    <input type="checkbox" disabled='true' id="Applicant_{{dd.id}}"
+                                      [(ngModel)]="dd.isApplicant">
+                                    <label for="Applicant_{{dd.id}}"> Applicant
+                                    </label>
+                                  </div>
+                                  <div class="checkbox checkbox-psbpurple "
+                                    *ngIf="dd.key!='ADMISSION_TYPE'&&dd.key!='LOAN_AMOUNT'">
+                                    <input type="checkbox" disabled='true' id="Co-Applicant_{{dd.id}}"
+                                      [(ngModel)]="dd.isCoApplicant">
+                                    <label for="Co-Applicant_{{dd.id}}">Co-Applicant</label>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </td>
+                          <td>
+                            <ng-container *ngFor="let sub of dd.productSubFieldTempResponse;">
+                              <ng-container
+                                *ngIf="sub.value!=sub.subFieldsId && sub.value!=null&&sub.controlType!=1&&sub.controlType!=6&&sub.controlType!=8&&dd.fieldId!=17&&sub.controlType!=3">
+                                <div class="Txt-DG">
+                                  {{sub.value.minValue}} {{sub.info}} To {{sub.value.maxValue}} {{sub.info}}
+                                </div>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="sub.value===sub.subFieldsId||sub.valueforCoApp===sub.subFieldsId&& sub.value!=null&&sub.controlType!=6&&sub.controlType!=3">
+                                <div class="Txt-DG" *ngIf="sub.controlType!=3">
+                                  {{sub.subPara}},
+                                  <ng-container *ngIf="sub.valueforCoApp===sub.subFieldsId">
+                                    {{sub.subPara}}
+                                  </ng-container>
+                                </div>
+                              </ng-container>
+                              <ng-container *ngIf="sub.controlType==6">
+                                <div class="Txt-DG">
+                                  [{{sub.value}}]
+                                </div>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="dd.fieldId==26 && sub.controlType==8 && sub.value.state!=null&& sub.value.city!=null">
+                                <div class="Txt-DG">
+                                  {{sub.value.state.length + ' State and ' + sub.value.city.length + ' City selected'}}
+                                  <a href="javascript: void(0)" (click)="Select_Geo_Graphical_Popup(dd,true)">View</a>
+                                </div>
+                              </ng-container>
+                              <ng-container *ngIf="dd.fieldId==1 && sub.controlType==8">
+                                <div class="Txt-DG">
+                                  {{sub?.value?.maxValue}}
+                                </div>
+                              </ng-container>
+                              <ng-container
+                                *ngIf="dd.fieldId==42&&sub.controlType==8 && sub.value.industry!=null&& sub.value.sector!=null&& sub.value.subSector!=null">
+                                <div class="Txt-DG">
+                                  {{sub.value.industry.length + ' Industries and ' + sub.value.sector.length + ' sectors and'+sub.value.subSector.length + ' sub-sectors selected.' }}
+                                  <a href="javascript: void(0)" (click)="Select_Industry_Sector_Popup(dd,true)">View</a>
+                                </div>
+                              </ng-container>
+                              <ng-container *ngIf="sub.value===sub.subFieldsId&& sub.value!=null&&sub.controlType==3">
+                                <div class="Txt-DG">
+                                  {{sub.subPara}}
+                                </div>
+                              </ng-container>
+                            </ng-container>
+                          </td>
+                        </ng-container>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+        <ng-container *ngIf="tab == 2">
+        <div class="card-box">
+          <div class="row">
+            <div class="col-12">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-heading-cards">
+                  <h4 class="main-text-heading">Optional Parameters</h4>
+                  <p class="text-muted">These parameters will not be used for matching, Borrower will not be
+                    rejected even if parameters doesn’t match</p>
+                </div>
+
+                <!-- <div class="Btn-Drop_Down-dual-Cont">
+                      <div class="form-group-select jc-end-mr-0">
+                        <label for="status-select" class="S-lable">Sort By</label>
+                        <ng-select placeholder="Chronologically(need to change)" [items]="selectValue">
+                        </ng-select>
+                      </div>
+                    </div> -->
+
+              </div>
+              <!-- end row -->
+
+              <div class="table-responsive">
+                <table class="view-table-product" summary="">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Parameter</th>
+                      <th>Set Value</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="productFields">
+                    <ng-container *ngFor="let dd of productFields.productFieldTempMappings;let i = index">
+                      <tr *ngIf="!dd.isMandatory">
+                        <td scope="row">{{i+1}}</td>
+                        <td>{{dd.fieldParameter}}
+                          <div class="main-content SE-check" *ngIf="businessTypeId===9">
+                            <ng-container>
+                              <!--  *ngIf="dd.controlType==1" -->
+                              <div class="psb-parameter-content-c">
+                                <div class="checkbox checkbox-psbpurple form-check-inline">
+                                  <input type="checkbox" disabled='true' id="Applicant_{{dd.id}}"
+                                    [(ngModel)]="dd.isApplicant">
+                                  <label for="Applicant_{{dd.id}}"> Applicant
+                                  </label>
+                                </div>
+                                <div class="checkbox checkbox-psbpurple " *ngIf="dd.key!='ADMISSION_TYPE'">
+                                  <input type="checkbox" disabled='true' id="Co-Applicant_{{dd.id}}"
+                                    [(ngModel)]="dd.isCoApplicant">
+                                  <label for="Co-Applicant_{{dd.id}}">Co-Applicant</label>
+                                </div>
+                              </div>
+                            </ng-container>
+                            <!-- <ng-container *ngIf="dd.controlType!=1&&dd.controlType!=6">
+                              <ng-container *ngFor="let sub of dd.productSubFieldTempResponse;">
+                                <div class="psb-parameter-content-c">
+                                  <div class="checkbox checkbox-psbpurple form-check-inline" *ngIf="sub.isforCoApp==1">
+                                    <input type="checkbox" disabled='true' id="Applicant_{{sub.id}}"
+                                      [(ngModel)]="sub.isApplicant">
+                                    <label for="Applicant_{{sub.id}}"> Applicant
+                                    </label>
+                                  </div>
+                                  <div class="checkbox checkbox-psbpurple form-check-inline" *ngIf="sub.isforCoApp==0">
+                                    <input type="checkbox" disabled='true' id="Co-Applicant_{{sub.id}}"
+                                      [(ngModel)]="sub.isCoApplicant">
+                                    <label for="Co-Applicant_{{sub.id}}">Co-Applicant</label>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="dd.controlType==6">
+                              <ng-container *ngFor="let sub of dd.productSubFieldTempResponse;let last=last;let first=first;">
+                                <div class="psb-parameter-content-c">
+                                  <div class="checkbox checkbox-psbpurple form-check-inline" *ngIf="first&&sub.isforCoApp==1">
+                                    <input type="checkbox" disabled='true' id="Applicant_{{sub.id}}"
+                                      [(ngModel)]="sub.isApplicant">
+                                    <label for="Applicant_{{sub.id}}"> Applicant
+                                    </label>
+                                  </div>
+                                  <div class="checkbox checkbox-psbpurple " *ngIf="last&&sub.isforCoApp==0">
+                                    <input type="checkbox" disabled='true' id="Co-Applicant_{{sub.id}}"
+                                      [(ngModel)]="sub.isCoApplicant">
+                                    <label for="Co-Applicant_{{sub.id}}">Co-Applicant</label>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </ng-container> -->
+
+                          </div>
+                        </td>
+                        <td>
+                          <ng-container *ngFor="let sub of dd.productSubFieldTempResponse;">
+                            <ng-container
+                              *ngIf="sub.value!=sub.subFieldsId && sub.value!=null&&sub.controlType!=1&&sub.controlType!=6&&sub.controlType!=8&&dd.fieldId!=17&&sub.controlType!=3">
+                              <div class="Txt-DG">
+                                {{sub.value.minValue}} {{sub.info}} To {{sub.value.maxValue}} {{sub.info}}
+                              </div>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="sub.value===sub.subFieldsId||sub.valueforCoApp===sub.subFieldsId&& sub.value!=null&&sub.controlType!=6&&sub.controlType!=3">
+                              <div class="Txt-DG" *ngIf="sub.controlType!=3">
+                                {{sub.subPara}},
+                                <ng-container *ngIf="sub.valueforCoApp===sub.subFieldsId">
+                                  {{sub.subPara}}
+                                </ng-container>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="sub.controlType==6">
+                              <div class="Txt-DG">
+                                [{{sub.value}}]
+                              </div>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="dd.fieldId==26 && sub.controlType==8 && sub.value.state!=null&& sub.value.city!=null">
+                              <div class="Txt-DG">
+                                {{sub.value.state.length + ' State and ' + sub.value.city.length + ' City selected'}}
+                                <a href="javascript: void(0)" (click)="Select_Geo_Graphical_Popup(dd,true)">View</a>
+                              </div>
+                            </ng-container>
+                            <ng-container
+                              *ngIf="dd.fieldId==42&&sub.controlType==8 && sub.value.industry!=null&& sub.value.sector!=null&& sub.value.subSector!=null">
+                              <div class="Txt-DG">
+                                {{sub.value.industry.length + ' Industries and ' + sub.value.sector.length + ' sectors and'+sub.value.subSector.length + ' sub-sectors selected.' }}
+                                <a href="javascript: void(0)" (click)="Select_Industry_Sector_Popup(dd,true)">View</a>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="sub.value===sub.subFieldsId&& sub.value!=null&&sub.controlType==3">
+                              <div class="Txt-DG">
+                                {{sub.subPara}}
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+      <ng-container *ngIf="tab == 3">
+        <app-eligibility-model [contentType]="'view'" [productType]="productType"></app-eligibility-model>
+      </ng-container>
+      <ng-container *ngIf="tab == 4">
+        <div class="card-box">
+          <div class="row">
+            <div class="col-12">
+              <div class="Main-heading-dual-Cont bb-1">
+                <div class="text-heading-cards">
+                  <h4 class="main-text-heading">Scaling Matrix Configuration</h4>
+                  <p class="text-muted">Set the configuration of scaling matrix as suitable to you</p>
+                </div>
+              </div>
+              <!-- end row -->
+
+              <div class="table-responsive">
+                <table class="Eligiblity-view-table mb-0" summary="">
+                  <tbody>
+                    <tr>
+                      <td>Do you want to attach scoring model with this product ?</td>
+                      <td><strong>{{scoringObj.isNoScoring?'No':'Yes'}}</strong></td>
+                    </tr>
+                     <tr>
+                      <td>Do you want consider ROI ?</td>
+                      <td><strong>{{scoringObj.isConfigureRoi?'Yes':'No'}}</strong></td>
+                    </tr>
+                    <ng-container *ngIf="scoringObj.isConfigureRoi">
+                      <tr>
+                        <td>FOIR based on</td>
+                        <td><strong>{{getTxtById(scoringObj.marginScaleType)}}</strong></td>
+                      </tr>
+                      <tr>
+                        <td>ROI (Rate Of Interest) based on</td>
+                        <td><strong>{{getTxtById(scoringObj.roiScaleType)}} </strong></td>
+                      </tr>
+                      <tr>
+                        <td>Tenure based on</td>
+                        <td><strong>{{getTxtById(scoringObj.tenureScaleType)}} </strong></td>
+                      </tr>
+                      <tr>
+                        <td>PF (Processing Fee) based on</td>
+                        <td><strong>{{getTxtById(scoringObj.pfScaleType)}}</strong></td>
+                      </tr>
+                      <tr>
+                        <td>Effective ROI Calculation method</td>
+                        <td><strong>{{scoringObj.baseRateType == 1?(schemeId==1 || schemeId==2 || schemeId==3 ||
+                            schemeId==4)?'Repo Rate':'EBLR':scoringObj.baseRateType == 2?'MCLR':'Base Rate'}} +
+                            Spread</strong></td>
+                      </tr>
+
+                    </ng-container>
+                   
+                    <ng-container *ngIf="!scoringObj.isNoScoring">
+                      <tr>
+                        <td>Risk Score Model</td>
+                        <td class="NP-Scorign-view">
+                      <tr>
+                        <td> Scoring Model</td>
+                        <td><strong>{{scoringObj.scoringModelName}}</strong></td>
+                      </tr>
+                      <tr>
+                        <!-- || businessTypeId==5 -->
+                        <td>{{businessTypeId==9 ?'Minimum Score For Applicant':'Minimum Score'}}</td>
+                        <!-- <strong>Mandatory</strong><strong>Range 0-230</strong> -->
+                        <td><span><strong>{{scoringObj.minimumScore}}</strong></span>
+                        </td>
+                      </tr>
+                      <!-- || businessTypeId==5 -->
+                      <tr *ngIf="businessTypeId==9 ">
+                        <td>Minimum Score For Co-applicant</td>
+                        <!-- <strong>Mandatory</strong><strong>Range 0-230</strong> -->
+                        <td><span><strong>{{scoringObj.minimumScoreCoApp}}</strong></span>
+                        </td>
+                      </tr>
+                      </td>
+                      </tr>
+                    </ng-container>
+
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+
+          </div> <!-- end card-box -->
+        </div>
+
+        <!-- risk View scoring maxtrix -->
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 1 || scoringObj.pfScaleType == 1 || scoringObj.tenureScaleType == 1 || scoringObj.roiScaleType == 1">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Risk Score Scaling Matrix</h4>
+              <span>Set different values for borrower with different risk score for borrowers with ITR
+                audited 3 years</span>
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{(scoringObj.riskGradingList !=null && scoringObj.riskGradingList
+                    !=undefine)?scoringObj.riskGradingList.length:0}}
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{(scoringObj.riskGradingList !=null && scoringObj.riskGradingList
+                    !=undefine)?scoringObj.riskGradingList[0].minScore + ' - ' +
+                    scoringObj.riskGradingList[scoringObj.riskGradingList.length - 1].maxScore:'0 - 0'}}
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.riskGrad.isCollapsed = !scoringObj.riskGrad.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="scoringObj.riskGrad.isCollapsed"
+            *ngIf="scoringObj.marginScaleType == 1 || scoringObj.pfScaleType == 1 || scoringObj.tenureScaleType == 1 || scoringObj.roiScaleType == 1">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Score Range</th>
+                    <th>Scale</th>
+                    <th>Interpretation</th>
+                    <th *ngIf="scoringObj.marginScaleType == 1">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 1">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 1">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 1">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 1">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 1">ROI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.riskGradingList;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.minScore}} to {{scrObj.maxScore}} </td>
+                    <td> {{scrObj.scale}} </td>
+                    <td>{{scrObj.interpretation}} </td>
+                    <td *ngIf="scoringObj.marginScaleType == 1"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 1"> {{scrObj.pf}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 1">₹ {{scrObj.minPf}}</td>
+                    <td *ngIf="scoringObj.pfScaleType == 1">₹ {{scrObj.maxPf}}</td>
+                    <td *ngIf="scoringObj.tenureScaleType == 1"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 1">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Gross Annual Score Scaling Matrix</h4>
+              <span>Set different values for borrower with different risk score for borrowers with ITR
+                audited 3 years</span>
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{scoringObj.grossMonthlyGradingList.length}}
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{(scoringObj.grossMonthlyGradingList !=null &&
+                    scoringObj.grossMonthlyGradingList
+                    !=undefine)?scoringObj.grossMonthlyGradingList[0].minScore + ' - ' +
+                    scoringObj.grossMonthlyGradingList[scoringObj.grossMonthlyGradingList.length - 1].maxScore:'0 - 0'}}
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.grossMonth.isCollapsed = !scoringObj.grossMonth.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="scoringObj.grossMonth.isCollapsed">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <!-- scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3 -->
+                    <th>Gross Annual Income Range</th>
+                    <th *ngIf="scoringObj.marginScaleType == 3">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 3">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 3">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 3">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 3">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 3">ROI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.grossMonthlyGradingList;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.minScore}} to {{scrObj.maxScore}} </td>
+                    <td *ngIf="scoringObj.marginScaleType == 3"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 3"> {{scrObj.pf}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 3">₹ {{scrObj.minPf}}</td>
+                    <td *ngIf="scoringObj.pfScaleType == 3">₹ {{scrObj.maxPf}}</td>
+                    <td *ngIf="scoringObj.tenureScaleType == 3"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 3">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 4 || scoringObj.pfScaleType == 4 || scoringObj.tenureScaleType == 4 || scoringObj.roiScaleType == 4">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Net Annual Score Scaling Matrix</h4>
+              <span>Set different values for borrower with different risk score for borrowers with ITR
+                audited 3 years</span>
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{scoringObj.netMonthlyGradingList.length}}
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{(scoringObj.netMonthlyGradingList !=null && scoringObj.netMonthlyGradingList
+                    !=undefine)?scoringObj.netMonthlyGradingList[0].minScore + ' - ' +
+                    scoringObj.netMonthlyGradingList[scoringObj.netMonthlyGradingList.length - 1].maxScore:'0 - 0'}}
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.netMonthGrad.isCollapsed = !scoringObj.netMonthGrad.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="scoringObj.netMonthGrad.isCollapsed">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <!-- scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3 -->
+                    <th>Net Annual Income Range</th>
+                    <th *ngIf="scoringObj.marginScaleType == 4">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 4">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 4">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 4">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 4">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 4">ROI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.netMonthlyGradingList;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.minScore}} to {{scrObj.maxScore}} </td>
+                    <td *ngIf="scoringObj.marginScaleType == 4"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 4"> {{scrObj.pf}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 4">₹ {{scrObj.minPf}}</td>
+                    <td *ngIf="scoringObj.pfScaleType == 4">₹ {{scrObj.maxPf}}</td>
+                    <td *ngIf="scoringObj.tenureScaleType == 4"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 4">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 5 || scoringObj.pfScaleType == 5 || scoringObj.tenureScaleType == 5 || scoringObj.roiScaleType == 5">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Loan Amount Scaling Matrix</h4>
+              <!-- <span>Set different values for borrower with different risk score for borrowers with ITR
+              audited 3 years</span> -->
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{scoringObj.loanAmountGradingList.length}}
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{(scoringObj.loanAmountGradingList !=null && scoringObj.loanAmountGradingList
+                    !=undefine)?scoringObj.loanAmountGradingList[0].minScore + ' - ' +
+                    scoringObj.loanAmountGradingList[scoringObj.loanAmountGradingList.length - 1].maxScore:'0 - 0'}}
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.loanAmountGrad.isCollapsed = !scoringObj.loanAmountGrad.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="scoringObj.loanAmountGrad.isCollapsed">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <!-- scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3 -->
+                    <th>Loan Amount Range</th>
+                    <th *ngIf="scoringObj.marginScaleType == 5">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 5">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 5">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 5">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 5">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 5">ROI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.loanAmountGradingList;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.minScore}} to {{scrObj.maxScore}} </td>
+                    <td *ngIf="scoringObj.marginScaleType == 5"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 5"> {{scrObj.pf}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 5">₹ {{scrObj.minPf}}</td>
+                    <td *ngIf="scoringObj.pfScaleType == 5">₹ {{scrObj.maxPf}}</td>
+                    <td *ngIf="scoringObj.tenureScaleType == 5"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 5">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 7 || scoringObj.pfScaleType == 7 || scoringObj.tenureScaleType == 7 || scoringObj.roiScaleType == 7">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Bureau Score (Cibil) Scaling Matrix</h4>
+              <!-- <span>Set different values for borrower with different risk score for borrowers with ITR
+            audited 3 years</span> -->
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">{{scoringObj.bureauRangeList.length}}
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">300-900
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <!-- (click)="scoringObj.loanAmountGrad.isCollapsed = !scoringObj.loanAmountGrad.isCollapsed" -->
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.bureauRange.isCollapsed = !scoringObj.bureauRange.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- [ngbCollapse]="scoringObj.loanAmountGrad.isCollapsed" -->
+          <div class="collapse psb-collapse" id="collapseExampleBureau"
+            [ngbCollapse]="scoringObj.bureauRange.isCollapsed">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <!-- scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3 -->
+                    <th>CIBIL Score Range</th>
+                    <th *ngIf="scoringObj.marginScaleType == 7">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 7">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 7">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 7">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 7">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 7">ROI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.bureauRangeList;let i=index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.minScore}} to {{scrObj.maxScore}} </td>
+                    <td *ngIf="scoringObj.marginScaleType == 7"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 7"> {{scrObj.pf}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 7">₹ {{scrObj.minPf}}</td>
+                    <td *ngIf="scoringObj.pfScaleType == 7">₹ {{scrObj.maxPf}}</td>
+                    <td *ngIf="scoringObj.tenureScaleType == 7"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 7">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box"
+          *ngIf="scoringObj.marginScaleType == 8 || scoringObj.pfScaleType == 8 || scoringObj.tenureScaleType == 8 || scoringObj.roiScaleType == 8">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Type Of Borrower</h4>
+              <!-- <span>Set different values for borrower with different risk score for borrowers with ITR
+          audited 3 years</span> -->
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <!-- <div class="sub-number-collapse">
+              <h4 class="m-0 mb-1">{{scoringObj.bureauRangeList.length}}
+              </h4>
+              <span>No. of Ranges</span>
+            </div>
+            <div class="sub-number-collapse">
+              <h4 class="m-0 mb-1">300-900
+              </h4>
+              <span>Score Range</span>
+            </div> -->
+                <a class="psb-collapse-a" data-toggle="collapse"
+                  (click)="scoringObj.typeOfBorrower.isCollapsed = !scoringObj.typeOfBorrower.isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="scoringObj.typeOfBorrower.isCollapsed">
+            <div class="table-responsive">
+              <table class="scroing-RSitr-table-matx" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <!-- scoringObj.marginScaleType == 3 || scoringObj.pfScaleType == 3 || scoringObj.tenureScaleType == 3 || scoringObj.roiScaleType == 3 -->
+                    <th>Type Of Borrower</th>
+                    <th *ngIf="scoringObj.marginScaleType == 8">FOIR (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 8">PF (%)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 8">Min PF (Amount)</th>
+                    <th *ngIf="scoringObj.pfScaleType == 8">Max PF (Amount)</th>
+                    <th *ngIf="scoringObj.tenureScaleType == 8">Tenure </th>
+                    <th *ngIf="scoringObj.roiScaleType == 8">Spread (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let scrObj of scoringObj.typeOfBorrowerList;let i=index">
+                    <!-- {{scrObj |json}} -->
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{scrObj.maxScore==1?'Micro':scrObj.maxScore==2?'Small':scrObj.maxScore==3?'Medium':''}}</td>
+                    <td *ngIf="scoringObj.marginScaleType == 8"> {{scrObj.margin}} % </td>
+                    <td *ngIf="scoringObj.pfScaleType == 8"> {{scrObj.pf}} % </td>
+                    <!-- <td *ngIf="scoringObj.pfScaleType == 7">₹ {{scrObj.minPf}}</td>
+                <td *ngIf="scoringObj.pfScaleType == 7">₹ {{scrObj.maxPf}}</td> -->
+                    <td *ngIf="scoringObj.tenureScaleType == 8"> {{scrObj.tenure}} Years </td>
+                    <td *ngIf="scoringObj.roiScaleType == 8">{{baseRate + scrObj.spread}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+
+
+        <div class="card-box" *ngIf="false">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Loan Amount & Bureau Score (Cibil) Scaling Matrix</h4>
+              <span>Different Values set for borrowers</span>
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">04
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">160 - 280
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="table-responsive">
+              <table class="table-scroing mb-0" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Loan Amount Range</th>
+                    <th>Spread</th>
+                    <th>Effective ROI</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">1</td>
+                    <td>
+                      <div class="scoring-number">
+                        <div class="form-group input-number-s">
+                          <input type="text" value="5" id="simpleinput" class="form-control" disabled>
+                          <span class="input-margin ">To</span>
+                          <input type="text" value="10" id="simpleinput" class="form-control">
+                        </div>
+                      </div>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td class="icon-center"><em class="mdi mdi-close icon-danger"></em></td>
+                  </tr>
+                  <tr class="jc-center">
+                    <table class="scroing-Cibil-sub-table" summary="">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>CIBIL Score Range</th>
+                          <th>Spread</th>
+                          <th>Effective ROI (%)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="row">1</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+
+                        <tr>
+                          <td scope="row">2</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">3</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">3</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">4</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">5</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+
+
+                      </tbody>
+                    </table>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+        <div class="card-box" *ngIf="false">
+          <div class="clearfix">
+            <div class="text-collapse">
+              <h4 class="m-0 mb-2 d-print-none">Loan Amount & Bureau (Experian) Scaling Matrix</h4>
+              <span>Set different values for Co-Applicant</span>
+            </div>
+            <div class="number-collapse">
+              <div class="collpse-number-main">
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">04
+                  </h4>
+                  <span>No. of Ranges</span>
+                </div>
+                <div class="sub-number-collapse">
+                  <h4 class="m-0 mb-1">160 - 280
+                  </h4>
+                  <span>Score Range</span>
+                </div>
+                <a class="psb-collapse-a" data-toggle="collapse" (click)="isCollapsed = !isCollapsed"
+                  href="javascript:void(0)">
+                  <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="isCollapsed">
+            <div class="table-responsive">
+              <table class="table-scroing mb-0" summary="">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Loan Amount Range</th>
+                    <th>Spread</th>
+                    <th>Effective ROI</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">1</td>
+                    <td>
+                      <div class="scoring-number">
+                        <div class="form-group input-number-s">
+                          <input type="text" value="5" id="simpleinput" class="form-control" disabled>
+                          <span class="input-margin ">To</span>
+                          <input type="text" value="10" id="simpleinput" class="form-control">
+                        </div>
+                      </div>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td class="icon-center"><em class="mdi mdi-close icon-danger"></em></td>
+                  </tr>
+                  <tr class="jc-center">
+                    <table class="scroing-Cibil-sub-table" summary="">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Experian Score Range</th>
+                          <th>Spread</th>
+                          <th>Effective ROI (%)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td scope="row">1</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+
+                        <tr>
+                          <td scope="row">2</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">3</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">3</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">4</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+                        <tr>
+                          <td scope="row">5</td>
+                          <td>-1 to -1 </td>
+                          <td> 5 % </td>
+                          <td>9.1% + 5% = 14.1% </td>
+                        </tr>
+
+
+                      </tbody>
+                    </table>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+
+            </div>
+          </div><!-- End Collapse -->
+        </div>
+
+
+      </ng-container>
+    </div>
+  </div>
+</div>

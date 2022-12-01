@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <h4 class="modal-title">Choose Product Matching Parameters</h4>
+  <div class="modal-heading-g jc-FEnd">
+    <!-- <div class="form-group-input mr-3">
+      <ng-select placeholder="Group By" [items]="gruoupBy">
+      </ng-select>
+    </div> -->
+    <div class="form-group-input ">
+      <div class="symbole-input">
+        <i class="mdi mdi-magnify"></i>
+        <input type="text" class="form-control" placeholder="Search Parameter" [(ngModel)]="searchText"
+          (keyup)="filterText(searchText)" />
+      </div>
+    </div>
+  </div>
+  <!-- <button type="button" class="close" (click)="modal('Cross click')" aria-hidden="true">×</button> -->
+</div>
+<div class="modal-body Modal-scroll">
+  <div class="row m-0">
+    <div class="col-md-12 p-0">
+      <div class="checkbox-parameters-m">
+        <div class="checkbox checkbox-psbpurple form-check-inline">
+          <input type="checkbox" id="selectAll" [(ngModel)]="selectAllFields" [checked]="selectAllFields"
+            (ngModelChange)="selectAll()">
+          <label for="selectAll">Select All Parameter
+          </label>
+        </div>
+      </div>
+      <ng-container *ngFor="let item of groupByFields|keyvalue|filter:searchText;">
+        <div class="popup-sub-parameter">
+          <span>{{item.key}}</span>
+          <span>{{item.value.length}} Parameters</span>
+        </div>
+        <ng-container *ngFor="let field of item.value|filter:searchText;">
+
+          <div class="checkbox-parameters-m">
+            <div class="checkbox checkbox-psbpurple form-check-inline NPPSCheck" ngbTooltip="{{field.isDisabled ? ('' +field.fieldParameter + 'Paramter is already selected ') : ('' + field.fieldParameter + 'Paramter of' + item.key)}}" tooltipClass="PSNP-tooltip">
+              <input type="checkbox" 
+                [disabled]="(field.defaultMandatory == 1) && tab ===false ||field.isDisabled ? true : false"
+                id="chackebox_{{field.fieldParameter}}_{{field.id}}" [(ngModel)]="field.isConsidered"
+                (ngModelChange)="selectedFields(field,$event)">
+              <label for="chackebox_{{field.fieldParameter}}_{{field.id}}" 
+              >
+             
+                {{field.fieldParameter}}
+              </label>
+            </div>
+            <span>{{field.source}}</span>
+          </div>
+        </ng-container>
+      </ng-container>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal-footer footer-text-m">
+  <span><b>{{count}} parameters selected</b></span>
+  <div class="btn-footer-g jc-FEnd">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="closeModal()">Cancel</a>
+    <a class="btn btn-psb btn-psbpurple" (click)="addParameter()">Save changes</a>
+  </div>
+</div>

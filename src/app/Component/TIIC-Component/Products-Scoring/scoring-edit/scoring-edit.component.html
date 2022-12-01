@@ -1,0 +1,660 @@
+<div class="container-fluid">
+  <app-page-title title="Edit Scoring Model" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <form name="scoringForm" #scoringForm="ngForm" novalidate>
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="card-box">
+              <!-- Logo & title -->
+              <div class="clearfix">
+                <div class="float-left">
+                  <h4 class="m-0 d-print-none">Scoring Model Info</h4>
+                </div>
+                <div class="float-right" style="cursor: pointer;" (click)="openExistingProduct()"
+                  *ngIf="productList != undefined && productList.length > 0">
+                  <span class="badge badge-pill psbbuges ml-1-5"><em class="mdi mdi-folder mr-2"></em>
+                    {{productList.length}}
+                    dependent products</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="product-text al-center">
+                    <p class="m-0">Scoring Model Name</p>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="product-text ">
+                    <h2 class="m-0">{{scoringModelData.scoreModelName}}</h2>
+                    <div>
+                      <!-- <p class="d-block">
+
+                        <span *ngIf="scoringModelData?.configName">{{scoringModelData?.configName.join(', ')}}</span>
+
+                      </p> -->
+                    </div>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="product-text al-center">
+                    <p>This will be used as a reference while creating Scoring Model and for internal bank
+                      reference.
+                    </p>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="product-text al-center">
+                    <p class="Modification-text m0">
+                      <span>Last modified :{{scoringModelData.lastModified | date: 'dd MMM yyyy'}}</span>
+                      <span class="Scoring-product-code">
+                        <p class="m-0">Scoring Code : {{scoringModelData.scoreModelCode}}</p>
+                        <p class="m-0" style=" margin-left: 10px !important;">Version :
+                          {{scoringModelData.version || 0.1}}</p>
+                      </span>
+                    </p>
+                    <div class="Link_View_Right">
+                      <a *ngIf="(schemeId!=12 && schemeId!=11&&schemeId!=14)" href="javascript:Void(0)" class="link-btn mr-2"
+                        (click)="NP_View_Scoring_Confirmation_Popup()"><em class="fmdi fmdi-eye mr-1"></em>
+                        View scoring model configuration</a>
+
+                      <a href="javascript:Void(0)" class="link-btn" (click)="Confirm_scoring_Confiration_Popup()"
+                        *ngIf=" scoringModelData.statusId != 3 && scoringModelData.version==null">
+                        <em class="fmdi fmdi-edit mr-1"></em>
+                        <!-- checkButtonPermission('SCORING_EDIT') &&  -->
+                        Edit scoring model configuration</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- end col -->
+              </div>
+              <!-- end row -->
+            </div>
+            <!-- end card-box -->
+          </div>
+        </div>
+        <div class="row" (scroll)="onWindowScroll($event);">
+          <div class="col-12 parent">
+            <div class="card-box btn-tabs" id="stick-headerN">
+              <div class="Main-heading-dual-Cont p-0">
+                <div class="tab-text-hading Np_tab-heading">                  
+                  <h4 class="main-text-heading">
+                    You can edit or delete this Scoring model permanently
+                  </h4>
+                  <!-- <span class="text-muted mb-02 btn-Other-tab">You can edit or delete this Scoring model permanently</span> -->
+                  <!-- <div class="nav-bordered" *ngIf="isTabAvailable">
+                    <ul #tabScrollNP class="nav nav-tabs justify-content-start">
+                      <li class="nav-item" id="tab1" (click)="changeTab(1)">
+                        <a class="nav-link" [ngClass]="{ active : tab == 1 }">
+                          <span class="number-text">Applicant</span>
+                        </a>
+                      </li>
+                      <li class="nav-item" id="tab2" (click)="changeTab(2)">
+                        <a class="nav-link" [ngClass]="{ active : tab == 2 }">
+                          <span class="number-text">Co-Applicant</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div> -->
+
+                </div>
+                <div class="Btn-Drop_Down-dual-Cont">
+                  <a href="javascript:void(0)" class="btn btn-psb btn-psblightgray"
+                    (click)="exitScoringModel()">Exit</a>
+                  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                    (click)="saveScoringDraftOrsendCheckerApproval(1)">
+                    <em class="mdi mdi-folder mr-1"></em> Save</a>
+                  <!-- *ngIf="checkButtonPermission('SCORING_SAVE')" -->
+                  <!-- <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                    (click)="saveScoringParameters(scoringForm)"> -->
+                  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple"
+                    (click)="saveScoringDraftOrsendCheckerApproval(2)">
+                    <em class="mdi mdi-arrow-top-right mr-1"></em> Send to checker</a>
+                  <!--  *ngIf="checkButtonPermission('SCORING_SEND_TO_CHECKER')" -->
+                </div>
+              </div>
+            </div>
+            <!-- End Bordered Tabs -->
+          </div>
+        </div>
+        <!-- Personal Risk & Financial Risk & Management Risk & Business Risk Start  -->
+        <div class="row" >
+          <div class="col-lg-12">
+            <div class="card-box">
+              <div class="Main-heading-dual-Cont bb-1">
+                <div class="text-collapse NP_W100">
+                  <h4 class="main-text-heading">Scoring Parameters</h4>
+                  <span class="text-muted">Add Multiple Scoring Parameters</span>
+                </div>
+              </div>
+              <ng-container *ngFor="let item of scoringModelData.titleList; let t=index">
+                <div class="NP_Paramter_Groups">
+                <div class="Main-heading-dual-Cont p-0">
+                  <div class="text-collapse">
+                    <h4 class="main-text-heading">{{item.riskName}}</h4>
+                    <span class="text-muted">{{item.riskDescription}}</span>
+                  </div>
+                  <div class="number-collapse NP_Input_Text_Cont">
+                    <div class="collpse-number-main ">
+                      <div class="Total-Count-sp">  
+                        <div class="sub-number-collapse">
+                          <span>Max Score to be Considered</span>
+                          <div class="input-PS-Valid">
+                          <input type="number" class="form-control width-15" placeholder="Enter text"
+                            value="{{item.riskMaxScore}}" [(ngModel)]="item.riskMaxScore"
+                            pattern ="^[0-9]\d*(\.\d{0,2})?$" (focusout)="calculateTotalMax()"
+                            id="{{item.riskMaxScore}}_applicant" name="{{item.riskMaxScore}}_applicant"
+                            [appValidateElement]="submitted" [validationMessage]="{'required': 'Total Max Score is required','pattern':'please enter numeric value'}"
+                            required />
+                          </div>
+                          <!-- {{scoringModelData.total}} -->                          
+                        </div>
+                        <div class="sub-number-collapse">
+                          <span>Parameters</span>
+                          <h4 class="m-0">{{item.fieldsList.length}}</h4>                          
+                        </div>
+                      </div>
+                      <a class="psb-collapse-a" data-toggle="collapse"
+                        (click)="item.isPersonalRiskCollapsed = !item.isPersonalRiskCollapsed" href="javascript:void(0)">
+                        <em class="mdi mdi-arrow-down-drop-circle-outline"></em>
+                      </a>
+                    </div>
+                  </div>
+                </div>                
+                <!-- Start Collapse -->
+                <div class="collapse psb-collapse" id="collapseExample" [ngbCollapse]="item.isPersonalRiskCollapsed">
+                  <div class="table-responsive">
+                    <table class="scroingModel-RSitr-table" summary="">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Parameter</th>
+                          <th>&nbsp;</th>
+                          <th class="jc-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Personal Risk Parameters start -->
+                        <ng-container *ngFor="let field of item.fieldsList;let i = index">
+                          <tr *ngIf="field.isConsider">
+                            <div class="table-collapse">
+                              <div class="clearfix">
+                                <td>{{i+1}}</td>
+                                <td>
+                                  <div class="sub-man-para-number">
+                                    <!--   (click)="field.isCollapsed1 = !field.isCollapsed1" weightage -->
+                                    <p class="ctsp-Common NP_Scroring_Width">{{field.fieldName}}
+                                      <!-- <ng-select placeholder="Version 2" class="width-15" [items]="selectValue">
+                                  </ng-select> -->
+                                      
+                                      <em class="fmdi fmdi-info"
+                                        *ngIf="field.tooltip != undefined && field.tooltip != null"
+                                        tooltipClass="SE-tooltip" ngbTooltip="{{field.tooltip}}"></em>
+                                    </p>
+                                    <div class="NP_Scoring_Weight">
+                                      <label>Weight:</label>
+                                      <div class="form-group m0">                                      
+                                        <div class="psb-input-group">
+                                          <!-- checkTotalWeightage(item.fieldsList,item); -->
+                                            <input type="number" class="form-control" placeholder="Enter text"
+                                              value="{{field.weightage}}" [(ngModel)]="field.weightage"
+                                              (ngModelChange)="setWeightedScoreOnChangeWeight(field.weightage,field)"
+                                              id="{{field.fieldId}}_applicant" name="{{field.weightage}}_applicant"
+                                              [appValidateElement]="submitted"  pattern ="^[0-9]\d*(\.\d{0,2})?$"
+                                              [validationMessage]="{'required': 'Weight is required','pattern':'Enter numeric value.'}" required />
+                                              <div class="psb-input-group-append">
+                                                <span class="psb-input-group-text">%</span>
+                                              </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td>
+
+                                  <span>Max Score <strong>{{field.maxScore}}</strong></span>
+                                </td>
+                                <td class="jc-end">
+                                  <a href="javascript:void(0);" data-toggle="collapse"
+                                    (click)="field.isCollapsed1 = !field.isCollapsed1" class="action-icon">
+                                    <em class="mdi mdi-arrow-down-drop-circle-outline"></em></a>
+                                  <!-- <ng-template [ngTemplateOutlet]="Dropdown">
+                                </ng-template> -->
+                                  <a href="javascript:void(0);" class="action-icon" (click)="removeParameter(field)"> <em
+                                      class="mdi mdi-close icon-danger" placement="top"
+                                      ngbTooltip="Delete Scoring"></em></a>
+                                </td>
+                              </div>
+  
+                              <!-- tab inside data start -->
+  
+                              <!-- data for score model start -->
+                              <div class="collapse" id="collapseExample" [ngbCollapse]="field.isCollapsed1"
+                                *ngIf="field.type == 1 || field.type == 3 || field.type == 4">
+                                <table class="scoring-collapse-table" *ngIf="field.type == 3" summary="">
+                                  <tbody>
+                                    <tr>
+                                      <div class="radio radio-psbpurple RMR-1"
+                                        *ngFor="let item of field.lovList ;let m = index; let first = first">
+                                        <div class="form-check-inline m-0">
+                                          <input type="radio"
+                                            id="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}"
+                                            value="{{item.id}}" [(ngModel)]="field.addiValues"
+                                            name="radio_{{field.modelParameterId}}_{{field.type}}" [required]="true"
+                                            #baseOnIncome="ngModel"
+                                            name="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}">
+                                          <label for="radio_{{field.modelParameterId}}_{{field.type}}_{{item.id}}">
+                                            {{item.value}} </label>
+                                        </div>
+                                        <div *ngIf="first && checkStaticValidation && baseOnIncome.errors?.required"
+                                          class="small text-danger">
+                                          Kindly Select Income
+                                        </div>
+                                      </div>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table class="scoring-collapse-table" summary="">
+                                  <thead>
+                                    <tr>
+                                      <th>Min</th>
+                                      <th>Max</th>
+                                      <th>Enter Score</th>
+                                      <th>Weighted Score</th>
+                                      <!-- <th *ngIf="scoringModelData.isRiskParameter">Select Risk</th> -->
+                                      <th>&nbsp;</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <ng-container *ngIf="field.type == 4">
+                                      <tr *ngFor="let item of field.lovList ;let m = index">
+                                        <td class="Add-Scoring-TxtNP">
+                                          <div class="input-PS-Valid">
+                                            <input type="text" class="form-control" placeholder="Enter text"
+                                              value="{{item.value}}" disabled>
+                                          </div>
+                                        </td>
+                                        <td class="Add-Scoring-TxtNPScore">
+                                          <div class="input-PS-Valid">
+                                            <input type="text" class="form-control" placeholder="Enter text"
+                                              name="score_list_{{field.fieldId}}_{{m+1}}" [(ngModel)]="item.score"
+                                              (ngModelChange)="calculateParamScore(field,field.modelParameterList); setWeightedScore(item,field.weightage)"
+                                              [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                                              [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                                              required>
+                                          </div>
+                                        </td>
+  
+                                        <td><input type="text" value="{{item.weightedScore}}" class="form-control"
+                                            disabled></td>
+  
+                                      </tr>
+                                    </ng-container>
+  
+  
+                                    <tr *ngFor="let item of field.modelParameterList ;let m = index">
+                                      <td>
+                                        <div class="input-PS-Valid">
+                                          <div class="input-group">
+                                            <input type="text" 
+                                              value="{{field.isMinLess ? (item.minRange + ' & Less') : item.minRange }}"
+                                              class="form-control" *ngIf="m == 0 &&field.field !== 'LOAN_TO_VALUE'" disabled>
+                                            <input type="text"
+                                              value="{{item.minRange + ' &  no collateral'}}"
+                                              class="form-control" *ngIf="m == 0 && field.field === 'LOAN_TO_VALUE'" disabled>
+                                            <input type="{{m != 0 ? 'number':'hidden'}}" [(ngModel)]="item.minRange"
+                                              name="minRange_{{field.fieldId}}_{{m+1}}" class="form-control" disabled>
+  
+                                            <div class="input-group-append"
+                                              *ngIf="field.field === 'BUREAU_SCORE' && item.minRange == -1">
+                                              <span class="input-group-text">(New to credit)</span>
+                                            </div>
+                                            <div class="input-group-append">
+                                              <span class="input-group-text">{{field.symbol}}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="input-PS-Valid">
+                                          <div class="input-group">
+                                            <input type="text"
+                                              value="{{field.isMaxMore ? (item.maxRange + ' & Above') : item.maxRange }}"
+                                              class="form-control" *ngIf="(field.modelParameterList.length-1) == m"
+                                              disabled>
+                                            <input type="{{(field.modelParameterList.length-1) != m ? 'number':'hidden'}}"
+                                              [(ngModel)]="item.maxRange" class="form-control"
+                                              (ngModelChange)="calculate(field,item)" placeholder="Enter Max Value"
+                                              name="maxRange_{{field.fieldId}}_{{m+1}}"
+                                              (focusout)="validateFirst(field,item); chekValidVal(field,item, m)"
+                                              [pattern]="field.isFloatAdd ? '^[0-9]+(\.[0-9]{1,2})?$' : '^[0-9]*$'"
+                                              [disabled]="((field.modelParameterList.length - 1) == m || item.isDisabled)"
+                                              [appValidateElement]="submitted" required
+                                              [validationMessage]="{'required': 'Max is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}">
+                                            <div class="input-group-append"
+                                              *ngIf="field.field === 'BUREAU_SCORE' && item.maxRange == -1">
+                                              <span class="input-group-text">(New to credit)</span>
+                                            </div>
+                                            <div class="input-group-append">
+                                              <span class="input-group-text">{{field.symbol}}</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="input-group">
+                                          <div class="input-PS-Valid">
+                                            <input type="number" [(ngModel)]="item.score" class="form-control"
+                                              name="score_{{field.fieldId}}_{{m+1}}" placeholder="Enter Score"
+                                              (ngModelChange)="calculateParamScore(field,field.modelParameterList);setWeightedScore(item,field.weightage)"
+                                              [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                                              [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}">
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td><input type="text" value="{{item.weightedScore}}" class="form-control" disabled>
+                                      </td>
+  
+                                      <td class="Com-action"><a href="javascript:void(0);"
+                                          (click)="removeScoreParameter(field,item, field.modelParameterList)"
+                                          *ngIf="(field.modelParameterList.length>1 && m==(field.modelParameterList.length-1)) && (item.isRemove != false)">
+                                          <em class="fmdi fmdi-close icon-danger"></em></a>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td class="Btn-Add-Scoring-NP"
+                                        *ngIf="field.modelParameterList!==undefined && field.modelParameterList.length < field.maxRangeNumber">
+                                        <a href="javascript: void(0)" class="btn btn-ex-large btn-outline-psbpurple"
+                                          (click)="addScoreParameterList(field,1)"><em class="mdi mdi-plus"></em>
+                                          Add Range</a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+  
+                              </div>
+                              <!-- data for score model end-->
+  
+                              <!-- data for lov model start-->
+                              <div class="collapse" id="collapseExample" [ngbCollapse]="field.isCollapsed1"
+                                *ngIf="field.type == 2">
+  
+                                <table class="scoring-collapse-table_NP" summary="">
+                                  <thead>
+                                    <tr>
+                                      <th>Category</th>
+                                      <th>Enter Score</th>
+                                      <th>Weighted Score</th>
+                                      <th>&nbsp;</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of field.modelParameterList ;let m = index">
+                                      <td><input type="text" value="{{item.value}}" class="form-control" disabled>
+                                      </td>
+                                      <td>
+                                        <div class="input-PS-Valid">
+                                          <input type="number" [(ngModel)]="item.score" class="form-control"
+                                            name="score_{{field.fieldId}}_{{m+1}}" placeholder="Enter Score"
+                                            (ngModelChange)="calculateParamScore(field,field.modelParameterList);setWeightedScore(item,field.weightage)"
+                                            [appValidateElement]="submitted" required    pattern ="^[0-9]\d*(\.\d{0,2})?$"
+                                            [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}">
+                                        </div>
+                                      </td>
+                                      <td><input type="text" value="{{item.weightedScore}}" class="form-control" disabled>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+  
+                              </div>
+                            </div>
+                          </tr>
+                        </ng-container>
+                        <!-- Personal Risk Parameters end -->
+                        <div class="copy-paste-content-scoring" *ngIf="item.fieldsList.length == 0">
+                          <h4>No Parameter Added Yet</h4>
+                          <span>You can add new scoring parameters by clicking button below</span>
+                          <a href="javascript: void(0);" class="btn btn-psbpurple mt-3"
+                            (click)="scoreFieldAdd(item,scoringModelData.id)"><em class="mdi mdi-plus mr-1"></em>
+                            Add Scoring Parameters</a>
+  
+                        </div>
+                      </tbody>
+                      <div class="btn-sitr-new-rang" *ngIf="item.fieldsList.length > 0">
+                        <div class="text-right d-print-none">
+                          <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple ml-3"
+                            (click)="scoreFieldAdd(item,scoringModelData.id)"><em class="mdi mdi-plus mr-1"></em>
+                            Add Scoring Parameters</a>
+                        </div>
+                      </div>
+                    </table>
+                  </div>
+                </div>
+                <!-- End Collapse -->
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+         <!-- Personal Risk & Financial Risk & Management Risk & Business Risk End  -->
+        
+         <!-- Decision Matrix Start Code -->
+
+         <div class="row" >
+          <div class="col-lg-12">
+            <div class="card-box">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-ones">
+                  <h4 class="main-text-heading">Decision Matrix</h4>
+                  <span class="text-muted">You can set a propionate score if you want</span>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="scroing-SixColumn-matrix">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Score Range</th>
+                      <th>Grade</th>
+                      <th>Interpretation</th>
+                      <th>Loan Status</th>
+                      <th class="NP_Action">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of scoringModelData?.decisionMatrixList ;let m = index">
+                      <td scope="row">{{m+1}}</td>
+                      <td>
+                        <div class="sitr-scoring-number">
+                          <div class="form-group input-number-s">
+                            <input type="text" class="form-control"  
+                            name="min_score{{m+1}}" [(ngModel)]="item.maxScore"  [disabled]="true">
+                            <span class="input-margin input-width_np">To</span>
+                            <input type="text" class="form-control"
+                            name="max_score_{{m+1}}"
+                            (focusout)="onFocusOutEvent(scoringModelData?.decisionMatrixList,m);"
+                            [disabled]="(m == (scoringModelData?.decisionMatrixList?.length -1))"          
+                             [(ngModel)]="item.minScore"  (blur)="blurForMax($event,scoringModelData?.decisionMatrixList,2,item.maxScore)"
+                            [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$"
+                            [validationMessage]="{'required': 'Max Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                            required>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="sitr-Scale-number">
+                          <div class="form-group input-number-s">
+                            <input type="text"  id="simpleinput" class="form-control"
+                            name="grade_{{m+1}}" [(ngModel)]="item.grade"
+                            [appValidateElement]="submitted"
+                            [validationMessage]="{'required': 'Grade is required'}"
+                            required>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="sitr-Interpretation-number">
+                          <div class="form-group input-number-s">
+                            <input type="text" value="Very Risky" class="form-control"
+                            name="interpretation_{{m+1}}" [(ngModel)]="item.interpretation"
+                            [appValidateElement]="submitted" 
+                            [validationMessage]="{'required': 'Interpretation is required'}"
+                            required>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="sitr-Spread-number">
+                          <div class="form-group input-number-s">
+                              <input type="text" class="form-control" 
+                              name="interpretation_{{m+1}}" [(ngModel)]="item.loanStatus"
+                              [appValidateElement]="submitted"
+                              [validationMessage]="{'required': 'Loan Status is required'}"
+                              required>
+                          </div>
+                        </div>
+                      </td>
+                      <td  *ngIf="(m == (scoringModelData?.decisionMatrixList?.length -1))" class="NP_Action icon-center" (click)="removeDecisionRange(m)"><i class="mdi mdi-close icon-danger" ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                  
+                </table>
+                <div class="btn-sitr-new-rang">
+                  <div class="text-right d-print-none">
+                    <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple ml-3"  (click)="addDecisionRange(scoringModelData?.decisionMatrixList)"><i
+                        class="mdi mdi-plus mr-1"></i>
+                      Add Range</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+         </div>
+
+          <!-- Decision Matrix End Code -->
+          
+          <!-- Proportionate & Overall Score Start  -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card-box">
+              <div class="Main-heading-dual-Cont">
+                <div class="text-collapse">
+                  <h4 class="main-text-heading">Proportionate & Overall Score</h4>
+                  <span class="text-muted">You can set a propionate score if you want</span>
+                </div>
+                <div class="number-collapse NP_Input_Text_Cont NP_Proportionate_W">
+                  <div class="collpse-number-main ">
+                    <div class="Total-Count-sp">  
+                      <div class="sub-number-collapse">
+                        <span>Total Parameters</span>
+                        <h4 class="m-0">{{totalParameter}}</h4>                      
+                      </div>
+                      <div class="sub-number-collapse">
+                        <span>Overall Score</span>
+                        <h4 class="m-0">{{scoringModelData?.total}}</h4>                          
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="Proportionate-over-score">
+                <div class="col-lg-6 float-left br-1 pl-0">
+                  <div class="text-ones-ps">
+                    <h4 class="main-text-heading">Proportionate Score</h4>
+                    <span class="text-muted">
+                      If you want to convert your overall score to some provisional value you can use this</span>
+                  </div>
+                  <div class="score-Proportionate">
+                    <div class="Check-text-PS">
+                      <div class="checkbox checkbox-psbpurple form-check-inline mb-2">
+                        <input type="checkbox" id="isUseProportionateScore" value="isUseProportionateScore"
+                          [(ngModel)]="scoringModelData.isUseProportionateScore" name="isUseProportionateScore">
+                        <label for="isUseProportionateScore">Use Proportionate Score</label>
+                      </div>
+                      <!-- <div [ngClass]="{'NoneBox': !scoringModelData.isUseProportionateScore}" -->
+                      <div *ngIf="scoringModelData.isUseProportionateScore" class="Input-ps-group">
+                        <div class="group-label-input-score">
+                          <label>Total Score</label>
+                          <input type="text" class="form-control total-Proportionate-score"
+                            [(ngModel)]="scoringModelData.total" name="total" disabled>
+                        </div>
+                        <div class="scoring-exchange">
+                          <img src="assets/images/Dashabord/exchange.svg" alt="exchange" />
+                        </div>
+                        <div class="group-label-input-score">
+                          <label>Proportionate Score</label>
+                          <input type="number" class="form-control total-Proportionate-score" placeholder="Enter Score"
+                            [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                            [validationMessage]="{'required': 'Proportionate is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                            [(ngModel)]="scoringModelData.proportionateScore" name="proportionateScore">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 float-left pl-4 pr-0" *ngIf="false">
+                  <div class="text-ones-ps">
+                    <h4 class="main-text-heading">Risk Weights</h4>
+                    <span class="text-muted">If you want to give different weightage to different types of risk you can
+                      use this<br />
+                      method otherwise every parameter will be given same weightage</span>
+                  </div>
+                  <div class="score-Proportionate">
+                    <div class="Check-text-PS">
+                      <div class="checkbox checkbox-psbpurple form-check-inline w-100-fl mb-2">
+                        <input type="checkbox" id="RiskWeight" value="RiskWeight"
+                          [(ngModel)]="scoringModelData.isUserRiskWeight" [ngModelOptions]="{standalone: true}">
+                        <label for="RiskWeight"> User Risk Weight </label>
+                      </div>
+                      <!-- <div [ngClass]="{'NoneBox': !scoringModelData.isUserRiskWeight}" -->
+                      <div *ngIf="scoringModelData.isUserRiskWeight" class="input-scoring-proportionate">
+                        <div class="form-group-input mr-3" *ngFor="let item of scoringModelData.titleList; let i=index">
+                          <label>{{item.riskName}}</label>
+                          <!-- <div class="symbole-input custom_error_design">
+                            <input type="number" placeholder="Enter amount" class="form-control"
+                              [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                              [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                              [(ngModel)]="item.riskWeightValue" name="riskValue_{{i}}">
+                            <span>%</span>
+                          </div> -->
+                          <div class="psb-input-group Common-form-icon">
+                            <input type="number" placeholder="Enter amount" class="form-control br-0"
+                              [appValidateElement]="submitted" pattern="^(?:\d*\.\d{1,2}|\d+)$" required
+                              [validationMessage]="{'required': 'Score is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                              [(ngModel)]="item.riskWeightValue" name="riskValue_{{i}}">
+                            <div class="psb-input-group-append">
+                              <span class="psb-input-group-text">%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Proportionate & Overall Score End  -->
+      </div>
+
+    </div>
+  </form>
+  <!-- -----form end -->
+</div>

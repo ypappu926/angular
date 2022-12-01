@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title">Product Configuration</h4>
+
+  <!-- <button type="button" class="close" (click)="modal('Cross click')" aria-hidden="true">×</button> -->
+</div>
+<div class="modal-body Modal-scroll_NP">
+  <div class="row m-0">
+    <div class="col-md-12 p-0">
+      <!-- <div class="Product-Config-View-table">
+        <span>Campaing Type</span>
+        <ng-container *ngIf="byIdData.productAvailableFor==1">
+          <span> Marketplace </span>
+        </ng-container>
+        <ng-container *ngIf="byIdData.productAvailableFor==2">
+          <span> Bank Specifc </span>
+        </ng-container>
+        <ng-container *ngIf="byIdData.productAvailableFor==3">
+          <span> Both </span>
+        </ng-container>
+      </div> -->
+      <div class="slimScroll-psb-cotent" appSlimScroll>
+        <ng-container *ngFor="let config of editConfigurationParamter|keyvalue">
+          <div class="Product-Config-View-td">
+            <span>{{config.key}}</span>
+              <span class="Txt-DG">
+                <p *ngFor="let value of config.value ">{{value.masterValue}}</p>
+              </span>
+          </div>
+        </ng-container>
+       </div>
+
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer jc_center">
+  <a href="javascript: void(0)" class="btn btn-psb btn-psbpurple" (click)="activeModal.close('Ok')">Ok</a>
+</div>

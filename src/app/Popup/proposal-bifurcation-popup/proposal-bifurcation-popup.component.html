@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h4 class="modal-title">Update Loan Amount for Bifurcation</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <table class="NP_Com_Form_Table_BM_FIO NP_Three_table_Popup">
+        <thead>
+          <tr>
+            <th>Select Organization</th>
+            <th>Min Value</th>
+            <th>Max Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <ng-select placeholder="Select any one" [clearable]="false" [items]="selectValue"></ng-select>
+            </td>
+            <td>
+              <div class="form-group">
+                <input type="number" class="form-control" id="CAmount" placeholder="Enter Amount">
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <input type="number" class="form-control" id="CAmount" placeholder="Enter Amount">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ng-select placeholder="Select any one" [clearable]="false" [items]="selectValue"></ng-select>
+            </td>
+            <td>
+              <div class="form-group">
+                <input type="number" class="form-control" id="CAmount" placeholder="Enter Amount" disabled>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <input type="number" class="form-control" id="CAmount" placeholder="Enter Amount">
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12">
+      <span>The new loan amount will be effective after checker approval. If checker approves this request, then all
+        previous requests will expire. If checker rejected this request, then previous request will have no
+        effect.</span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-psb btn-secondary waves-effect">Cancel</button>
+  <button type="button" class="btn btn-psb btn-psbpurple waves-effect"><em
+      class="fmdi fmdi-arrow-right-top mr-1"></em>Send To Checker For Approval</button>
+</div>

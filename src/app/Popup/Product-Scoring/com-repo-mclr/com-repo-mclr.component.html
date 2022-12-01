@@ -1,0 +1,86 @@
+<form autocomplete="off" #interestRate="ngForm" noValidate>
+  <div class="modal-header">
+    <h4 class="modal-title">Update {{typeId==1?checkScheme(schemeId)?'Repo Rate':'EBLR':typeId==2?'MCLR':'Base Rate'}}
+      Value</h4>
+  </div>
+
+
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="main-content">
+          <div class="form-group-input Valid_NP">
+            <label>{{typeId==1?checkScheme(schemeId)?'Repo Rate':'EBLR':typeId==2?'MCLR':'Base Rate'}} Value</label>
+            <div class="input-group">
+              <input type="text" class="form-control" name="intrestRate"
+                pattern="^(0*100{1,1}\.?((?<=\.)0*)?%?$)|(^0*\d{0,2}\.?((?<=\.)\d{1,2})?)$"
+                [appValidateElement]="submitted"
+                [validationMessage]="{'required': 'Base Rate value is required','pattern': 'Please enter only numeric value with upto 2 decimals.'}"
+                required placeholder="10" [(ngModel)]="baseRateDetails.baseRate">
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-input ml-3">
+            <div class="form-group">
+              <div class="input-PS-Valid Valid_NP">
+                <label>Schedule Date</label>
+                <div class="psb-input-group">
+                  <input ngbDatepicker class="form-control" name="date" placeholder="dd-mm-yyyy" #scheduleDate="ngModel"
+                    #date="ngbDatepicker" [(ngModel)]="baseRateDetails.effectiveFromDate"
+                    [minDate]="{year:year,month:(month+1),day:day}" onkeydown="return false"
+                    (ngModelChange)="dateChanged()" required />
+                  <div class="psb-input-group-append" (click)="date.toggle()">
+                    <span class="psb-input-group-text"><em class="fmdi fmdi-calendar"></em></span>
+                  </div>
+
+
+                </div> <!-- <input type="date" class="form-control" placeholder="10 July 2020" /> -->
+                <div *ngIf="submitted && scheduleDate.invalid" class="invalid-feedback">
+                  <div *ngIf="scheduleDate.errors.required">Schedule Date is required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-input ml-3">
+            <div class="form-group">
+              <label>Schedule Time</label>
+              <!-- <input type="date" class="form-control" placeholder="06:30 PM" [(ngModel)]="baseRateDetails.effectiveFromTime"/> -->
+              <div class="input-PS-Valid Valid_NP">
+                <div class="Time_Picker_NP">
+                  <input class="form-control" name="time" [ngxTimepicker]="defaultValue" #scheduleTime="ngModel"
+                    [min]="isIE ? '00:00 am' :minTime" [value]="'05:11 pm'"
+                    [(ngModel)]="baseRateDetails.effectiveFromTime" [format]="12" onkeydown="return false" required />
+                  <ngx-material-timepicker-toggle [for]="defaultValue"></ngx-material-timepicker-toggle>
+                  <ngx-material-timepicker #defaultValue></ngx-material-timepicker>
+                </div>
+                <!-- <div *ngIf="submitted && scheduleTime.invalid" class="invalid-feedback">
+                  <div *ngIf="scheduleTime.errors.required">Schedule Time is required</div>
+                </div> -->
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-2">
+        <span>Your new {{typeId==1?checkScheme(schemeId)?'Repo Rate':'EBLR':typeId==2?'MCLR':'Base Rate'}} value will
+          take effect from{{baseRateDetails.effectiveFromDate || '-'}} {{baseRateDetails.effectiveFromTime || '-'}}
+          after checker approval, in case checker
+          doesn’t approve before scheduled time request will automatically expire. If Checker approves this request
+          previous request will expire and this one will be scheduled. If checker rejected this request previous request
+          will have no effect.</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript: void(0)" class="btn btn-psb btn-secondary waves-effect" (click)="closePopUp()">Cancel</a>
+    <ng-container *ngFor="let activeButton of actionButtons">
+      <a href="javascript: void(0)" (click)="updateJob(activeButton)" class="btn btn-psb btn-psbpurple"><em
+          class="mdi mdi-arrow-top-right mr-1"></em>
+        {{activeButton.action.buttonText}}</a>
+    </ng-container>
+  </div>
+</form>
